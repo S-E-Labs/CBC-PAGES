@@ -1491,25 +1491,31 @@
     
     // Cargar actividades recientes
     function cargarActividades() {
-      const container = document.getElementById('activityList');
-      container.innerHTML = '';
+  const container = document.getElementById('activityList');
+  container.innerHTML = '';
+
+  // 1. Filtrar las actividades para mostrar solo las del usuario actual
+  const actividadesDelUsuarioActual = actividades.filter(actividad => actividad.userId === currentUserId);
+
+  // 2. Iterar sobre las actividades filtradas
+  actividadesDelUsuarioActual.forEach(actividad => {
+    const item = document.createElement('div');
+    item.className = 'activity-item';
+    item.innerHTML = `
+      <div class="activity-icon ${actividad.tipo}">
+        <i class="fas fa-${actividad.tipo === 'inventario' ? 'box' : actividad.tipo === 'usuario' ? 'user-plus' : actividad.tipo === 'proveedor' ? 'truck-loading' : 'shield-alt'}"></i>
+      </div>
+      <div class="activity-content">
+        <div class="activity-title">${actividad.titulo}</div>
+        <div class="activity-desc">${actividad.desc}</div>
+      </div>
+      <div class="activity-time">${actividad.tiempo}</div>
+    `;
+    container.appendChild(item);
+  });
+}
       
-      actividades.forEach(actividad => {
-        const item = document.createElement('div');
-        item.className = 'activity-item';
-        item.innerHTML = `
-          <div class="activity-icon ${actividad.tipo}">
-            <i class="fas fa-${actividad.tipo === 'inventario' ? 'box' : actividad.tipo === 'usuario' ? 'user-plus' : actividad.tipo === 'proveedor' ? 'truck-loading' : 'shield-alt'}"></i>
-          </div>
-          <div class="activity-content">
-            <div class="activity-title">${actividad.titulo}</div>
-            <div class="activity-desc">${actividad.desc}</div>
-          </div>
-          <div class="activity-time">${actividad.tiempo}</div>
-        `;
-        container.appendChild(item);
-      });
-    }
+      
     
     // Navegación entre secciones
     function mostrarSeccion(idSeccion) {
@@ -1539,53 +1545,7 @@
         document.querySelectorAll('.nav-item')[secciones[idSeccion]].classList.add('active');
       }
     }
-    // --- Aquí empieza el código JavaScript para el dashboard ---
-
-    // --- Variables y referencias a elementos ---
-    const btnSemana = document.getElementById('btnSemana'); // Asegúrate de que tus botones tengan estos IDs
-    const btnMes = document.getElementById('btnMes');     // Asegúrate de que tus botones tengan estos IDs
-    const actividadSistemaCanvas = document.getElementById('actividadSistemaChart'); // Asegúrate de que tu canvas tenga este ID
-
-    let periodoActual = 'semana'; // Estado inicial: mostrar la semana
-    let actividadSistemaChart; // Variable para almacenar la instancia del gráfico Chart.js
-
-    // --- Funciones para simular datos y prepararlos para Chart.js ---
-    // Pega el código completo de las funciones simularDatosActividadChart,
-    // obtenerDatosActividadChart, dibujarActividadSistemaChart aquí
-    // ... (continúa pegando todo el código JavaScript que te di)
-
-    // --- Lógica para manejar los botones (similar a antes) ---
-    function actualizarEstadoBotones(periodoActivo) {
-      if (periodoActivo === 'semana') {
-        btnSemana.classList.add('active');
-        btnMes.classList.remove('active');
-      } else if (periodoActivo === 'mes') {
-        btnMes.classList.add('active');
-        btnSemana.classList.remove('active');
-      }
-    }
-
-    // --- Event Listeners para los botones ---
-    btnSemana.addEventListener('click', () => {
-      periodoActual = 'semana';
-      const datosSemana = obtenerDatosActividadChart(periodoActual);
-      dibujarActividadSistemaChart(datosSemana);
-      actualizarEstadoBotones(periodoActual);
-    });
-
-    btnMes.addEventListener('click', () => {
-      periodoActual = 'mes';
-      const datosMes = obtenerDatosActividadChart(periodoActual);
-      dibujarActividadSistemaChart(datosMes);
-      actualizarEstadoBotones(periodoActual);
-    });
-
-    // --- Cargar actividad de la semana por defecto al cargar la página ---
-    document.addEventListener('DOMContentLoaded', () => {
-      const datosSemanaInicial = obtenerDatosActividadChart(periodoActual);
-      dibujarActividadSistemaChart(datosSemanaInicial);
-      actualizarEstadoBotones(periodoActual);
-    });
+    
     // ================== SECCIÓN INVENTARIO ==================
     function initInventario() {
       // Inicializar categorías si no existen
