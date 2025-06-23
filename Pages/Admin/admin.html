@@ -1491,31 +1491,29 @@
     
     // Cargar actividades recientes
     function cargarActividades() {
-  const container = document.getElementById('activityList');
-  container.innerHTML = '';
+          const container = document.getElementById('activityList');
+          container.innerHTML = '';
 
-  // 1. Filtrar las actividades para mostrar solo las del usuario actual
-  const actividadesDelUsuarioActual = actividades.filter(actividad => actividad.userId === currentUserId);
+          // Cargar todas las actividades (como estaba originalmente)
+          actividades.forEach(actividad => {
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            item.innerHTML = `
+              <div class="activity-icon ${actividad.tipo}">
+                <i class="fas fa-${actividad.tipo === 'inventario' ? 'box' : actividad.tipo === 'usuario' ? 'user-plus' : actividad.tipo === 'proveedor' ? 'truck-loading' : 'shield-alt'}"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">${actividad.titulo}</div>
+                <div class="activity-desc">${actividad.desc}</div>
+              </div>
+              <div class="activity-time">${actividad.tiempo}</div>
+            `;
+            container.appendChild(item);
+          });
+        }
 
-  // 2. Iterar sobre las actividades filtradas
-  actividadesDelUsuarioActual.forEach(actividad => {
-    const item = document.createElement('div');
-    item.className = 'activity-item';
-    item.innerHTML = `
-      <div class="activity-icon ${actividad.tipo}">
-        <i class="fas fa-${actividad.tipo === 'inventario' ? 'box' : actividad.tipo === 'usuario' ? 'user-plus' : actividad.tipo === 'proveedor' ? 'truck-loading' : 'shield-alt'}"></i>
-      </div>
-      <div class="activity-content">
-        <div class="activity-title">${actividad.titulo}</div>
-        <div class="activity-desc">${actividad.desc}</div>
-      </div>
-      <div class="activity-time">${actividad.tiempo}</div>
-    `;
-    container.appendChild(item);
-  });
-}
       
-      
+    
     
     // Navegación entre secciones
     function mostrarSeccion(idSeccion) {
