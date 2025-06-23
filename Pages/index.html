@@ -79,8 +79,6 @@
       width: 100%;
       margin: 0 auto;
       animation: fadeIn 0.5s ease-in-out;
-      max-height: 95vh;
-      overflow-y: auto;
       padding: 10px;
     }
     
@@ -469,52 +467,7 @@
           <p class="mb-0"><i class="fas fa-headset me-2"></i>Soporte Técnico: <strong>soporte@cbcdecoracion.com</strong></p>
         </div>
         
-        <!-- Información adicional para scroll -->
-        <div class="additional-info">
-          <h4 class="info-title">Beneficios del Sistema</h4>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon">
-              <i class="fas fa-chart-line"></i>
-            </div>
-            <div>
-              <strong>Control Total del Inventario</strong>
-              <p class="mb-0">Gestione eficientemente todos sus productos y materiales</p>
-            </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <div>
-              <strong>Seguridad Avanzada</strong>
-              <p class="mb-0">Sistema de protección contra accesos no autorizados</p>
-            </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon">
-              <i class="fas fa-sync-alt"></i>
-            </div>
-            <div>
-              <strong>Actualizaciones en Tiempo Real</strong>
-              <p class="mb-0">Información actualizada al instante en toda la organización</p>
-            </div>
-          </div>
-          
-          <div class="benefit-item">
-            <div class="benefit-icon">
-              <i class="fas fa-mobile-alt"></i>
-            </div>
-            <div>
-              <strong>Acceso Móvil</strong>
-              <p class="mb-0">Gestione su inventario desde cualquier dispositivo</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
     
     <!-- Footer -->
     <div class="footer-links">
@@ -582,7 +535,7 @@
           rol: "administrador" 
         },
         { 
-          nombre: "Empleado Ejemplo", 
+          nombre: "Empleado", 
           correo: "empleado@cbc.com", 
           password: "empleado123", 
           estado: "activo", 
@@ -615,7 +568,7 @@
             }));
           }
 
-          alert(`Bienvenido, ${usuarioEncontrado.nombre}`);
+      
 
           if (tipoUsuario === "administrador") {
             window.location.href = "../Pages/Admin/admin.html";
@@ -684,6 +637,7 @@
         document.getElementById('rememberMe').checked = true;
       }
     });
+    
   </script>
 </body>
 </html>
