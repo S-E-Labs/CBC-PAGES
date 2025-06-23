@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventario - CBC</title>
+  <link rel="icon" href="../../../Assests/Img/favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="../../../Assests/Styles/inventario.css" />
+</head>
+<body>
+  <div class="inventory-panel">
+    <h2>Categorías de Inventario</h2>
+
+    <div class="category-container">
+      <a href="../../Admin/inventario/lavamanos.html">
+        <button class="btn btn-category">
+          <img src="../../../Assests/Img/lavamanos.png" class="emoji" alt="Lavamanos"> Lavamanos
+        </button>
+      </a>
+      <a href="./muebles.html">
+        <button class="btn btn-category">
+          <img src="../../../Assests/Img/mueble.png" class="emoji" alt="Muebles"> Muebles
+        </button>
+      </a>
+      <a href="./sanitarios.html">
+        <button class="btn btn-category">
+          <img src="../../../Assests/Img/bano.png" class="emoji" alt="Sanitarios"> Sanitarios
+        </button>
+      </a>
+      <a href="./grifos.html">
+        <button class="btn btn-category">
+          <img src="../../../Assests/Img/grifo.png" class="emoji" alt="Grifos"> Grifos
+        </button>
+      </a>
+      <a href="./accesorios.html">
+        <button class="btn btn-category">
+          <img src="../../../Assests/Img/accesorio.png" class="emoji" alt="Accesorios"> Accesorios
+        </button>
+      </a>
+    </div>
+
+    <hr />
+
+    <button class="btn btn-back" onclick="volverAlPanel()">Volver al Panel</button>
+
+    <!-- Edición de inventario -->
+    <div class="inventory-actions">
+      <h2>Gestión de Inventario</h2>
+
+      <label for="accion">Selecciona una acción:</label>
+      <select id="accion" onchange="mostrarFormulario()">
+        <option value="">-- Selecciona --</option>
+        <option value="agregar">Agregar Producto</option>
+        <option value="editar">Editar Producto</option>
+        <option value="eliminar">Eliminar Producto</option>
+      </select>
+
+      <div id="formularioAccion" class="form-hidden">
+        <label for="categoria">Categoría:</label>
+        <select id="categoria">
+          <option value="">-- Selecciona Categoría --</option>
+          <option value="lavamanos">Lavamanos</option>
+          <option value="muebles">Muebles</option>
+          <option value="sanitarios">Sanitarios</option>
+          <option value="grifos">Grifos</option>
+          <option value="accesorios">Accesorios</option>
+        </select>
+
+        <!-- Formulario Agregar -->
+        <div id="formAgregar" class="form-hidden">
+          <input type="text" placeholder="Código del Producto" />
+          <input type="text" placeholder="Nombre del Producto" />
+          <input type="number" placeholder="Precio" />
+          <input type="number" placeholder="Cantidad" />
+          <button>Agregar</button>
+        </div>
+
+        <!-- Formulario Editar -->
+        <div id="formEditar" class="form-hidden">
+          <label for="codigoEditar">Código del Producto:</label>
+          <input type="text" id="codigoEditar" placeholder="Ej: 00123" />
+          <button onclick="mostrarCamposEdicion()">Buscar</button>
+
+          <div id="editarCampos" class="form-hidden">
+            <input type="text" placeholder="Nuevo Nombre" />
+            <input type="number" placeholder="Nuevo Precio" />
+            <input type="number" placeholder="Nueva Cantidad" />
+            <button>Guardar Cambios</button>
+          </div>
+        </div>
+
+        <!-- Formulario Eliminar -->
+        <div id="formEliminar" class="form-hidden">
+          <label for="codigoEliminar">Código del Producto:</label>
+          <input type="text" id="codigoEliminar" placeholder="Ej: 00123" />
+          <button>Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../Assests/Scripts/inventario.js"></script>
+</body>
+</html>

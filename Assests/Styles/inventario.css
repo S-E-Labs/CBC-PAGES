@@ -1,0 +1,136 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .inventory-panel {
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .category-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .btn-category {
+    background-color: #ffffff;
+    border: 2px solid #4caf50;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #4caf50;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+  
+  .btn-category:hover {
+    background-color: #4caf50;
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  .emoji {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .btn-back {
+    margin-top: 30px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-back:hover {
+    background: linear-gradient(135deg, #45a049, #3e8e41);
+    transform: scale(1.05);
+  }
+  
+  /* Inventario edición */
+  
+  .inventory-actions {
+    margin-top: 40px;
+    background: #f9fafc;
+    border: 1px solid #ddd;
+    padding: 25px;
+    border-radius: 15px;
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  .inventory-actions label,
+  .inventory-actions select,
+  .inventory-actions input {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .inventory-actions select:focus,
+  .inventory-actions input:focus {
+    border-color: #4caf50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+  }
+  
+  .inventory-actions button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .inventory-actions button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+  
+  .form-hidden {
+    display: none;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

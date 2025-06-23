@@ -1,0 +1,55 @@
+<section class="galeria" id="galeria">
+  <h2>Galería de Proyectos</h2>
+  <div class="galeria-grid">
+    <!-- Imagen 1 -->
+    <a href="#img1">
+      <img src="assets/img/proyecto1.jpg" alt="Proyecto 1">
+    </a>
+    <a href="#img2">
+      <img src="assets/img/proyecto2.jpg" alt="Proyecto 2">
+    </a>
+    <a href="#img3">
+      <img src="assets/img/proyecto3.jpg" alt="Proyecto 3">
+    </a>
+    <a href="#img4">
+      <img src="assets/img/proyecto4.jpg" alt="Proyecto 4">
+    </a>
+    <a href="#img5">
+      <img src="assets/img/proyecto5.jpg" alt="Proyecto 5">
+    </a>
+    <a href="#img6">
+      <img src="assets/img/proyecto6.jpg" alt="Proyecto 6">
+    </a>
+  </div>
+
+  <!-- Lightbox (ventana emergente para ver la imagen en grande) -->
+  <div id="img1" class="lightbox">
+    <a href="#galeria" class="lightbox-close">&times;</a>
+    <img src="assets/img/proyecto1.jpg" alt="Proyecto 1 Ampliado">
+  </div>
+
+  <div id="img2" class="lightbox">
+    <a href="#galeria" class="lightbox-close">&times;</a>
+    <img src="assets/img/proyecto2.jpg" alt="Proyecto 2 Ampliado">
+  </div>
+
+  <div id="img3" class="lightbox">
+    <a href="#galeria" class="lightbox-close">&times;</a>
+    <img src="assets/img/proyecto3.jpg" alt="Proyecto 3 Ampliado">
+  </div>
+
+  <div id="img4" class="lightbox">
+    <a href="#galeria" class="lightbox-close">&times;</a>
+    <img src="assets/img/proyecto4.jpg" alt="Proyecto 4 Ampliado">
+  </div>
+
+  <div id="img5" class="lightbox">
+    <a href="#galeria" class="lightbox-close">&times;</a>
+    <img src="assets/img/proyecto5.jpg" alt="Proyecto 5 Ampliado">
+  </div>
+
+  <div id="img6" class="lightbox">
+    <a href="#galeria" class="lightbox-close">&times;</a>
+    <img src="assets/img/proyecto6.jpg" alt="Proyecto 6 Ampliado">
+  </div>
+</section>

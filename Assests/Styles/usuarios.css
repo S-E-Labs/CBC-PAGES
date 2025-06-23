@@ -1,0 +1,98 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .admin-panel {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    background-color: #3498db;
+    color: white;
+    padding: 0.75rem 2rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+  }
+  
+  table th, table td {
+    padding: 1rem;
+    border: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  table tr:hover {
+    background-color: #ddd;
+  }
+  
+  #estado-activo {
+    color: green;
+  }
+  
+  #estado-inactivo {
+    color: red;
+  }
+  
+  .btn-volver {
+    background-color: #e74c3c;
+  }
+  
+  .btn-volver:hover {
+    background-color: #c0392b;
+  }
+  
+  #cancel-edit {
+    background-color: #f39c12;
+  }
+  
+  #cancel-edit:hover {
+    background-color: #e67e22;
+  }
+  

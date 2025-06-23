@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Assests/Img/favicon.png" type="image/png" />
+    <title>CBC - Explorar Productos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a6bb0;
+            --primary-dark: #0d4a8c;
+            --secondary: #468faf;
+            --accent: #89c2d9;
+            --light: #f8f9fa;
+            --dark: #333;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #ffd166;
+            font-size: 1.5em;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 1.05rem;
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-weight: 300;
+        }
+
+        /* Categories */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2.4rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 25px auto 0;
+            line-height: 1.8;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-img {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-img img {
+            transform: scale(1.08);
+        }
+
+        .category-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .category-content h3 {
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .category-content a {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 10px;
+            font-size: 1.05rem;
+        }
+
+        .category-content a:hover {
+            background: var(--primary-dark);
+            transform: translateX(5px);
+        }
+
+        /* Products Section */
+        .products-section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin: 50px 0;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 35px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid var(--light-gray);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff6b6b;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-content {
+            padding: 20px;
+        }
+
+        .product-content h3 {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .product-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            min-height: 60px;
+            line-height: 1.7;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .product-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Filters */
+        .filters {
+            background: #f0f7ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .filters h3 {
+            margin-bottom: 0;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .search-box {
+            display: flex;
+            margin-left: auto;
+        }
+
+        .search-box input {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px 0 0 30px;
+            width: 250px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Product Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 40px auto;
+            border-radius: 12px;
+            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            animation: modalFade 0.4s ease;
+        }
+
+        @keyframes modalFade {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            color: #aaa;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+            background: rgba(0,0,0,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: #333;
+            transform: rotate(90deg);
+        }
+
+        .product-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-detail-images {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-thumbnails {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: var(--light-gray);
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            object-fit: cover;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .product-detail-info {
+            padding: 30px;
+        }
+
+        .product-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .product-detail-title {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .product-detail-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .product-detail-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .product-detail-description {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .product-detail-specs {
+            margin-bottom: 30px;
+        }
+
+        .specs-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .specs-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .specs-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .spec-item i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .spec-item span {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-large {
+            padding: 15px 25px;
+            font-size: 1.1rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--light-gray);
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quantity-btn:hover {
+            background: #ddd;
+        }
+
+        .quantity-input {
+            width: 50px;
+            height: 40px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-column ul li i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .footer-column ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero {
+                padding: 80px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .product-detail {
+                flex-direction: column;
+            }
+            
+            .product-detail-images {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+            
+            .hero {
+                padding: 60px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .detail-actions {
+                flex-direction: column;
+            }
+            
+            .quantity-selector {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .product-detail-images {
+                height: 250px;
+            }
+            
+            .product-detail-info {
+                padding: 20px;
+            }
+            
+            .product-detail-header {
+                flex-direction: column;
+            }
+            
+            .product-detail-price {
+                margin-top: 10px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-shower"></i>
+                CBC - Decoración
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="#categorias"><i class="fas fa-list"></i> Categorías</a></li>
+                    <li><a href="#productos"><i class="fas fa-box-open"></i> Productos</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Diseño y Calidad para tu Espacio</h1>
+            <p>Descubre nuestra exclusiva colección de productos de baño que combinan innovación, funcionalidad y el más alto estándar de calidad.</p>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="container categories" id="categorias">
+        <div class="section-title fade-in">
+            <h2>Nuestras Categorías</h2>
+            <p>Selecciona una categoría para explorar nuestros productos premium diseñados para transformar tu baño en un espacio de lujo y confort.</p>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-card fade-in delay-1">
+                <div class="category-img">
+                    <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Duchas y Cabinas">
+                </div>
+                <div class="category-content">
+                    <h3>Duchas y Cabinas</h3>
+                    <a href="#" onclick="filterProducts('duchas')">Explorar productos <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="category-card fade-in delay-2">
+                <div class="category-img">
+                    <img src="../Assests/Img/Mueble de baño.jpg" alt="Muebles de Baño">
+                </div>
+                <div class="category-content">
+                    <h3>Muebles de Baño</h3>
+                    <a href="#" onclick="filterProducts('muebles')">Explorar productos <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="category-card fade-in delay-3">
+                <div class="category-img">
+                    <img src="../Assests/Img/Griferia.jpg" alt="Grifería y Accesorios">
+                </div>
+                <div class="category-content">
+                    <h3>Grifería y Accesorios</h3>
+                    <a href="#" onclick="filterProducts('griferia')">Explorar productos <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="container products-section" id="productos">
+        <div class="products-header">
+            <div class="section-title" style="text-align: left; margin: 0;">
+                <h2>Explorar Productos</h2>
+                <p>Filtra por categoría o busca productos específicos</p>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Buscar productos...">
+                <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <h3>Filtrar por categoría:</h3>
+            <div class="filter-options">
+                <button class="filter-btn active" onclick="filterProducts('todos')">Todos</button>
+                <button class="filter-btn" onclick="filterProducts('duchas')">Duchas y Cabinas</button>
+                <button class="filter-btn" onclick="filterProducts('muebles')">Muebles de Baño</button>
+                <button class="filter-btn" onclick="filterProducts('griferia')">Grifería y Accesorios</button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="products-container">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="product-detail" id="productDetailContent">
+                <!-- Product details will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CBC Decoración</h3>
+                    <p>Ofrecemos soluciones de baño de alta gama que combinan diseño innovador, funcionalidad excepcional y calidad superior.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><i class="fas fa-chevron-right"></i><a href="../index.html">Inicio</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="#categorias">Categorías</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="#productos">Productos</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="#">Sobre Nosotros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorías</h3>
+                    <ul>
+                        <li><i class="fas fa-chevron-right"></i><a href="#" onclick="filterProducts('duchas')">Duchas y Cabinas</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="#" onclick="filterProducts('muebles')">Muebles de Baño</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="#" onclick="filterProducts('griferia')">Grifería y Accesorios</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="#" onclick="filterProducts('todos')">Todos los productos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Carrera 56c #51 - 109
+Barrio San Benito, Medellín, Colombia</li>
+                        <li><i class="fas fa-phone"></i>+57 310 7107274</li>
+                        <li><i class="fas fa-envelope"></i>cbcdecoracion@gmail.com</li>
+                        <li><i class="fas fa-clock"></i> L-V: 9:00 - 18:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CBC Decoración. Todos los derechos reservados. | Diseño y Calidad para Espacios Únicos</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: "Ducha de Lluvia Premium",
+                description: "Sistema de ducha de techo con efecto lluvia, acabado en cromo pulido y tecnología ahorradora de agua.",
+                price: "289.99",
+                image: "../Assests/Img/ducha lluvia.jpeg",
+                category: "duchas",
+                tag: "Nuevo",
+                specs: ["Material: Acero inoxidable", "Tecnología: Ahorro de agua", "Garantía: 5 años", "Instalación: Fácil"],
+                details: "Esta ducha premium ofrece una experiencia de baño relajante con su efecto lluvia suave. Fabricada con materiales de primera calidad y acabado cromado duradero que resiste la corrosión y las manchas de agua. Incluye sistema de filtración integrado para agua más pura.",
+                images: ["../Assests/Img/ducha lluvia.jpeg", "../Assests/Img/ducha lluvia2.jpg", "../Assests/Img/ducha lluvia3.jpg"]
+            },
+            {
+                id: 2,
+                name: "Cabina de Ducha Minimalista",
+                description: "Cabina de ducha con puertas correderas de vidrio templado y base antideslizante.",
+                price: "659.99",
+                image: "../Assests/Img/ducha minimalista.jpg",
+                category: "duchas",
+                specs: ["Material: Vidrio templado 8mm", "Dimensiones: 90x90cm", "Garantía: 3 años", "Base: Antideslizante"],
+                details: "Cabina de ducha minimalista con diseño moderno que se integra perfectamente en cualquier baño. Puertas correderas suaves que ahorran espacio, vidrio templado de seguridad y base antideslizante para máxima seguridad. Fácil de limpiar y mantener.",
+                images: ["../Assests/Img/ducha minimalista.jpg", "../Assests/Img/cabina-minimalista2.jpg", "../Assests/Img/cabina-minimalista3.jpg"]
+            },
+            {
+                id: 3,
+                name: "Mueble de Baño Moderno",
+                description: "Mueble de baño con acabado en madera de roble blanco, doble lavabo y amplio almacenamiento.",
+                price: "899.99",
+                image: "../Assests/Img/mueble moderno.png",
+                category: "muebles",
+                tag: "Oferta",
+                specs: ["Material: Madera de roble", "Color: Blanco mate", "Dimensiones: 120x50x85cm", "Lavabos: Doble"],
+                details: "Este mueble de baño moderno combina elegancia y funcionalidad. Fabricado con madera de roble de alta calidad con acabado blanco mate resistente a la humedad. Cuenta con amplios cajones y puertas para un almacenamiento óptimo. Ideal para baños espaciosos que requieren estilo y organización.",
+                images: ["../Assests/Img/mueble moderno.png", "../Assests/Img/mueble-moderno2.jpg", "../Assests/Img/mueble-moderno3.jpg"]
+            },
+            {
+                id: 4,
+                name: "Grifo Monomando Diseño",
+                description: "Grifo para lavabo con diseño minimalista, acabado en negro mate y tecnología sin contacto.",
+                price: "149.99",
+                image: "../Assests/Img/griferia dorada.jpg",
+                category: "griferia",
+                specs: ["Acabado: Negro mate", "Tecnología: Sensor sin contacto", "Ahorro de agua: 40%", "Instalación: Fácil"],
+                details: "Grifo monomando con tecnología de sensor sin contacto para máxima higiene y comodidad. Acabado negro mate elegante que combina con cualquier estilo de baño. Sistema de ahorro de agua que reduce el consumo hasta en un 40% sin comprometer el rendimiento.",
+                images: ["../Assests/Img/griferia dorada.jpg", "../Assests/Img/grifo-negro2.jpg", "../Assests/Img/grifo-negro3.jpg"]
+            },
+            {
+                id: 5,
+                name: "Cabina de Ducha Spa",
+                description: "Cabina de ducha con hidromasaje, sistema de vapor, radio Bluetooth y luces LED.",
+                price: "2199.99",
+                image: "../Assests/Img/spa ducha.jpg",
+                category: "duchas",
+                tag: "Premium",
+                specs: ["Hidromasaje: 6 chorros", "Vapor: Sistema integrado", "Audio: Bluetooth", "Luces: LED RGB"],
+                details: "Transforma tu baño en un spa de lujo con esta cabina multifuncional. Disfruta de hidromasaje terapéutico con 6 chorros ajustables, sistema de vapor para relajación muscular, radio Bluetooth para tu música favorita y luces LED con efectos cromáticos. Todo controlado mediante un panel táctil digital.",
+                images: ["../Assests/Img/spa ducha.jpg", "../Assests/Img/spa-ducha2.jpg", "../Assests/Img/spa-ducha3.jpg"]
+            },
+            {
+                id: 6,
+                name: "Mueble de Baño Compacto",
+                description: "Mueble compacto ideal para espacios reducidos, con espejo integrado y almacenamiento inteligente.",
+                price: "479.99",
+                image: "../Assests/Img/mueble compacto.jpg",
+                category: "muebles",
+                specs: ["Dimensiones: 60x45x75cm", "Espejo: Integrado con luz", "Material: MDF resistente", "Color: Gris grafito"],
+                details: "Solución perfecta para baños pequeños. Este mueble compacto incluye espejo con iluminación LED integrada, cajones organizadores y estantes para almacenamiento inteligente. Fabricado en MDF de alta densidad con acabado resistente a la humedad en elegante color gris grafito.",
+                images: ["../Assests/Img/mueble compacto.jpg", "../Assests/Img/mueble-compacto2.jpg", "../Assests/Img/mueble-compacto3.jpg"]
+            },
+            {
+                id: 7,
+                name: "Set Accesorios Baño",
+                description: "Set completo de accesorios en cromo satinado: portarrollos, toallero, jabonera y portalápiz.",
+                price: "129.99",
+                image: "../Assests/Img/accesorios set.jpg",
+                category: "griferia",
+                tag: "Popular",
+                specs: ["Material: Acero inoxidable", "Acabado: Cromo satinado", "Incluye: 4 piezas", "Garantía: 2 años"],
+                details: "Set completo de accesorios de baño en cromo satinado que combinan funcionalidad y estilo. Incluye portarrollos de papel, toallero doble, jabonera y portalápiz. Fácil instalación con todos los accesorios incluidos. Resistente a la corrosión y de fácil mantenimiento.",
+                images: ["../Assests/Img/accesorios set.jpg", "../Assests/Img/accesorios-set2.jpg", "../Assests/Img/accesorios-set3.jpg"]
+            },
+            {
+                id: 8,
+                name: "Grifo Termostático",
+                description: "Grifo termostático con control de temperatura preciso, seguridad anti-escaldadura y ahorro de agua.",
+                price: "229.99",
+                image: "../Assests/Img/termostatico.jpeg",
+                category: "griferia",
+                specs: ["Control de temperatura: Preciso", "Seguridad: Anti-escaldadura", "Ahorro de agua: 30%", "Instalación: Estándar"],
+                details: "Grifo termostático que mantiene la temperatura del agua constante durante toda la ducha. Sistema de seguridad que evita escaldaduras bloqueando el agua caliente si hay una caída en la presión del agua fría. Diseño ergonómico con palanca de control suave y precisa.",
+                images: ["../Assests/Img/termostatico.jpeg", "../Assests/Img/grifo-termo2.jpg", "../Assests/Img/grifo-termo3.jpg"]
+            },
+            {
+                id: 9,
+                name: "Ducha de Mano Cromada",
+                description: "Ducha de mano con 5 funciones de agua, manguera de acero inoxidable y acabado cromado duradero.",
+                price: "89.99",
+                image: "../Assests/Img/ducha mano cromada.jpg",
+                category: "duchas",
+                specs: ["Funciones: 5 modos", "Manguera: Acero inoxidable", "Longitud: 1.5m", "Acabado: Cromo brillante"],
+                details: "Ducha de mano versátil con 5 funciones de agua diferentes para adaptarse a tus necesidades. Manguera de acero inoxidable de 1.5 metros de longitud que no se enreda y es resistente. Cabezal giratorio 360° para mayor comodidad y alcance. Fácil instalación en cualquier sistema de ducha.",
+                images: ["../Assests/Img/ducha mano cromada.jpg", "../Assests/Img/ducha-mano2.jpg", "../Assests/Img/ducha-mano3.jpg"]
+            },
+            {
+                id: 10,
+                name: "Espejo con Luz LED",
+                description: "Espejo inteligente con luz LED integrada, sensor de movimiento y función anti-vaho.",
+                price: "199.99",
+                image: "../Assests/Img/gl4.jpg",
+                category: "muebles",
+                tag: "Nuevo",
+                specs: ["Iluminación: LED regulable", "Sensor: Movimiento", "Anti-vaho: Integrado", "Dimensiones: 80x60cm"],
+                details: "Espejo inteligente con iluminación LED regulable que ofrece la luz perfecta para el maquillaje o el afeitado. Sensor de movimiento que enciende la luz automáticamente. Función anti-vaho que mantiene el espejo limpio durante la ducha. Diseño ultra delgado con marco minimalista.",
+                images: ["../Assests/Img/gl4.jpg", "../Assests/Img/espejo-led2.jpg", "../Assests/Img/espejo-led3.jpg"]
+            }
+        ];
+
+        // Function to filter products by category
+        function filterProducts(category) {
+            const productsContainer = document.getElementById('products-container');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(category)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Clear container
+            productsContainer.innerHTML = '';
+            
+            // Filter products
+            let filteredProducts = [];
+            if (category === 'todos') {
+                filteredProducts = products;
+            } else {
+                filteredProducts = products.filter(product => product.category === category);
+            }
+            
+            // Generate product cards
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card fade-in';
+                productCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${product.image}" alt="${product.name}">
+                        ${product.tag ? `<div class="product-tag">${product.tag}</div>` : ''}
+                    </div>
+                    <div class="product-content">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <span class="price">$${product.price}</span>
+                        <div class="product-buttons">
+                            <button class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Añadir</button>
+                            <button class="btn btn-outline" onclick="showProductDetail(${product.id})"><i class="fas fa-info-circle"></i> Detalles</button>
+                        </div>
+                    </div>
+                `;
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        // Search products function
+        function searchProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const productsContainer = document.getElementById('products-container');
+            
+            if (!searchTerm) {
+                filterProducts('todos');
+                return;
+            }
+            
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) || 
+                product.description.toLowerCase().includes(searchTerm)
+            );
+            
+            // Clear container
+            productsContainer.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                productsContainer.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <h3>No se encontraron productos</h3>
+                        <p>Intenta con otro término de búsqueda</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Generate product cards
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card fade-in';
+                productCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${product.image}" alt="${product.name}">
+                        ${product.tag ? `<div class="product-tag">${product.tag}</div>` : ''}
+                    </div>
+                    <div class="product-content">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <span class="price">$${product.price}</span>
+                        <div class="product-buttons">
+                            <button class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Añadir</button>
+                            <button class="btn btn-outline" onclick="showProductDetail(${product.id})"><i class="fas fa-info-circle"></i> Detalles</button>
+                        </div>
+                    </div>
+                `;
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        // Function to show product details
+        function showProductDetail(productId) {
+            const modal = document.getElementById('productModal');
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                document.getElementById('productDetailContent').innerHTML = `
+                    <div class="product-detail-images">
+                        <img src="${product.images[0]}" alt="${product.name}" class="main-image" id="mainProductImage">
+                    </div>
+                    <div class="product-thumbnails">
+                        ${product.images.map((img, index) => `
+                            <img src="${img}" alt="Thumbnail ${index+1}" class="thumbnail ${index === 0 ? 'active' : ''}" 
+                                 onclick="changeMainImage('${img}', this)">
+                        `).join('')}
+                    </div>
+                    <div class="product-detail-info">
+                        <div class="product-detail-header">
+                            <div>
+                                <h2 class="product-detail-title">${product.name}</h2>
+                                ${product.tag ? `<span class="product-detail-tag">${product.tag}</span>` : ''}
+                            </div>
+                            <div class="product-detail-price">$${product.price}</div>
+                        </div>
+                        
+                        <p class="product-detail-description">${product.details}</p>
+                        
+                        <div class="product-detail-specs">
+                            <h3 class="specs-title">Especificaciones</h3>
+                            <div class="specs-list">
+                                ${product.specs.map(spec => `
+                                    <div class="spec-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>${spec}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" onclick="updateQuantity(-1)">-</button>
+                                <input type="number" class="quantity-input" id="productQuantity" value="1" min="1">
+                                <button class="quantity-btn" onclick="updateQuantity(1)">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-large">
+                                <i class="fas fa-shopping-cart"></i> Añadir al carrito
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                modal.style.display = "block";
+                document.body.style.overflow = "hidden"; // Prevent scrolling
+            }
+        }
+
+        // Function to change main image in product detail
+        function changeMainImage(src, element) {
+            document.getElementById('mainProductImage').src = src;
+            
+            // Remove active class from all thumbnails
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            
+            // Add active class to clicked thumbnail
+            element.classList.add('active');
+        }
+
+        // Function to update quantity
+        function updateQuantity(change) {
+            const input = document.getElementById('productQuantity');
+            let value = parseInt(input.value) || 1;
+            value += change;
+            
+            if (value < 1) value = 1;
+            if (value > 99) value = 99;
+            
+            input.value = value;
+        }
+
+        // Initialize products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            filterProducts('todos');
+            
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Close modal when clicking on close button
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('productModal').style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+            
+            // Close modal when clicking outside of it
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('productModal');
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

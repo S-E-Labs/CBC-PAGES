@@ -1,0 +1,2763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Administrativo - CBC</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>" type="image/svg+xml"/>
+
+  <!-- Bootstrap y Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  
+  <!-- Bibliotecas para exportación -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3f37c9;
+      --accent: #4cc9f0;
+      --success: #4ade80;
+      --warning: #facc15;
+      --danger: #f87171;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --sidebar-width: 250px;
+      --header-height: 70px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+      color: white;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    .sidebar-header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-header h3 {
+      margin: 0;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-header h3 i {
+      background: rgba(255, 255, 255, 0.15);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .nav-links {
+      padding: 20px 0;
+    }
+    
+    .nav-item {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border-left: 4px solid transparent;
+      cursor: pointer;
+    }
+    
+    .nav-item:hover, .nav-item.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .nav-item i {
+      width: 24px;
+      text-align: center;
+      font-size: 18px;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      transition: all 0.3s ease;
+    }
+    
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 99;
+    }
+    
+    .toggle-sidebar {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--dark);
+      cursor: pointer;
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .notification {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--danger);
+      color: white;
+      font-size: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+    
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .user-role {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    /* Dashboard Content */
+    .content {
+      padding: 30px;
+    }
+    
+    .section-content {
+      display: none;
+    }
+    
+    .section-content.active {
+      display: block;
+    }
+    
+    /* Estilos para el dashboard */
+    .welcome-section {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 15px;
+      padding: 30px;
+      color: white;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .welcome-section::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+    
+    .welcome-section::after {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      right: 20px;
+      width: 150px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+    }
+    
+    .welcome-content h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .welcome-content p {
+      max-width: 600px;
+      opacity: 0.9;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+    }
+    
+    .stat-card.inventario::before { background: var(--primary); }
+    .stat-card.proveedores::before { background: var(--success); }
+    .stat-card.usuarios::before { background: var(--accent); }
+    .stat-card.alertas::before { background: var(--danger); }
+    
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .stat-card.inventario .stat-icon { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
+    .stat-card.proveedores .stat-icon { background: rgba(74, 222, 128, 0.1); color: var(--success); }
+    .stat-card.usuarios .stat-icon { background: rgba(76, 201, 240, 0.1); color: var(--accent); }
+    .stat-card.alertas .stat-icon { background: rgba(248, 113, 113, 0.1); color: var(--danger); }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .stat-title {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    @media (max-width: 992px) {
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .chart-container {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .chart-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .chart {
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      border-radius: 10px;
+      color: var(--gray);
+      font-weight: 500;
+    }
+    
+    .recent-activity {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .activity-item {
+      display: flex;
+      padding: 15px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+    
+    .activity-icon.inventario { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
+    .activity-icon.usuario { background: rgba(76, 201, 240, 0.1); color: var(--accent); }
+    .activity-icon.alerta { background: rgba(248, 113, 113, 0.1); color: var(--danger); }
+    .activity-icon.proveedor { background: rgba(74, 222, 128, 0.1); color: var(--success); }
+    
+    .activity-content {
+      flex: 1;
+    }
+    
+    .activity-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .activity-desc {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .activity-time {
+      color: var(--gray);
+      font-size: 0.8rem;
+      text-align: right;
+      white-space: nowrap;
+      margin-left: 15px;
+    }
+    
+    /* Botón de logout */
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: calc(100% - 40px);
+      margin: 20px;
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    
+    /* Estilos para la sección de inventario */
+    .inventario-section {
+      background-color: #f4f6f8;
+      padding: 20px;
+      border-radius: 15px;
+    }
+    
+    .inventario-section h2, .inventario-section h3 {
+      color: #2c3e50;
+    }
+    
+    .inventario-section label {
+      margin-top: 15px;
+      font-weight: bold;
+      display: block;
+      color: #1e293b;
+    }
+    
+    .inventario-section select, 
+    .inventario-section input[type="text"], 
+    .inventario-section input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      box-sizing: border-box;
+      transition: all 0.3s;
+      background-color: white;
+      font-size: 15px;
+    }
+    
+    .inventario-section select:focus, 
+    .inventario-section input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+    
+    .inventario-section button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .inventario-section button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .inventario-section table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .inventario-section th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      padding: 14px;
+      text-align: left;
+    }
+    
+    .inventario-section td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 14px;
+      color: #374151;
+    }
+    
+    .inventario-section tr:hover td {
+      background-color: #f9fafb;
+    }
+    
+    .inventario-section td button {
+      background-color: transparent;
+      color: var(--danger);
+      font-size: 18px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .inventario-section td button:hover {
+      background-color: rgba(248, 113, 113, 0.1);
+    }
+    
+    .export-buttons {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .export-buttons button {
+      flex: 1 1 200px;
+      background-color: var(--success);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .export-buttons button:hover {
+      background-color: #3ac36d;
+    }
+    
+    .flex-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    
+    .flex-row > input {
+      flex: 1 1 200px;
+      min-width: 180px;
+    }
+    
+    .chart-container-inv {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .chart-box {
+      flex: 1 1 400px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .chart-title {
+      text-align: center;
+      margin-bottom: 15px;
+      color: var(--dark);
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    /* Estilos para nuevas secciones */
+    .proveedores-section, .usuarios-section, .sospechosos-section {
+      background-color: #f4f6f8;
+      padding: 20px;
+      border-radius: 15px;
+    }
+    
+    .proveedores-section h2, .usuarios-section h2, .sospechosos-section h2 {
+      color: #2c3e50;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .card-header h3 {
+      margin: 0;
+    }
+    
+    .search-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .search-bar input {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+    
+    .table-responsive {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .table th {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .table-hover tbody tr:hover {
+      background-color: rgba(67, 97, 238, 0.05);
+    }
+    
+    .badge-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    .badge-active {
+      background-color: rgba(74, 222, 128, 0.2);
+      color: #0f9d58;
+    }
+    
+    .badge-inactive {
+      background-color: rgba(248, 113, 113, 0.2);
+      color: #db4437;
+    }
+    
+    .badge-admin {
+      background-color: rgba(67, 97, 238, 0.2);
+      color: var(--primary);
+    }
+    
+    .badge-user {
+      background-color: rgba(76, 201, 240, 0.2);
+      color: var(--accent);
+    }
+    
+    .badge-suspicious {
+      background-color: rgba(248, 113, 113, 0.2);
+      color: #db4437;
+    }
+    
+    .btn-action {
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    
+    .btn-action.edit:hover {
+      background-color: rgba(76, 201, 240, 0.1);
+      color: var(--accent);
+    }
+    
+    .btn-action.delete:hover {
+      background-color: rgba(248, 113, 113, 0.1);
+      color: var(--danger);
+    }
+    
+    .modal-content {
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    
+    .modal-header {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .modal-footer {
+      background-color: #f8fafc;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .form-control {
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+    
+    .pagination {
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .page-item.active .page-link {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .page-link {
+      color: var(--primary);
+    }
+    
+    .status-toggle {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    
+    .status-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background-color: var(--success);
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(30px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .header {
+        padding: 0 15px;
+      }
+      
+      .flex-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .export-buttons {
+        flex-direction: column;
+      }
+      
+      .export-buttons button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h3><i class="fas fa-boxes"></i> CBC Inventario</h3>
+    </div>
+    
+    <div class="nav-links">
+      <div class="nav-item active" onclick="mostrarSeccion('dashboard-section')">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="mostrarSeccion('inventario-section')">
+        <i class="fas fa-boxes"></i>
+        <span>Inventario</span>
+      </div>
+      <div class="nav-item" onclick="mostrarSeccion('proveedores-section')">
+        <i class="fas fa-truck"></i>
+        <span>Proveedores</span>
+      </div>
+      <div class="nav-item" onclick="mostrarSeccion('usuarios-section')">
+        <i class="fas fa-users-cog"></i>
+        <span>Gestión de Usuarios</span>
+      </div>
+      <div class="nav-item" onclick="mostrarSeccion('sospechosos-section')">
+        <i class="fas fa-shield-alt"></i>
+        <span>Intentos Sospechosos</span>
+      </div>
+    </div>
+    
+    <button class="logout-btn" onclick="cerrarSesion()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <button class="toggle-sidebar" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <div class="header-right">
+        <div class="notification">
+          <i class="fas fa-bell"></i>
+          <span class="notification-badge" id="notificationCount">3</span>
+        </div>
+        
+        <div class="user-profile">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <div class="user-info">
+            <div class="user-name" id="userName">Administrador Principal</div>
+            <div class="user-role">Administrador</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dashboard Content -->
+    <div class="content">
+      <!-- Dashboard Section -->
+      <div class="section-content active" id="dashboard-section">
+        <div class="welcome-section">
+          <div class="welcome-content">
+            <h1>Bienvenido de nuevo, <span id="welcomeName">Administrador</span></h1>
+            <p>Aquí puedes gestionar todo el inventario de CBC Decoración, supervisar proveedores, usuarios y ver las estadísticas del sistema.</p>
+          </div>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card inventario" onclick="mostrarSeccion('inventario-section')">
+            <div class="stat-header">
+              <div>
+                <div class="stat-number" id="inventoryCount">0</div>
+                <div class="stat-title">Productos en Inventario</div>
+              </div>
+              <div class="stat-icon">
+                <i class="fas fa-boxes"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stat-card proveedores" onclick="mostrarSeccion('proveedores-section')">
+            <div class="stat-header">
+              <div>
+                <div class="stat-number" id="supplierCount">0</div>
+                <div class="stat-title">Proveedores Activos</div>
+              </div>
+              <div class="stat-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stat-card usuarios" onclick="mostrarSeccion('usuarios-section')">
+            <div class="stat-header">
+              <div>
+                <div class="stat-number" id="userCount">0</div>
+                <div class="stat-title">Usuarios Registrados</div>
+              </div>
+              <div class="stat-icon">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stat-card alertas" onclick="mostrarSeccion('sospechosos-section')">
+            <div class="stat-header">
+              <div>
+                <div class="stat-number" id="alertCount">0</div>
+                <div class="stat-title">Alertas de Seguridad</div>
+              </div>
+              <div class="stat-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chart-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Inventario por Categoría</h3>
+              <div>
+                <button class="btn btn-sm btn-outline-secondary" onclick="actualizarDashboardCharts('week')">Esta semana</button>
+                <button class="btn btn-sm btn-primary" onclick="actualizarDashboardCharts('month')">Este mes</button>
+              </div>
+            </div>
+            <div class="chart">
+              <canvas id="inventoryChart"></canvas>
+            </div>
+          </div>
+          
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Actividad del Sistema</h3>
+            </div>
+            <div class="chart">
+              <canvas id="activityChart"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="recent-activity">
+          <div class="chart-header">
+            <h3>Actividad Reciente</h3>
+            <a href="#">Ver todo</a>
+          </div>
+          
+          <div class="activity-list" id="activityList">
+            <!-- Actividades se cargan dinámicamente -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Inventario Section -->
+      <div class="section-content inventario-section" id="inventario-section">
+        <h2><i class="fas fa-boxes me-2"></i> Gestión de Inventario</h2>
+        
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="categoria">Selecciona Categoría:</label>
+            <select class="form-select" id="categoria" onchange="mostrarProductos(); actualizarGraficas(); actualizarDashboardCharts()">
+              <option value="">-- Todas las Categorías (para búsqueda global) --</option>
+              <option value="lavamanos">Lavamanos</option>
+              <option value="muebles">Muebles</option>
+              <option value="sanitarios">Sanitarios</option>
+              <option value="grifos">Grifos</option>
+              <option value="accesorios">Accesorios</option>
+            </select>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="buscar">Buscar (global en todas las categorías):</label>
+            <input type="text" class="form-control" id="buscar" oninput="filtrarProductos()" placeholder="Buscar por nombre o código...">
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Agregar Producto</h3>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <input type="text" class="form-control" id="codigo" placeholder="Código" required>
+              </div>
+              <div class="col-md-3">
+                <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+              </div>
+              <div class="col-md-2">
+                <input type="number" class="form-control" id="precio" placeholder="Precio" min="0" step="0.01" required>
+              </div>
+              <div class="col-md-2">
+                <input type="number" class="form-control" id="Precio_costos" placeholder="Precio costos" min="0" step="0.01" required>
+              </div>
+              <div class="col-md-2">
+                <input type="number" class="form-control" id="cantidad" placeholder="Cantidad" min="0" step="1" required>
+              </div>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="agregarProducto()">
+              <i class="fas fa-plus me-1"></i> Agregar Producto
+            </button>
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-box-open me-2"></i> Inventario</h3>
+            <div class="export-buttons">
+              <button class="btn btn-sm btn-success" onclick="exportar('pdf')">
+                <i class="fas fa-file-pdf me-1"></i> Exportar PDF
+              </button>
+              <button class="btn btn-sm btn-success" onclick="exportar('excel')">
+                <i class="fas fa-file-excel me-1"></i> Exportar Excel
+              </button>
+              <button class="btn btn-sm btn-success" onclick="exportar('pdf', true)">
+                <i class="fas fa-file-pdf me-1"></i> Todo el Inventario
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="tablaProductos">
+                <thead>
+                  <tr>
+                    <th>Categoría</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Precio costo</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-file-import me-2"></i> Importar desde Excel</h3>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="importarArchivo" class="form-label"><strong>Seleccionar archivo Excel (Formato: Categoría, Código, Nombre, Precio, Precio costos, Cantidad)</strong></label>
+              <input class="form-control" type="file" id="importarArchivo" accept=".xlsx, .xls">
+            </div>
+            <button class="btn btn-primary" onclick="importarExcel()">
+              <i class="fas fa-file-import me-1"></i> Importar Excel
+            </button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-chart-bar me-2"></i> Análisis de Inventario</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart-container-inv">
+              <div class="chart-box">
+                <div class="chart-title">Productos por Categoría</div>
+                <canvas id="chartCategorias" height="250"></canvas>
+              </div>
+              
+              <div class="chart-box">
+                <div class="chart-title">Valor del Inventario por Categoría</div>
+                <canvas id="chartValorInventario" height="250"></canvas>
+              </div>
+              
+              <div class="chart-box">
+                <div class="chart-title">Productos con Bajo Stock (&lt;5 unidades)</div>
+                <canvas id="chartBajoStock" height="250"></canvas>
+              </div>
+              
+              <div class="chart-box">
+                <div class="chart-title">Margen de Beneficio Promedio</div>
+                <canvas id="chartMargenBeneficio" height="250"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Proveedores Section -->
+      <div class="section-content proveedores-section" id="proveedores-section">
+        <h2><i class="fas fa-truck"></i> Gestión de Proveedores</h2>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-search me-2"></i> Búsqueda y Filtros</h3>
+          </div>
+          <div class="card-body">
+            <div class="search-bar">
+              <input type="text" class="form-control" id="buscarProveedor" placeholder="Buscar proveedor por nombre, contacto o producto..." oninput="filtrarProveedores()">
+              <select class="form-select" id="filtroEstado" onchange="filtrarProveedores()">
+                <option value="">Todos los estados</option>
+                <option value="activo">Activos</option>
+                <option value="inactivo">Inactivos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-list me-2"></i> Lista de Proveedores</h3>
+            <div class="action-buttons">
+              <button class="btn btn-primary" onclick="abrirModalProveedor()">
+                <i class="fas fa-plus me-1"></i> Nuevo Proveedor
+              </button>
+              <button class="btn btn-success" onclick="exportarProveedores('excel')">
+                <i class="fas fa-file-excel me-1"></i> Excel
+              </button>
+              <button class="btn btn-danger" onclick="exportarProveedores('pdf')">
+                <i class="fas fa-file-pdf me-1"></i> PDF
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="tablaProveedores">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Contacto</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Productos</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Proveedores se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Usuarios Section -->
+      <div class="section-content usuarios-section" id="usuarios-section">
+        <h2><i class="fas fa-users-cog"></i> Gestión de Usuarios</h2>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-search me-2"></i> Búsqueda y Filtros</h3>
+          </div>
+          <div class="card-body">
+            <div class="search-bar">
+              <input type="text" class="form-control" id="buscarUsuario" placeholder="Buscar usuario por nombre, email o rol..." oninput="filtrarUsuarios()">
+              <select class="form-select" id="filtroRol" onchange="filtrarUsuarios()">
+                <option value="">Todos los roles</option>
+                <option value="administrador">Administradores</option>
+                <option value="empleado">Empleados</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-users me-2"></i> Lista de Usuarios</h3>
+            <div class="action-buttons">
+              <button class="btn btn-primary" onclick="abrirModalUsuario()">
+                <i class="fas fa-user-plus me-1"></i> Nuevo Usuario
+              </button>
+              <button class="btn btn-success" onclick="exportarUsuarios('excel')">
+                <i class="fas fa-file-excel me-1"></i> Excel
+              </button>
+              <button class="btn btn-danger" onclick="exportarUsuarios('pdf')">
+                <i class="fas fa-file-pdf me-1"></i> PDF
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="tablaUsuarios">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Último Acceso</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Usuarios se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sospechosos Section -->
+      <div class="section-content sospechosos-section" id="sospechosos-section">
+        <h2><i class="fas fa-shield-alt"></i> Intentos Sospechosos</h2>
+        
+        <div class="alert alert-warning">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Esta sección muestra los intentos de acceso no autorizados al sistema. 
+          Revise periódicamente para mantener la seguridad de su información.
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-filter me-2"></i> Filtros</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha desde:</label>
+                  <input type="date" class="form-control" id="fechaDesde" onchange="filtrarSospechosos()">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fecha hasta:</label>
+                  <input type="date" class="form-control" id="fechaHasta" onchange="filtrarSospechosos()">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo de intento:</label>
+                  <select class="form-select" id="filtroTipo" onchange="filtrarSospechosos()">
+                    <option value="">Todos los tipos</option>
+                    <option value="login">Intento de login</option>
+                    <option value="acceso">Acceso no autorizado</option>
+                    <option value="bruteforce">Ataque de fuerza bruta</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i> Registro de Intentos Sospechosos</h3>
+            <div class="action-buttons">
+              <button class="btn btn-success" onclick="exportarSospechosos('excel')">
+                <i class="fas fa-file-excel me-1"></i> Excel
+              </button>
+              <button class="btn btn-danger" onclick="exportarSospechosos('pdf')">
+                <i class="fas fa-file-pdf me-1"></i> PDF
+              </button>
+              <button class="btn btn-warning" onclick="limpiarRegistrosSospechosos()">
+                <i class="fas fa-trash-alt me-1"></i> Limpiar Registros
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="tablaSospechosos">
+                <thead>
+                  <tr>
+                    <th>Fecha y Hora</th>
+                    <th>IP</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Intentos sospechosos se cargarán dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modales -->
+  <!-- Modal para Proveedores -->
+  <div class="modal fade" id="modalProveedor" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalProveedorTitle">Nuevo Proveedor</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formProveedor">
+            <input type="hidden" id="proveedorId">
+            <div class="form-group">
+              <label for="nombreProveedor">Nombre del Proveedor *</label>
+              <input type="text" class="form-control" id="nombreProveedor" required>
+            </div>
+            <div class="form-group">
+              <label for="contactoProveedor">Persona de Contacto *</label>
+              <input type="text" class="form-control" id="contactoProveedor" required>
+            </div>
+            <div class="form-group">
+              <label for="telefonoProveedor">Teléfono *</label>
+              <input type="tel" class="form-control" id="telefonoProveedor" required>
+            </div>
+            <div class="form-group">
+              <label for="emailProveedor">Email *</label>
+              <input type="email" class="form-control" id="emailProveedor" required>
+            </div>
+            <div class="form-group">
+              <label for="productosProveedor">Productos que Suministra</label>
+              <textarea class="form-control" id="productosProveedor" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Estado del Proveedor</label>
+              <div class="d-flex align-items-center">
+                <label class="status-toggle me-3">
+                  <input type="checkbox" id="estadoProveedor" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span id="estadoTexto">Activo</span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnGuardarProveedor">Guardar Proveedor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal para Usuarios -->
+  <div class="modal fade" id="modalUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalUsuarioTitle">Nuevo Usuario</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formUsuario">
+            <input type="hidden" id="usuarioId">
+            <div class="form-group">
+              <label for="nombreUsuario">Nombre Completo *</label>
+              <input type="text" class="form-control" id="nombreUsuario" required>
+            </div>
+            <div class="form-group">
+              <label for="emailUsuario">Email *</label>
+              <input type="email" class="form-control" id="emailUsuario" required>
+            </div>
+            <div class="form-group">
+              <label for="rolUsuario">Rol *</label>
+              <select class="form-select" id="rolUsuario" required>
+                <option value="">Seleccionar rol</option>
+                <option value="administrador">Administrador</option>
+                <option value="empleado">Empleado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="passwordUsuario">Contraseña *</label>
+              <input type="password" class="form-control" id="passwordUsuario" required>
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirmar Contraseña *</label>
+              <input type="password" class="form-control" id="confirmPassword" required>
+            </div>
+            <div class="form-group">
+              <label>Estado del Usuario</label>
+              <div class="d-flex align-items-center">
+                <label class="status-toggle me-3">
+                  <input type="checkbox" id="estadoUsuario" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span id="estadoUsuarioTexto">Activo</span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnGuardarUsuario">Guardar Usuario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS y Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    // Variables globales para todas las secciones
+    const proveedoresModal = new bootstrap.Modal(document.getElementById('modalProveedor'));
+    const usuariosModal = new bootstrap.Modal(document.getElementById('modalUsuario'));
+    const categorias = ["lavamanos", "muebles", "sanitarios", "grifos", "accesorios"];
+    let chartCategorias, chartValorInventario, chartBajoStock, chartMargenBeneficio;
+    let dashboardInventoryChart, dashboardActivityChart;
+    
+    // Datos de actividad
+    const actividades = [
+      { tipo: "inventario", titulo: "Nuevo producto agregado", desc: "Sofá de 3 plazas modelo Barcelona", tiempo: "Hace 2 horas" },
+      { tipo: "usuario", titulo: "Nuevo usuario registrado", desc: "Carlos Rodríguez fue registrado como empleado", tiempo: "Hace 5 horas" },
+      { tipo: "proveedor", titulo: "Pedido a proveedor", desc: "Se realizó pedido de 50 unidades a Muebles del Norte", tiempo: "Ayer, 15:30" },
+      { tipo: "alerta", titulo: "Intento sospechoso detectado", desc: "Se registró un intento de acceso no autorizado", tiempo: "Ayer, 10:15" }
+    ];
+
+    // Validación de sesión
+    window.addEventListener('load', () => {
+      const usuario = sessionStorage.getItem('usuario');
+      const rol = sessionStorage.getItem('rol');
+      
+      if (usuario) {
+        document.getElementById('userName').textContent = usuario;
+        document.getElementById('welcomeName').textContent = usuario;
+        document.getElementById('userAvatar').textContent = usuario.charAt(0).toUpperCase();
+      }
+
+      if (!usuario || rol !== 'administrador') {
+        window.location.href = "../../Pages/index.html";
+      }
+      
+      // Inicializar todas las secciones
+      initInventario();
+      cargarProveedores();
+      cargarUsuarios();
+      cargarIntentosSospechosos();
+      initCharts();
+      cargarActividades();
+      
+      // Event listeners para los modales
+      document.getElementById('btnGuardarProveedor').addEventListener('click', guardarProveedor);
+      document.getElementById('btnGuardarUsuario').addEventListener('click', guardarUsuario);
+      
+      // Estado de proveedores
+      document.getElementById('estadoProveedor').addEventListener('change', function() {
+        document.getElementById('estadoTexto').textContent = this.checked ? 'Activo' : 'Inactivo';
+      });
+      
+      // Estado de usuarios
+      document.getElementById('estadoUsuario').addEventListener('change', function() {
+        document.getElementById('estadoUsuarioTexto').textContent = this.checked ? 'Activo' : 'Inactivo';
+      });
+    });
+
+    function cerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = "../../Pages/index.html";
+    }
+    
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+    
+    // Cargar actividades recientes
+    function cargarActividades() {
+      const container = document.getElementById('activityList');
+      container.innerHTML = '';
+      
+      actividades.forEach(actividad => {
+        const item = document.createElement('div');
+        item.className = 'activity-item';
+        item.innerHTML = `
+          <div class="activity-icon ${actividad.tipo}">
+            <i class="fas fa-${actividad.tipo === 'inventario' ? 'box' : actividad.tipo === 'usuario' ? 'user-plus' : actividad.tipo === 'proveedor' ? 'truck-loading' : 'shield-alt'}"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">${actividad.titulo}</div>
+            <div class="activity-desc">${actividad.desc}</div>
+          </div>
+          <div class="activity-time">${actividad.tiempo}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+    
+    // Navegación entre secciones
+    function mostrarSeccion(idSeccion) {
+      // Ocultar todas las secciones
+      document.querySelectorAll('.section-content').forEach(seccion => {
+        seccion.classList.remove('active');
+      });
+      
+      // Mostrar la sección seleccionada
+      document.getElementById(idSeccion).classList.add('active');
+      
+      // Actualizar menú activo
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Encontrar el ítem de menú correspondiente y activarlo
+      const secciones = {
+        'dashboard-section': 0,
+        'inventario-section': 1,
+        'proveedores-section': 2,
+        'usuarios-section': 3,
+        'sospechosos-section': 4
+      };
+      
+      if (secciones[idSeccion] !== undefined) {
+        document.querySelectorAll('.nav-item')[secciones[idSeccion]].classList.add('active');
+      }
+    }
+    
+    // ================== SECCIÓN INVENTARIO ==================
+    function initInventario() {
+      // Inicializar categorías si no existen
+      categorias.forEach(cat => {
+        if (!localStorage.getItem(cat)) {
+          localStorage.setItem(cat, JSON.stringify([]));
+        }
+      });
+      
+      mostrarProductos();
+      actualizarGraficas();
+      actualizarContadores();
+      actualizarDashboardCharts();
+    }
+    
+    // Actualizar contadores del dashboard
+    function actualizarContadores() {
+      // Contador de productos
+      let totalProductos = 0;
+      categorias.forEach(cat => {
+        const productos = JSON.parse(localStorage.getItem(cat)) || [];
+        totalProductos += productos.length;
+      });
+      document.getElementById('inventoryCount').textContent = totalProductos.toLocaleString();
+      
+      // Actualizar otros contadores
+      const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+      document.getElementById('supplierCount').textContent = proveedores.filter(p => p.estado === 'activo').length;
+      
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      document.getElementById('userCount').textContent = usuarios.length;
+      
+      const intentos = JSON.parse(localStorage.getItem('intentosSospechosos')) || [];
+      document.getElementById('alertCount').textContent = intentos.length;
+    }
+
+    function obtenerCategoria() {
+      return document.getElementById("categoria").value.toLowerCase();
+    }
+
+    function mostrarProductos(filtrados = null) {
+      const tbody = document.querySelector("#tablaProductos tbody");
+      tbody.innerHTML = "";
+
+      let productosAMostrar = [];
+
+      if (filtrados) {
+        productosAMostrar = filtrados;
+      } else {
+        const categoria = obtenerCategoria();
+        if (categoria) {
+          productosAMostrar = JSON.parse(localStorage.getItem(categoria)) || [];
+          productosAMostrar = productosAMostrar.map(p => ({ ...p, categoria }));
+        } else {
+          // Mostrar todo inventario
+          productosAMostrar = [];
+          for (let cat of categorias) {
+            let prods = JSON.parse(localStorage.getItem(cat)) || [];
+            prods = prods.map(p => ({ ...p, categoria: cat }));
+            productosAMostrar = productosAMostrar.concat(prods);
+          }
+        }
+      }
+
+      productosAMostrar.forEach((prod) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${prod.categoria}</td>
+          <td>${prod.codigo}</td>
+          <td>${prod.nombre}</td>
+          <td>$${prod.precio.toFixed(2)}</td>
+          <td>$${prod.Precio_costos.toFixed(2)}</td>
+          <td>${prod.cantidad}</td>
+          <td>
+            <button onclick="eliminarProductoPorCodigo('${prod.codigo}')"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      actualizarContadores();
+    }
+
+    function eliminarProductoPorCodigo(codigo) {
+      if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
+      
+      for (let cat of categorias) {
+        let productos = JSON.parse(localStorage.getItem(cat)) || [];
+        const index = productos.findIndex(p => p.codigo === codigo);
+        if (index > -1) {
+          productos.splice(index, 1);
+          localStorage.setItem(cat, JSON.stringify(productos));
+          break;
+        }
+      }
+      filtrarProductos();
+      actualizarGraficas();
+      actualizarDashboardCharts();
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "inventario",
+        titulo: "Producto eliminado",
+        desc: `Producto con código ${codigo} fue eliminado del inventario`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+
+    function agregarProducto() {
+      const categoria = obtenerCategoria();
+      const codigo = document.getElementById("codigo").value.trim();
+      const nombre = document.getElementById("nombre").value.trim();
+      const precio = parseFloat(document.getElementById("precio").value);
+      const Precio_costos = parseFloat(document.getElementById("Precio_costos").value);
+      const cantidad = parseInt(document.getElementById("cantidad").value);
+      
+      if (!categoria) {
+        alert("Selecciona una categoría para agregar producto.");
+        return;
+      }
+      if (!codigo || !nombre || isNaN(precio) || isNaN(Precio_costos) || isNaN(cantidad)) {
+        alert("Todos los campos son obligatorios y deben ser válidos.");
+        return;
+      }
+
+      const productos = JSON.parse(localStorage.getItem(categoria)) || [];
+      if (productos.find(p => p.codigo === codigo)) {
+        alert("Ya existe un producto con ese código en esta categoría.");
+        return;
+      }
+
+      productos.push({ codigo, nombre, precio, Precio_costos, cantidad });
+      localStorage.setItem(categoria, JSON.stringify(productos));
+
+      // Limpiar inputs
+      document.getElementById("codigo").value = "";
+      document.getElementById("nombre").value = "";
+      document.getElementById("precio").value = "";
+      document.getElementById("Precio_costos").value = "";
+      document.getElementById("cantidad").value = "";
+       
+      mostrarProductos();
+      actualizarGraficas();
+      actualizarDashboardCharts();
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "inventario",
+        titulo: "Nuevo producto agregado",
+        desc: `${nombre} (${codigo}) fue agregado al inventario`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+
+    function filtrarProductos() {
+      const busqueda = document.getElementById("buscar").value.toLowerCase();
+      const categoria = obtenerCategoria();
+
+      let productosAMostrar = [];
+
+      if (categoria) {
+        let prods = JSON.parse(localStorage.getItem(categoria)) || [];
+        productosAMostrar = prods.filter(p =>
+          p.nombre.toLowerCase().includes(busqueda) ||
+          p.codigo.toLowerCase().includes(busqueda)
+        ).map(p => ({ ...p, categoria }));
+      } else {
+        for (let cat of categorias) {
+          let prods = JSON.parse(localStorage.getItem(cat)) || [];
+          let filtrados = prods.filter(p =>
+            p.nombre.toLowerCase().includes(busqueda) ||
+            p.codigo.toLowerCase().includes(busqueda)
+          ).map(p => ({ ...p, categoria: cat }));
+          productosAMostrar = productosAMostrar.concat(filtrados);
+        }
+      }
+      mostrarProductos(productosAMostrar);
+    }
+
+    function exportar(tipo, todo = false) {
+      let productosAExportar = [];
+      if (todo) {
+        for (let cat of categorias) {
+          let prods = JSON.parse(localStorage.getItem(cat)) || [];
+          prods = prods.map(p => ({ ...p, categoria: cat }));
+          productosAExportar = productosAExportar.concat(prods);
+        }
+      } else {
+        const categoria = obtenerCategoria();
+        if (!categoria) {
+          alert("Selecciona una categoría para exportar o usa la opción de todo inventario.");
+          return;
+        }
+        productosAExportar = JSON.parse(localStorage.getItem(categoria)) || [];
+        productosAExportar = productosAExportar.map(p => ({ ...p, categoria }));
+      }
+
+      if (productosAExportar.length === 0) {
+        alert("No hay productos para exportar.");
+        return;
+      }
+
+      if (tipo === "pdf") {
+        exportarPDF(productosAExportar);
+      } else if (tipo === "excel") {
+        exportarExcel(productosAExportar);
+      }
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "inventario",
+        titulo: "Exportación de datos",
+        desc: `Se exportó ${todo ? 'todo el inventario' : 'la categoría actual'} en formato ${tipo.toUpperCase()}`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+
+    function exportarPDF(productos) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const columnas = ["Categoría", "Código", "Nombre", "Precio", "Precio costos", "Cantidad"];
+      const filas = productos.map(p => [
+        p.categoria, p.codigo, p.nombre, `$${p.precio.toFixed(2)}`, `$${p.Precio_costos.toFixed(2)}`, p.cantidad
+      ]);
+
+      doc.text("Inventario CBC", 14, 15);
+      doc.autoTable({
+        head: [columnas],
+        body: filas,
+        startY: 20,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [67, 97, 238] }
+      });
+      doc.save("inventario_cbc.pdf");
+    }
+
+    function exportarExcel(productos) {
+      const wb = XLSX.utils.book_new();
+      const ws_data = [
+        ["Categoría", "Código", "Nombre", "Precio", "Precio costos", "Cantidad"],
+        ...productos.map(p => [p.categoria, p.codigo, p.nombre, p.precio, p.Precio_costos, p.cantidad])
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      XLSX.utils.book_append_sheet(wb, ws, "Inventario");
+      XLSX.writeFile(wb, "inventario_cbc.xlsx");
+    }
+
+    function importarExcel() {
+      const archivoInput = document.getElementById("importarArchivo");
+      if (!archivoInput.files.length) {
+        alert("Selecciona un archivo Excel para importar.");
+        return;
+      }
+
+      const archivo = archivoInput.files[0];
+      const lector = new FileReader();
+
+      lector.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const nombreHoja = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[nombreHoja];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: ["categoria", "codigo", "nombre", "precio", "Precio_costos", "cantidad"], defval: "" });
+
+        if (jsonData.length === 0) {
+          alert("El archivo Excel está vacío o tiene formato incorrecto.");
+          return;
+        }
+
+        // La primera fila será el encabezado, ignorar si es la cabecera literal:
+        let datos = jsonData;
+        if (jsonData[0].categoria.toLowerCase() === "categoría" || jsonData[0].categoria.toLowerCase() === "categoria") {
+          datos = jsonData.slice(1);
+        }
+
+        // Validar y agregar productos
+        let errores = [];
+        datos.forEach((fila, index) => {
+          const categoria = fila.categoria.toLowerCase().trim();
+          const codigo = String(fila.codigo).trim();
+          const nombre = String(fila.nombre).trim();
+          const precio = parseFloat(fila.precio);
+          const Precio_costos = parseFloat(fila.Precio_costos);
+          const cantidad = parseInt(fila.cantidad);
+
+          if (!categorias.includes(categoria)) {
+            errores.push(`Fila ${index + 2}: Categoría inválida (${fila.categoria}).`);
+            return;
+          }
+          if (!codigo || !nombre || isNaN(precio) || isNaN(cantidad)) {
+            errores.push(`Fila ${index + 2}: Datos incompletos o inválidos.`);
+            return;
+          }
+
+          let productos = JSON.parse(localStorage.getItem(categoria)) || [];
+          if (!productos.find(p => p.codigo === codigo)) {
+            productos.push({ codigo, nombre, precio, Precio_costos, cantidad });
+            localStorage.setItem(categoria, JSON.stringify(productos));
+          }
+        });
+
+        if (errores.length) {
+          alert("Se importaron algunos productos, pero hubo errores:\n" + errores.join("\n"));
+        } else {
+          alert("Productos importados con éxito.");
+          
+          // Agregar actividad
+          actividades.unshift({
+            tipo: "inventario",
+            titulo: "Importación desde Excel",
+            desc: "Se importaron productos desde un archivo Excel",
+            tiempo: "Hace unos momentos"
+          });
+          cargarActividades();
+        }
+        mostrarProductos();
+        actualizarGraficas();
+        actualizarDashboardCharts();
+        archivoInput.value = ""; // Reset file input
+      };
+
+      lector.readAsArrayBuffer(archivo);
+    }
+
+    // Funciones para las gráficas de inventario
+    function actualizarGraficas() {
+      // 1. Productos por categoría
+      const datosCategorias = categorias.map(cat => {
+        const productos = JSON.parse(localStorage.getItem(cat)) || [];
+        return productos.length;
+      });
+
+      if (chartCategorias) chartCategorias.destroy();
+      const ctx1 = document.getElementById('chartCategorias').getContext('2d');
+      chartCategorias = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+          labels: categorias,
+          datasets: [{
+            data: datosCategorias,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw} productos`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // 2. Valor del inventario por categoría
+      const valorInventario = categorias.map(cat => {
+        const productos = JSON.parse(localStorage.getItem(cat)) || [];
+        const total = productos.reduce((sum, p) => sum + (p.precio * p.cantidad), 0);
+        return parseFloat(total.toFixed(2));
+      });
+
+      if (chartValorInventario) chartValorInventario.destroy();
+      const ctx2 = document.getElementById('chartValorInventario').getContext('2d');
+      chartValorInventario = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: categorias,
+          datasets: [{
+            label: 'Valor del Inventario ($)',
+            data: valorInventario,
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Valor ($)' }
+            }
+          }
+        }
+      });
+
+      // 3. Productos con bajo stock (<5 unidades)
+      const umbral = 5;
+      const bajoStockData = categorias.map(cat => {
+        const productos = JSON.parse(localStorage.getItem(cat)) || [];
+        return productos.filter(p => p.cantidad < umbral).length;
+      });
+
+      if (chartBajoStock) chartBajoStock.destroy();
+      const ctx3 = document.getElementById('chartBajoStock').getContext('2d');
+      chartBajoStock = new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+          labels: categorias,
+          datasets: [{
+            label: 'Productos con bajo stock',
+            data: bajoStockData,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(255, 159, 64, 0.7)',
+              'rgba(255, 205, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw} productos con stock < ${umbral}`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // 4. Margen de beneficio promedio por categoría
+      const margenData = categorias.map(cat => {
+        const productos = JSON.parse(localStorage.getItem(cat)) || [];
+        const margenes = productos
+          .filter(p => p.Precio_costos > 0)
+          .map(p => ((p.precio - p.Precio_costos) / p.Precio_costos) * 100);
+        
+        if (margenes.length === 0) return 0;
+        const promedio = margenes.reduce((sum, m) => sum + m, 0) / margenes.length;
+        return parseFloat(promedio.toFixed(2));
+      });
+
+      if (chartMargenBeneficio) chartMargenBeneficio.destroy();
+      const ctx4 = document.getElementById('chartMargenBeneficio').getContext('2d');
+      chartMargenBeneficio = new Chart(ctx4, {
+        type: 'bar',
+        data: {
+          labels: categorias,
+          datasets: [{
+            label: 'Margen de Beneficio Promedio (%)',
+            data: margenData,
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Margen (%)' }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.raw}% de margen promedio`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Actualizar gráficos del dashboard
+    function actualizarDashboardCharts(range = 'month') {
+      // Datos reales del inventario
+      const datosCategorias = categorias.map(cat => {
+        const productos = JSON.parse(localStorage.getItem(cat)) || [];
+        return productos.length;
+      });
+      
+      // Actualizar gráfico de inventario en dashboard
+      if (dashboardInventoryChart) {
+        dashboardInventoryChart.data.datasets[0].data = datosCategorias;
+        dashboardInventoryChart.update();
+      }
+      
+      // Actualizar gráfico de actividad (simulado)
+      const activityData = range === 'week' ? [25, 30, 40, 35, 45, 50, 40] : [150, 180, 200, 190, 210, 230, 220];
+      
+      if (dashboardActivityChart) {
+        dashboardActivityChart.data.datasets[0].data = activityData;
+        dashboardActivityChart.update();
+      }
+    }
+    
+    // Gráficos del dashboard
+    function initCharts() {
+      // Gráfico de inventario
+      const inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
+      dashboardInventoryChart = new Chart(inventoryCtx, {
+        type: 'doughnut',
+        data: {
+          labels: categorias,
+          datasets: [{
+            data: categorias.map(cat => JSON.parse(localStorage.getItem(cat))?.length || 0),
+            backgroundColor: [
+              '#4361ee',
+              '#4cc9f0',
+              '#4ade80',
+              '#facc15',
+              '#f87171'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw} productos`;
+                }
+              }
+            }
+          }
+        }
+      });
+      
+      // Gráfico de actividad
+      const activityCtx = document.getElementById('activityChart').getContext('2d');
+      dashboardActivityChart = new Chart(activityCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+          datasets: [{
+            label: 'Actividad',
+            data: [45, 60, 40, 75, 65, 55, 30],
+            backgroundColor: '#4361ee',
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 20
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // ================== SECCIÓN PROVEEDORES ==================
+    function cargarProveedores() {
+      // Obtener proveedores de localStorage o inicializar
+      let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+      const tabla = document.querySelector('#tablaProveedores tbody');
+      tabla.innerHTML = '';
+      
+      // Filtrar si es necesario
+      const filtro = document.getElementById('filtroEstado').value;
+      if (filtro) {
+        proveedores = proveedores.filter(p => p.estado === filtro);
+      }
+      
+      // Mostrar proveedores
+      proveedores.forEach(proveedor => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${proveedor.nombre}</td>
+          <td>${proveedor.contacto}</td>
+          <td>${proveedor.telefono}</td>
+          <td>${proveedor.email}</td>
+          <td>${proveedor.productos || 'N/A'}</td>
+          <td><span class="badge-status ${proveedor.estado === 'activo' ? 'badge-active' : 'badge-inactive'}">${proveedor.estado === 'activo' ? 'Activo' : 'Inactivo'}</span></td>
+          <td>
+            <button class="btn-action edit" onclick="editarProveedor('${proveedor.id}')"><i class="fas fa-edit"></i></button>
+            <button class="btn-action delete" onclick="eliminarProveedor('${proveedor.id}')"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        `;
+        tabla.appendChild(tr);
+      });
+      
+      // Actualizar contador en dashboard
+      document.getElementById('supplierCount').textContent = proveedores.filter(p => p.estado === 'activo').length;
+    }
+    
+    function filtrarProveedores() {
+      const busqueda = document.getElementById('buscarProveedor').value.toLowerCase();
+      const filtroEstado = document.getElementById('filtroEstado').value;
+      
+      let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+      
+      // Aplicar filtros
+      if (busqueda) {
+        proveedores = proveedores.filter(p => 
+          p.nombre.toLowerCase().includes(busqueda) ||
+          p.contacto.toLowerCase().includes(busqueda) ||
+          (p.productos && p.productos.toLowerCase().includes(busqueda)) ||
+          p.email.toLowerCase().includes(busqueda)
+        );
+      }
+      
+      if (filtroEstado) {
+        proveedores = proveedores.filter(p => p.estado === filtroEstado);
+      }
+      
+      // Actualizar tabla
+      const tabla = document.querySelector('#tablaProveedores tbody');
+      tabla.innerHTML = '';
+      
+      proveedores.forEach(proveedor => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${proveedor.nombre}</td>
+          <td>${proveedor.contacto}</td>
+          <td>${proveedor.telefono}</td>
+          <td>${proveedor.email}</td>
+          <td>${proveedor.productos || 'N/A'}</td>
+          <td><span class="badge-status ${proveedor.estado === 'activo' ? 'badge-active' : 'badge-inactive'}">${proveedor.estado === 'activo' ? 'Activo' : 'Inactivo'}</span></td>
+          <td>
+            <button class="btn-action edit" onclick="editarProveedor('${proveedor.id}')"><i class="fas fa-edit"></i></button>
+            <button class="btn-action delete" onclick="eliminarProveedor('${proveedor.id}')"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        `;
+        tabla.appendChild(tr);
+      });
+    }
+    
+    function abrirModalProveedor(proveedorId = null) {
+      const form = document.getElementById('formProveedor');
+      form.reset();
+      
+      if (proveedorId) {
+        // Modo edición
+        document.getElementById('modalProveedorTitle').textContent = 'Editar Proveedor';
+        document.getElementById('btnGuardarProveedor').textContent = 'Actualizar Proveedor';
+        
+        // Obtener proveedor
+        const proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+        const proveedor = proveedores.find(p => p.id === proveedorId);
+        
+        if (proveedor) {
+          document.getElementById('proveedorId').value = proveedor.id;
+          document.getElementById('nombreProveedor').value = proveedor.nombre;
+          document.getElementById('contactoProveedor').value = proveedor.contacto;
+          document.getElementById('telefonoProveedor').value = proveedor.telefono;
+          document.getElementById('emailProveedor').value = proveedor.email;
+          document.getElementById('productosProveedor').value = proveedor.productos || '';
+          document.getElementById('estadoProveedor').checked = proveedor.estado === 'activo';
+          document.getElementById('estadoTexto').textContent = proveedor.estado === 'activo' ? 'Activo' : 'Inactivo';
+        }
+      } else {
+        // Modo nuevo
+        document.getElementById('modalProveedorTitle').textContent = 'Nuevo Proveedor';
+        document.getElementById('btnGuardarProveedor').textContent = 'Guardar Proveedor';
+        document.getElementById('estadoProveedor').checked = true;
+        document.getElementById('estadoTexto').textContent = 'Activo';
+      }
+      
+      proveedoresModal.show();
+    }
+    
+    function guardarProveedor() {
+      const form = document.getElementById('formProveedor');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      
+      const id = document.getElementById('proveedorId').value || generarId();
+      const nombre = document.getElementById('nombreProveedor').value;
+      const contacto = document.getElementById('contactoProveedor').value;
+      const telefono = document.getElementById('telefonoProveedor').value;
+      const email = document.getElementById('emailProveedor').value;
+      const productos = document.getElementById('productosProveedor').value;
+      const estado = document.getElementById('estadoProveedor').checked ? 'activo' : 'inactivo';
+      
+      const proveedor = {
+        id,
+        nombre,
+        contacto,
+        telefono,
+        email,
+        productos,
+        estado,
+        fechaCreacion: new Date().toISOString()
+      };
+      
+      // Guardar en localStorage
+      let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+      
+      if (document.getElementById('proveedorId').value) {
+        // Actualizar proveedor existente
+        const index = proveedores.findIndex(p => p.id === id);
+        if (index !== -1) {
+          proveedores[index] = proveedor;
+        }
+      } else {
+        // Nuevo proveedor
+        proveedores.push(proveedor);
+      }
+      
+      localStorage.setItem('proveedores', JSON.stringify(proveedores));
+      proveedoresModal.hide();
+      cargarProveedores();
+      actualizarContadores();
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "proveedor",
+        titulo: proveedorId ? "Proveedor actualizado" : "Nuevo proveedor agregado",
+        desc: `${nombre} fue ${proveedorId ? 'actualizado' : 'agregado'} al sistema`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+    
+    function editarProveedor(proveedorId) {
+      abrirModalProveedor(proveedorId);
+    }
+    
+    function eliminarProveedor(proveedorId) {
+      if (!confirm('¿Está seguro de eliminar este proveedor?')) return;
+      
+      let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+      const proveedor = proveedores.find(p => p.id === proveedorId);
+      
+      proveedores = proveedores.filter(p => p.id !== proveedorId);
+      localStorage.setItem('proveedores', JSON.stringify(proveedores));
+      cargarProveedores();
+      actualizarContadores();
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "proveedor",
+        titulo: "Proveedor eliminado",
+        desc: `${proveedor.nombre} fue eliminado del sistema`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+    
+    function exportarProveedores(formato) {
+      let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+      
+      if (proveedores.length === 0) {
+        alert('No hay proveedores para exportar');
+        return;
+      }
+      
+      if (formato === 'excel') {
+        const wb = XLSX.utils.book_new();
+        const ws_data = [
+          ['Nombre', 'Contacto', 'Teléfono', 'Email', 'Productos', 'Estado', 'Fecha Creación'],
+          ...proveedores.map(p => [
+            p.nombre, 
+            p.contacto, 
+            p.telefono, 
+            p.email, 
+            p.productos, 
+            p.estado === 'activo' ? 'Activo' : 'Inactivo',
+            new Date(p.fechaCreacion).toLocaleDateString()
+          ])
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, "Proveedores");
+        XLSX.writeFile(wb, "proveedores_cbc.xlsx");
+      } else if (formato === 'pdf') {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.text("Lista de Proveedores - CBC", 14, 15);
+        doc.autoTable({
+          head: [['Nombre', 'Contacto', 'Teléfono', 'Email', 'Estado']],
+          body: proveedores.map(p => [
+            p.nombre, 
+            p.contacto, 
+            p.telefono, 
+            p.email, 
+            p.estado === 'activo' ? 'Activo' : 'Inactivo'
+          ]),
+          startY: 20,
+          styles: { fontSize: 10 },
+          headStyles: { fillColor: [67, 97, 238] }
+        });
+        doc.save("proveedores_cbc.pdf");
+      }
+    }
+    
+    // ================== SECCIÓN USUARIOS ==================
+    function cargarUsuarios() {
+      // Obtener usuarios de localStorage o inicializar
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const tabla = document.querySelector('#tablaUsuarios tbody');
+      tabla.innerHTML = '';
+      
+      // Filtrar si es necesario
+      const filtro = document.getElementById('filtroRol').value;
+      if (filtro) {
+        usuarios = usuarios.filter(u => u.rol === filtro);
+      }
+      
+      // Mostrar usuarios
+      usuarios.forEach(usuario => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${usuario.nombre}</td>
+          <td>${usuario.email}</td>
+          <td><span class="badge-status ${usuario.rol === 'administrador' ? 'badge-admin' : 'badge-user'}">${usuario.rol === 'administrador' ? 'Administrador' : 'Empleado'}</span></td>
+          <td>${usuario.ultimoAcceso ? new Date(usuario.ultimoAcceso).toLocaleString() : 'Nunca'}</td>
+          <td><span class="badge-status ${usuario.estado === 'activo' ? 'badge-active' : 'badge-inactive'}">${usuario.estado === 'activo' ? 'Activo' : 'Inactivo'}</span></td>
+          <td>
+            <button class="btn-action edit" onclick="editarUsuario('${usuario.id}')"><i class="fas fa-edit"></i></button>
+            <button class="btn-action delete" onclick="eliminarUsuario('${usuario.id}')"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        `;
+        tabla.appendChild(tr);
+      });
+      
+      // Actualizar contador en dashboard
+      document.getElementById('userCount').textContent = usuarios.length;
+    }
+    
+    function filtrarUsuarios() {
+      const busqueda = document.getElementById('buscarUsuario').value.toLowerCase();
+      const filtroRol = document.getElementById('filtroRol').value;
+      
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      
+      // Aplicar filtros
+      if (busqueda) {
+        usuarios = usuarios.filter(u => 
+          u.nombre.toLowerCase().includes(busqueda) ||
+          u.email.toLowerCase().includes(busqueda) ||
+          u.rol.toLowerCase().includes(busqueda)
+        );
+      }
+      
+      if (filtroRol) {
+        usuarios = usuarios.filter(u => u.rol === filtroRol);
+      }
+      
+      // Actualizar tabla
+      const tabla = document.querySelector('#tablaUsuarios tbody');
+      tabla.innerHTML = '';
+      
+      usuarios.forEach(usuario => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${usuario.nombre}</td>
+          <td>${usuario.email}</td>
+          <td><span class="badge-status ${usuario.rol === 'administrador' ? 'badge-admin' : 'badge-user'}">${usuario.rol === 'administrador' ? 'Administrador' : 'Empleado'}</span></td>
+          <td>${usuario.ultimoAcceso ? new Date(usuario.ultimoAcceso).toLocaleString() : 'Nunca'}</td>
+          <td><span class="badge-status ${usuario.estado === 'activo' ? 'badge-active' : 'badge-inactive'}">${usuario.estado === 'activo' ? 'Activo' : 'Inactivo'}</span></td>
+          <td>
+            <button class="btn-action edit" onclick="editarUsuario('${usuario.id}')"><i class="fas fa-edit"></i></button>
+            <button class="btn-action delete" onclick="eliminarUsuario('${usuario.id}')"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        `;
+        tabla.appendChild(tr);
+      });
+    }
+    
+    function abrirModalUsuario(usuarioId = null) {
+      const form = document.getElementById('formUsuario');
+      form.reset();
+      
+      if (usuarioId) {
+        // Modo edición
+        document.getElementById('modalUsuarioTitle').textContent = 'Editar Usuario';
+        document.getElementById('btnGuardarUsuario').textContent = 'Actualizar Usuario';
+        
+        // Obtener usuario
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const usuario = usuarios.find(u => u.id === usuarioId);
+        
+        if (usuario) {
+          document.getElementById('usuarioId').value = usuario.id;
+          document.getElementById('nombreUsuario').value = usuario.nombre;
+          document.getElementById('emailUsuario').value = usuario.email;
+          document.getElementById('rolUsuario').value = usuario.rol;
+          document.getElementById('estadoUsuario').checked = usuario.estado === 'activo';
+          document.getElementById('estadoUsuarioTexto').textContent = usuario.estado === 'activo' ? 'Activo' : 'Inactivo';
+          
+          // Ocultar campos de contraseña en modo edición
+          document.getElementById('passwordUsuario').closest('.form-group').style.display = 'none';
+          document.getElementById('confirmPassword').closest('.form-group').style.display = 'none';
+        }
+      } else {
+        // Modo nuevo
+        document.getElementById('modalUsuarioTitle').textContent = 'Nuevo Usuario';
+        document.getElementById('btnGuardarUsuario').textContent = 'Guardar Usuario';
+        document.getElementById('estadoUsuario').checked = true;
+        document.getElementById('estadoUsuarioTexto').textContent = 'Activo';
+        
+        // Mostrar campos de contraseña en modo nuevo
+        document.getElementById('passwordUsuario').closest('.form-group').style.display = 'block';
+        document.getElementById('confirmPassword').closest('.form-group').style.display = 'block';
+      }
+      
+      usuariosModal.show();
+    }
+    
+    function guardarUsuario() {
+      const form = document.getElementById('formUsuario');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      
+      const password = document.getElementById('passwordUsuario').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // Validar contraseñas solo en modo nuevo
+      if (!document.getElementById('usuarioId').value && password !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+      
+      const id = document.getElementById('usuarioId').value || generarId();
+      const nombre = document.getElementById('nombreUsuario').value;
+      const email = document.getElementById('emailUsuario').value;
+      const rol = document.getElementById('rolUsuario').value;
+      const estado = document.getElementById('estadoUsuario').checked ? 'activo' : 'inactivo';
+      
+      const usuario = {
+        id,
+        nombre,
+        email,
+        rol,
+        estado,
+        fechaCreacion: new Date().toISOString(),
+        ultimoAcceso: null
+      };
+      
+      // Guardar en localStorage
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      
+      if (document.getElementById('usuarioId').value) {
+        // Actualizar usuario existente
+        const index = usuarios.findIndex(u => u.id === id);
+        if (index !== -1) {
+          usuarios[index] = usuario;
+        }
+      } else {
+        // Nuevo usuario (guardar contraseña)
+        usuario.password = password; // En producción esto debería ser un hash
+        usuarios.push(usuario);
+      }
+      
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      usuariosModal.hide();
+      cargarUsuarios();
+      actualizarContadores();
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "usuario",
+        titulo: usuarioId ? "Usuario actualizado" : "Nuevo usuario registrado",
+        desc: `${nombre} (${rol}) fue ${usuarioId ? 'actualizado' : 'agregado'}`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+    
+    function editarUsuario(usuarioId) {
+      abrirModalUsuario(usuarioId);
+    }
+    
+    function eliminarUsuario(usuarioId) {
+      if (!confirm('¿Está seguro de eliminar este usuario?')) return;
+      
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const usuario = usuarios.find(u => u.id === usuarioId);
+      
+      usuarios = usuarios.filter(u => u.id !== usuarioId);
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      cargarUsuarios();
+      actualizarContadores();
+      
+      // Agregar actividad
+      actividades.unshift({
+        tipo: "usuario",
+        titulo: "Usuario eliminado",
+        desc: `${usuario.nombre} fue eliminado del sistema`,
+        tiempo: "Hace unos momentos"
+      });
+      cargarActividades();
+    }
+    
+    function exportarUsuarios(formato) {
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      
+      if (usuarios.length === 0) {
+        alert('No hay usuarios para exportar');
+        return;
+      }
+      
+      if (formato === 'excel') {
+        const wb = XLSX.utils.book_new();
+        const ws_data = [
+          ['Nombre', 'Email', 'Rol', 'Estado', 'Fecha Creación', 'Último Acceso'],
+          ...usuarios.map(u => [
+            u.nombre, 
+            u.email, 
+            u.rol === 'administrador' ? 'Administrador' : 'Empleado',
+            u.estado === 'activo' ? 'Activo' : 'Inactivo',
+            new Date(u.fechaCreacion).toLocaleDateString(),
+            u.ultimoAcceso ? new Date(u.ultimoAcceso).toLocaleString() : 'Nunca'
+          ])
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, "Usuarios");
+        XLSX.writeFile(wb, "usuarios_cbc.xlsx");
+      } else if (formato === 'pdf') {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.text("Lista de Usuarios - CBC", 14, 15);
+        doc.autoTable({
+          head: [['Nombre', 'Email', 'Rol', 'Estado']],
+          body: usuarios.map(u => [
+            u.nombre, 
+            u.email, 
+            u.rol === 'administrador' ? 'Administrador' : 'Empleado',
+            u.estado === 'activo' ? 'Activo' : 'Inactivo'
+          ]),
+          startY: 20,
+          styles: { fontSize: 10 },
+          headStyles: { fillColor: [67, 97, 238] }
+        });
+        doc.save("usuarios_cbc.pdf");
+      }
+    }
+    
+    // ================== SECCIÓN INTENTOS SOSPECHOSOS ==================
+    function cargarIntentosSospechosos() {
+      // Obtener intentos de localStorage o inicializar
+      let intentos = JSON.parse(localStorage.getItem('intentosSospechosos')) || [];
+      const tabla = document.querySelector('#tablaSospechosos tbody');
+      tabla.innerHTML = '';
+      
+      // Aplicar filtros
+      const fechaDesde = document.getElementById('fechaDesde').value;
+      const fechaHasta = document.getElementById('fechaHasta').value;
+      const tipo = document.getElementById('filtroTipo').value;
+      
+      if (fechaDesde) {
+        intentos = intentos.filter(i => new Date(i.fecha) >= new Date(fechaDesde));
+      }
+      
+      if (fechaHasta) {
+        intentos = intentos.filter(i => new Date(i.fecha) <= new Date(fechaHasta + 'T23:59:59'));
+      }
+      
+      if (tipo) {
+        intentos = intentos.filter(i => i.tipo === tipo);
+      }
+      
+      // Ordenar por fecha descendente
+      intentos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+      
+      // Mostrar intentos
+      intentos.forEach(intento => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${new Date(intento.fecha).toLocaleString()}</td>
+          <td>${intento.ip}</td>
+          <td>${intento.tipo === 'login' ? 'Login' : intento.tipo === 'acceso' ? 'Acceso' : 'Fuerza bruta'}</td>
+          <td>${intento.descripcion}</td>
+          <td>${intento.usuario || 'Desconocido'}</td>
+          <td>
+            <button class="btn btn-sm btn-info" onclick="verDetalleIntento('${intento.id}')">
+              <i class="fas fa-eye"></i> Detalle
+            </button>
+          </td>
+        `;
+        tabla.appendChild(tr);
+      });
+      
+      // Actualizar contador en dashboard
+      document.getElementById('alertCount').textContent = intentos.length;
+    }
+    
+    function filtrarSospechosos() {
+      cargarIntentosSospechosos();
+    }
+    
+    function verDetalleIntento(intentoId) {
+      const intentos = JSON.parse(localStorage.getItem('intentosSospechosos')) || [];
+      const intento = intentos.find(i => i.id === intentoId);
+      
+      if (intento) {
+        alert(`Detalle del intento sospechoso:\n\nFecha: ${new Date(intento.fecha).toLocaleString()}\nIP: ${intento.ip}\nTipo: ${intento.tipo}\nDescripción: ${intento.descripcion}\nUsuario: ${intento.usuario || 'Desconocido'}\nDetalles: ${intento.detalles || 'No hay detalles adicionales'}`);
+      }
+    }
+    
+    function limpiarRegistrosSospechosos() {
+      if (confirm('¿Está seguro de eliminar todos los registros de intentos sospechosos? Esta acción no se puede deshacer.')) {
+        localStorage.setItem('intentosSospechosos', JSON.stringify([]));
+        cargarIntentosSospechosos();
+        actualizarContadores();
+        
+        // Agregar actividad
+        actividades.unshift({
+          tipo: "alerta",
+          titulo: "Registros de seguridad limpiados",
+          desc: "Todos los intentos sospechosos fueron eliminados",
+          tiempo: "Hace unos momentos"
+        });
+        cargarActividades();
+      }
+    }
+    
+    function exportarSospechosos(formato) {
+      let intentos = JSON.parse(localStorage.getItem('intentosSospechosos')) || [];
+      
+      if (intentos.length === 0) {
+        alert('No hay intentos sospechosos para exportar');
+        return;
+      }
+      
+      if (formato === 'excel') {
+        const wb = XLSX.utils.book_new();
+        const ws_data = [
+          ['Fecha', 'IP', 'Tipo', 'Descripción', 'Usuario'],
+          ...intentos.map(i => [
+            new Date(i.fecha).toLocaleString(),
+            i.ip,
+            i.tipo === 'login' ? 'Login' : i.tipo === 'acceso' ? 'Acceso' : 'Fuerza bruta',
+            i.descripcion,
+            i.usuario || 'Desconocido'
+          ])
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, "Intentos Sospechosos");
+        XLSX.writeFile(wb, "intentos_sospechosos.xlsx");
+      } else if (formato === 'pdf') {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.text("Registro de Intentos Sospechosos - CBC", 14, 15);
+        doc.autoTable({
+          head: [['Fecha', 'IP', 'Tipo', 'Descripción', 'Usuario']],
+          body: intentos.map(i => [
+            new Date(i.fecha).toLocaleString(),
+            i.ip,
+            i.tipo === 'login' ? 'Login' : i.tipo === 'acceso' ? 'Acceso' : 'Fuerza bruta',
+            i.descripcion,
+            i.usuario || 'Desconocido'
+          ]),
+          startY: 20,
+          styles: { fontSize: 9 },
+          headStyles: { fillColor: [67, 97, 238] }
+        });
+        doc.save("intentos_sospechosos.pdf");
+      }
+    }
+    
+    // Función auxiliar para generar IDs
+    function generarId() {
+      return 'id-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    // Simular un intento sospechoso cada 30 segundos (solo para demostración)
+    setInterval(() => {
+      const intentos = JSON.parse(localStorage.getItem('intentosSospechosos')) || [];
+      
+      const tipos = ['login', 'acceso', 'bruteforce'];
+      const descripciones = [
+        'Intento de acceso con credenciales incorrectas',
+        'Acceso desde IP no autorizada',
+        'Múltiples intentos fallidos en corto tiempo',
+        'Intento de acceso a recurso restringido'
+      ];
+      
+      const nuevoIntento = {
+        id: generarId(),
+        fecha: new Date().toISOString(),
+        ip: '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255),
+        tipo: tipos[Math.floor(Math.random() * tipos.length)],
+        descripcion: descripciones[Math.floor(Math.random() * descripciones.length)],
+        usuario: Math.random() > 0.5 ? 'usuario_desconocido' : null,
+        detalles: 'Detectado por sistema de seguridad automático'
+      };
+      
+      intentos.push(nuevoIntento);
+      localStorage.setItem('intentosSospechosos', JSON.stringify(intentos));
+      cargarIntentosSospechosos();
+      actualizarContadores();
+    }, 30000);
+  </script>
+</body>
+</html>

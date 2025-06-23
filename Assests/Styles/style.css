@@ -1,0 +1,121 @@
+/* Estilo global del fondo con animación tipo shader */
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(-45deg, #009688, #004d40, #00695c, #80cbc4);
+    background-size: 400% 400%;
+    animation: moverFondo 12s ease infinite;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  /* Animación tipo shader */
+  @keyframes moverFondo {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Fade-in al cargar */
+  .card {
+    animation: fadeIn 1.5s ease-in;
+  }
+  
+  /* Animación fade in */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Estilo glassmorphism para la tarjeta */
+  .card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    color: white;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Aumenta la escala al pasar el mouse */
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Estilo de botones */
+  .btn-primary {
+    background-color: #00bfa5;
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #008e76;
+    transform: scale(1.05);
+  }
+  
+  /* Inputs */
+  input.form-control, select.form-select {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: background 0.3s ease;
+  }
+  
+  input.form-control::placeholder,
+  select.form-select {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  input.form-control:focus, select.form-select:focus {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+  
+  /* Estilo del contenedor del formulario */
+  .main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  /* Estilo del formulario */
+  form {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  /* Estilo de los enlaces */
+  a {
+    color: #00bfa5;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Pestaña adhesiva */
+  #mensajeContacto {
+    display: none;
+  }
+  
+  /* Estilo del mensaje adhesivo de contacto */
+  #mensajeContacto {
+    background-color: #f0f8ff;
+    border-left: 5px solid #00bfa5;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

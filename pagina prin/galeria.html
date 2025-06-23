@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CBC Decoración - Galería de Baño</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1a6bb0;
+      --primary-dark: #0d4a8c;
+      --primary-light: #ebf5ff;
+      --accent: #4cc9f0;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --gray-light: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Header minimalista */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .logo-icon i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-text h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+      color: white;
+    }
+
+    .logo-text p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-links a i {
+      font-size: 1.1rem;
+    }
+
+    /* Hero section para baño */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                  url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;
+      color: white;
+      text-align: center;
+      padding: 5rem 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Filtros para baño */
+    .filters-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .category-filters {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      background: white;
+      color: var(--dark);
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .search-container {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 0.8rem 1.2rem 0.8rem 3rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .search-container input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 107, 176, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    /* Galería para productos de baño */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-img-container {
+      position: relative;
+      overflow: hidden;
+      height: 250px;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    .card-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 1.5rem;
+      color: white;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .card-overlay h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-overlay p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-info {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-info h3 {
+      font-size: 1.1rem;
+      color: var(--dark);
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+    }
+
+    .card-info p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+      flex: 1;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Lightbox para detalles de baño */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+      display: flex;
+      background: white;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .lightbox-image {
+      flex: 1;
+      min-width: 50%;
+      background: #f5f7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lightbox-image img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .lightbox-info {
+      flex: 1;
+      padding: 3rem;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+
+    .lightbox-info h2 {
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+    }
+
+    .lightbox-info p {
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .specs {
+      margin-bottom: 2rem;
+    }
+
+    .specs h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    .specs-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .spec-item i {
+      width: 30px;
+      height: 30px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .spec-item span {
+      font-size: 0.95rem;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 1.8rem;
+      color: var(--dark);
+      background: white;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: var(--shadow-md);
+      z-index: 10;
+    }
+
+    .close-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45px;
+      height: 45px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 10;
+    }
+
+    .lightbox-nav:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .lightbox-nav.prev {
+      left: 1.5rem;
+    }
+
+    .lightbox-nav.next {
+      right: 1.5rem;
+    }
+
+    /* Footer mejorado */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 4rem 1rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+
+    .footer-section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      color: white;
+      padding-bottom: 0.5rem;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+    }
+
+    .footer-section p, .footer-section a {
+      color: var(--gray-light);
+      margin-bottom: 1rem;
+      display: block;
+      text-decoration: none;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .footer-section a i {
+      min-width: 20px;
+    }
+
+    .footer-section a:hover {
+      color: var(--primary-light);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    .social-links a:hover {
+      background: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .copyright {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      text-align: center;
+    }
+
+    /* Botón volver arriba */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(20px);
+      box-shadow: var(--shadow-lg);
+      z-index: 99;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-dark);
+      transform: translateY(-5px);
+    }
+
+    /* Animaciones */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
+    .card:nth-child(7) { animation-delay: 0.7s; }
+    .card:nth-child(8) { animation-delay: 0.8s; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .lightbox-content {
+        flex-direction: column;
+        max-height: 90vh;
+      }
+      
+      .lightbox-image {
+        min-height: 300px;
+        padding: 1.5rem;
+      }
+      
+      .lightbox-info {
+        padding: 2rem;
+        max-height: 50vh;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .hero {
+        padding: 3rem 1rem;
+      }
+      
+      .hero h2 {
+        font-size: 2rem;
+      }
+      
+      .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .category-filters {
+        justify-content: center;
+      }
+      
+      .search-container {
+        width: 100%;
+      }
+      
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .card-img-container {
+        height: 200px;
+      }
+      
+      .specs-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .category-filters {
+        gap: 0.5rem;
+      }
+      
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+      
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      
+      .card-overlay {
+        padding: 1rem;
+      }
+      
+      .card-overlay h3 {
+        font-size: 1rem;
+      }
+      
+      .card-info {
+        padding: 1rem;
+      }
+      
+      .lightbox-content {
+        max-width: 95%;
+      }
+      
+      .lightbox-info {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <div class="logo-icon">
+      <i class="fas fa-bath"></i>
+    </div>
+    <div class="logo-text">
+      <h1>CBC Decoración</h1>
+      <p>Soluciones premium para baños</p>
+    </div>
+  </div>
+  
+  <div class="nav-links">
+    <a href="../index.html"><i class="fas fa-home"></i> Inicio</a>
+    <a href="#"><i class="fas fa-images"></i> Galería</a>
+    <a href="#"><i class="fas fa-phone"></i> Contacto</a>
+  </div>
+</header>
+
+<div class="hero">
+  <h2>Galería de Productos para Baño</h2>
+  <p>Descubre nuestra exclusiva colección de productos de alta calidad para transformar tu baño</p>
+</div>
+
+<div class="container">
+  <!-- Filtros para productos de baño -->
+  <div class="filters-container">
+    <div class="category-filters">
+      <button class="filter-btn active" data-category="all">
+        <i class="fas fa-layer-group"></i> Todos
+      </button>
+      <button class="filter-btn" data-category="duchas">
+        <i class="fas fa-shower"></i> Duchas
+      </button>
+      <button class="filter-btn" data-category="griferia">
+        <i class="fas fa-faucet"></i> Grifería
+      </button>
+      <button class="filter-btn" data-category="muebles">
+        <i class="fas fa-sink"></i> Muebles
+      </button>
+      <button class="filter-btn" data-category="accesorios">
+        <i class="fas fa-toilet-paper"></i> Accesorios
+      </button>
+    </div>
+    
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="search-input" placeholder="Buscar productos de baño...">
+    </div>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <!-- Las tarjetas se generarán dinámicamente -->
+  </div>
+</div>
+
+<!-- Lightbox para detalles de productos de baño -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content">
+    <button class="close-btn" onclick="closeLightbox()">&times;</button>
+    <div class="lightbox-nav prev" onclick="prevImage()">
+      <i class="fas fa-chevron-left"></i>
+    </div>
+    
+    <div class="lightbox-image">
+      <img id="lightbox-img" src="" alt="Vista ampliada" />
+    </div>
+    
+    <div class="lightbox-info">
+      <h2 id="lightbox-title"></h2>
+      <p id="lightbox-desc"></p>
+      
+      <div class="specs">
+        <h3>Especificaciones</h3>
+        <div class="specs-list" id="lightbox-specs"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-nav next" onclick="nextImage()">
+      <i class="fas fa-chevron-right"></i>
+    </div>
+  </div>
+</div>
+
+<div class="back-to-top" id="backToTop">
+  <i class="fas fa-chevron-up"></i>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Sobre CBC</h3>
+      <p>Especialistas en soluciones para baños con más de 15 años de experiencia, ofreciendo productos de la más alta calidad.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+      </div>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Contacto</h3>
+      <a href="tel:+573107107274"><i class="fas fa-phone"></i> +57 310 7107274</a>
+      <a href="mailto:cbcdecoracion@gmail.com"><i class="fas fa-envelope"></i> cbcdecoracion@gmail.com</a>
+      <p><i class="fas fa-map-marker-alt"></i> Carrera 56c #51 - 109, Barrio San Benito, Medellín</p>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Horario</h3>
+      <p><i class="fas fa-clock"></i> Lunes a Viernes: 9am - 6pm</p>
+      <p><i class="fas fa-clock"></i> Sábados: 9am - 2pm</p>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Productos</h3>
+      <a href="#"><i class="fas fa-shower"></i> Duchas y cabinas</a>
+      <a href="#"><i class="fas fa-faucet"></i> Grifería</a>
+      <a href="#"><i class="fas fa-sink"></i> Muebles de baño</a>
+      <a href="#"><i class="fas fa-toilet"></i> Sanitarios</a>
+    </div>
+  </div>
+  
+  <div class="copyright">
+    <p>&copy; 2025 CBC DECORACIÓN. Todos los derechos reservados. | Soluciones Premium para Baños</p>
+  </div>
+</footer>
+
+<script>
+  // Base de datos de productos de baño
+  const products = [
+    {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      alt: "Cabina de ducha moderna",
+      title: "Cabina de Ducha Elegance",
+      desc: "Cabina de ducha con puertas correderas de vidrio templado y acabado en cromo. Diseño minimalista que se adapta a cualquier espacio de baño.",
+      category: "duchas",
+      specs: ["Material: Vidrio templado 8mm", "Dimensiones: 90x90cm", "Base antideslizante", "Fácil instalación"]
+    },
+    {
+      id: 2,
+      src: "../Assests/Img/set vip.jpg",
+      alt: "Grifos de baño",
+      title: "Set de Grifería Premium",
+      desc: "Juego completo de grifería para baño en acabado cromado. Incluye grifo para lavabo, ducha y accesorios complementarios.",
+      category: "griferia",
+      specs: ["Material: Latón cromado", "Tecnología ahorro de agua", "Resistente a la corrosión", "Garantía de 5 años"]
+    },
+    {
+      id: 3,
+      src: "../Assests/Img/gl4.jpg",
+      alt: "Mueble de baño con lavabo",
+      title: "Mueble de Baño Contemporáneo",
+      desc: "Mueble de baño con lavabo integrado y amplio almacenamiento. Fabricado en madera tratada para ambientes húmedos.",
+      category: "muebles",
+      specs: ["Material: Madera de teca", "Dimensiones: 120x50x85cm", "2 cajones y puerta", "Resistente a la humedad"]
+    },
+    {
+      id: 4,
+      src: "../Assests/Img/set vip.jpg",
+      alt: "Accesorios de baño",
+      title: "Set Accesorios Baño Elite",
+      desc: "Set completo de accesorios en acabado cromado: portarrollos, toallero, jabonera y agarraderas.",
+      category: "accesorios",
+      specs: ["Material: Acero inoxidable", "Acabado: Cromo satinado", "Fácil instalación", "Resistente a la corrosión"]
+    },
+    {
+      id: 5,
+      src: "../Assests/Img/espejo led.jpg",
+      alt: "Espejo con iluminación LED",
+      title: "Espejo LED Inteligente",
+      desc: "Espejo para baño con iluminación LED integrada y función antiempañante. Perfecto para un acabado moderno y funcional.",
+      category: "accesorios",
+      specs: ["Dimensiones: 80x60cm", "Iluminación LED regulable", "Función antiempañante", "Sensor táctil"]
+    },
+    {
+      id: 6,
+      src: "../Assests/Img/ducha lluvia.jpeg",
+      alt: "Ducha de lluvia",
+      title: "Sistema de Ducha de Lluvia",
+      desc: "Cabezal de ducha extra grande con efecto lluvia. Tecnología que garantiza un flujo uniforme y relajante.",
+      category: "duchas",
+      specs: ["Diámetro: 30cm", "Presión óptima: 2-5 bar", "Ahorro de agua: 30%", "Fácil limpieza"]
+    },
+    {
+      id: 7,
+      src: "../Assests/Img/lavado.jpg",
+      alt: "Lavabo sobre encimera",
+      title: "Lavabo de Diseño Sobre Encimera",
+      desc: "Lavabo de porcelana de alta calidad diseñado para instalarse sobre la encimera. Elegancia y funcionalidad en un solo producto.",
+      category: "muebles",
+      specs: ["Material: Porcelana vitrificada", "Dimensiones: 50x40cm", "Fácil mantenimiento", "Resistente a manchas"]
+    },
+    {
+      id: 8,
+      src: "../Assests/Img/termostatico.jpeg",
+      alt: "Mezcladora termostática",
+      title: "Mezcladora Termostática Premium",
+      desc: "Mezcladora de ducha con control termostático para mantener la temperatura constante. Seguridad anti-escaldadura integrada.",
+      category: "griferia",
+      specs: ["Control de temperatura preciso", "Seguridad anti-escaldadura", "Ahorro de agua: 25%", "Diseño ergonómico"]
+    }
+  ];
+
+  // Elementos del DOM
+  const gallery = document.getElementById("gallery");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const lightboxTitle = document.getElementById("lightbox-title");
+  const lightboxDesc = document.getElementById("lightbox-desc");
+  const lightboxSpecs = document.getElementById("lightbox-specs");
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const searchInput = document.getElementById("search-input");
+  const backToTop = document.getElementById("backToTop");
+  let currentIndex = 0;
+  let currentFilter = "all";
+  let filteredProducts = [];
+
+  // Generar galería dinámicamente
+  function renderGallery(filter = "all", searchTerm = "") {
+    gallery.innerHTML = '';
+    currentFilter = filter;
+    
+    filteredProducts = filter === "all" 
+      ? products 
+      : products.filter(p => p.category === filter);
+    
+    // Aplicar búsqueda si existe
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filteredProducts = filteredProducts.filter(p => 
+        p.title.toLowerCase().includes(term) || 
+        p.desc.toLowerCase().includes(term) ||
+        (p.specs && p.specs.some(s => s.toLowerCase().includes(term)))
+      );
+    }
+    
+    filteredProducts.forEach((product, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.category = product.category;
+      
+      card.innerHTML = `
+        <div class="card-img-container">
+          <img src="${product.src}" alt="${product.alt}" loading="lazy" onclick="openLightbox(${index})" />
+          <div class="card-overlay">
+            <h3>${product.title}</h3>
+            <p>${product.desc}</p>
+          </div>
+        </div>
+        <div class="card-info">
+          <h3>${product.title}</h3>
+          <p>${product.desc}</p>
+        </div>
+      `;
+      
+      gallery.appendChild(card);
+    });
+  }
+
+  // Inicializar galería
+  renderGallery();
+
+  // Filtros de categoría
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      filterButtons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      
+      const category = button.dataset.category;
+      renderGallery(category, searchInput.value);
+    });
+  });
+
+  // Búsqueda en tiempo real
+  searchInput.addEventListener("input", () => {
+    const activeFilter = document.querySelector(".filter-btn.active");
+    const category = activeFilter ? activeFilter.dataset.category : "all";
+    renderGallery(category, searchInput.value);
+  });
+
+  // Lightbox functions
+  function openLightbox(index) {
+    currentIndex = index;
+    updateLightboxContent(filteredProducts[currentIndex]);
+    lightbox.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("show");
+    document.body.style.overflow = "auto";
+  }
+
+  function updateLightboxContent(product) {
+    lightboxImg.src = product.src;
+    lightboxImg.alt = product.alt;
+    lightboxTitle.textContent = product.title;
+    lightboxDesc.textContent = product.desc;
+    
+    // Actualizar especificaciones
+    lightboxSpecs.innerHTML = '';
+    if (product.specs) {
+      product.specs.forEach(spec => {
+        const specItem = document.createElement("div");
+        specItem.className = "spec-item";
+        specItem.innerHTML = `
+          <i class="fas fa-check"></i>
+          <span>${spec}</span>
+        `;
+        lightboxSpecs.appendChild(specItem);
+      });
+    }
+  }
+
+  function navigateLightbox(direction) {
+    if (direction === 'next') {
+      currentIndex = (currentIndex + 1) % filteredProducts.length;
+    } else {
+      currentIndex = (currentIndex - 1 + filteredProducts.length) % filteredProducts.length;
+    }
+    
+    updateLightboxContent(filteredProducts[currentIndex]);
+  }
+
+  function nextImage() {
+    navigateLightbox('next');
+  }
+
+  function prevImage() {
+    navigateLightbox('prev');
+  }
+
+  // Botón volver arriba
+  window.addEventListener("scroll", () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add("show");
+    } else {
+      backToTop.classList.remove("show");
+    }
+  });
+
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+
+  // Event listeners
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") nextImage();
+    if (e.key === "ArrowLeft") prevImage();
+  });
+
+  // Cerrar al hacer clic fuera de la imagen
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+</script>
+
+</body>
+</html>

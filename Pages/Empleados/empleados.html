@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventario - Empleado</title>
+  <link rel="icon" href="../../Assests/Img/favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="../../Assests/Styles/inventario.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h2, h3 {
+      color: #2c3e50;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+      display: block;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: #2980b9;
+      outline: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      margin-top: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+      font-weight: bold;
+    }
+
+    .comentario-input {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    .btn-logout {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-logout:hover {
+      background-color: #c0392b;
+    }
+
+    #saludoEmpleado {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Panel de Inventario - Empleado</h2>
+
+  <div id="saludoEmpleado"></div>
+
+  <label for="categoria">Selecciona Categoría:</label>
+  <select id="categoria" onchange="mostrarProductos()">
+    <option value="">-- Todas las Categorías --</option>
+    <option value="lavamanos">Lavamanos</option>
+    <option value="muebles">Muebles</option>
+    <option value="sanitarios">Sanitarios</option>
+    <option value="grifos">Grifos</option>
+    <option value="accesorios">Accesorios</option>
+  </select>
+
+  <label for="buscar">Buscar Producto:</label>
+  <input type="text" id="buscar" oninput="filtrarProductos()" placeholder="Buscar por nombre..." />
+
+  <h3>Inventario</h3>
+  <table id="tablaProductos">
+    <thead>
+      <tr>
+        <th>Categoría</th>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Comentarios</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
+
+  <script>
+    const categorias = ["lavamanos", "muebles", "sanitarios", "grifos", "accesorios"];
+
+    // Al cargar la página
+    window.addEventListener('load', () => {
+      const usuario = sessionStorage.getItem('usuario');
+      const rol = sessionStorage.getItem('rol');
+
+      if (!usuario || rol !== 'empleado') {
+        window.location.href = "../../../Pages/index.html";
+      } else {
+        mostrarSaludo(usuario);
+        mostrarProductos();
+      }
+    });
+
+    function mostrarSaludo(usuario) {
+      const saludoDiv = document.getElementById('saludoEmpleado');
+      saludoDiv.textContent = `¡Bienvenido, ${usuario}!`;
+    }
+
+    function obtenerCategoria() {
+      return document.getElementById("categoria").value.toLowerCase();
+    }
+
+    function mostrarProductos(filtrados = null) {
+      const tbody = document.querySelector("#tablaProductos tbody");
+      tbody.innerHTML = "";
+
+      let productosAMostrar = [];
+
+      if (filtrados) {
+        productosAMostrar = filtrados;
+      } else {
+        const categoria = obtenerCategoria();
+        if (categoria) {
+          productosAMostrar = JSON.parse(localStorage.getItem(categoria)) || [];
+          productosAMostrar = productosAMostrar.map(p => ({ ...p, categoria }));
+        } else {
+          // Mostrar todo inventario
+          productosAMostrar = [];
+          for (let cat of categorias) {
+            let prods = JSON.parse(localStorage.getItem(cat)) || [];
+            prods = prods.map(p => ({ ...p, categoria: cat }));
+            productosAMostrar = productosAMostrar.concat(prods);
+          }
+        }
+      }
+
+      productosAMostrar.forEach((prod) => {
+        const tr = document.createElement("tr");
+
+        // Obtener comentario guardado
+        const comentarioKey = `comentario_${prod.categoria}_${prod.codigo}`;
+        const comentarioGuardado = localStorage.getItem(comentarioKey) || "";
+
+        tr.innerHTML = `
+          <td>${prod.categoria}</td>
+          <td>${prod.codigo}</td>
+          <td>${prod.nombre}</td>
+          <td>${prod.precio}</td>
+          <td>${prod.cantidad}</td>
+          <td>
+            <input 
+              type="text" 
+              class="comentario-input" 
+              value="${comentarioGuardado.replace(/"/g, '&quot;')}" 
+              placeholder="Agregar comentario..." 
+              oninput="guardarComentario('${prod.categoria}', '${prod.codigo}', this.value)"
+            />
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function guardarComentario(categoria, codigo, texto) {
+      const key = `comentario_${categoria}_${codigo}`;
+      localStorage.setItem(key, texto);
+    }
+
+    function filtrarProductos() {
+      const texto = document.getElementById("buscar").value.toLowerCase();
+
+      let todosLosProductos = [];
+      for (let cat of categorias) {
+        let productos = JSON.parse(localStorage.getItem(cat)) || [];
+        productos = productos.map(p => ({ ...p, categoria: cat }));
+        todosLosProductos = todosLosProductos.concat(productos);
+      }
+
+      const filtrados = todosLosProductos.filter(p => p.nombre.toLowerCase().includes(texto));
+
+      mostrarProductos(filtrados);
+    }
+
+    function cerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = "../../Pages/index.html";
+    }
+  </script>
+</body>
+</html>

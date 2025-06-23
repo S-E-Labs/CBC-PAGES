@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Grifos - Inventario</title>
+  <link rel="icon" href="../../../Assests/Img/favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="../../../Assests/Styles/lavamanos.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Inventario de Grifos</h2>
+    
+    <!-- Contenedor para la tabla -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Producto</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Cantidad</th>
+            <th>Color</th>
+            <th>Medida</th>
+            <th>Ubicación</th>
+          </tr>
+        </thead>
+        <tbody id="tablaGrifos">
+          <!-- Aquí el backend PHP insertará las filas con datos de la BD -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='../empleados.html'">⬅️ Volver a Inventario</button>
+
+  <script src="../../../Assests/Scripts/lavamanos.js"></script>
+</body>
+</html>

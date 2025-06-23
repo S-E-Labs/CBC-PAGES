@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="../../Assests/Img/favicon.png" type="image/png"/>
+  <title>Proveedores - CBC</title>
+  <link rel="stylesheet" href="../../Assests/Styles/proveedores.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    .tabla-scroll {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gestión de Proveedores</h1>
+
+    <form id="formulario-proveedor">
+      <input type="text" id="id" placeholder="ID Proveedor" required />
+      <input type="text" id="empresa" placeholder="Nombre de la Empresa" required />
+      <input type="text" id="contacto" placeholder="Nombre de Contacto" required />
+      <input type="tel" id="telefono" placeholder="Teléfono" required />
+      <input type="text" id="cuenta" placeholder="Cuenta" required />
+      <button type="submit">Agregar proveedor</button>
+    </form>
+
+    <input type="file" id="archivo-excel" accept=".xlsx" />
+    <button onclick="cargarExcel()">Cargar Excel</button>
+
+    <!-- Scroll solo en esta parte -->
+    <div class="tabla-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Empresa</th>
+            <th>Contacto</th>
+            <th>Teléfono</th>
+            <th>Cuenta</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-proveedores"></tbody>
+      </table>
+    </div>
+
+    <button onclick="exportarExcel()">Exportar a Excel</button>
+    <button class="volver-btn" onclick="window.location.href='admin.html'">← Volver al Panel</button>
+  </div>
+
+  <script>
+    let proveedores = JSON.parse(localStorage.getItem('proveedores')) || [];
+
+    const formulario = document.getElementById("formulario-proveedor");
+    const tabla = document.getElementById("tabla-proveedores");
+
+    formulario.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const proveedor = {
+        id: document.getElementById("id").value.trim(),
+        empresa: document.getElementById("empresa").value.trim(),
+        contacto: document.getElementById("contacto").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        cuenta: document.getElementById("cuenta").value.trim()
+      };
+      proveedores.push(proveedor);
+      formulario.reset();
+      mostrarProveedores();
+      guardarProveedores();
+    });
+
+    function mostrarProveedores() {
+      tabla.innerHTML = "";
+      proveedores.forEach((prov, index) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td><input type="text" value="${prov.id}" onchange="editarProveedor(${index}, 'id', this.value)" /></td>
+          <td><input type="text" value="${prov.empresa}" onchange="editarProveedor(${index}, 'empresa', this.value)" /></td>
+          <td><input type="text" value="${prov.contacto}" onchange="editarProveedor(${index}, 'contacto', this.value)" /></td>
+          <td><input type="text" value="${prov.telefono}" onchange="editarProveedor(${index}, 'telefono', this.value)" /></td>
+          <td><input type="text" value="${prov.cuenta}" onchange="editarProveedor(${index}, 'cuenta', this.value)" /></td>
+          <td><button onclick="eliminarProveedor(${index})">Eliminar</button></td>
+        `;
+        tabla.appendChild(fila);
+      });
+    }
+
+    function editarProveedor(index, campo, valor) {
+      proveedores[index][campo] = valor.trim();
+      guardarProveedores();
+    }
+
+    function eliminarProveedor(index) {
+      if (confirm("¿Estás seguro de eliminar este proveedor?")) {
+        proveedores.splice(index, 1);
+        mostrarProveedores();
+        guardarProveedores();
+      }
+    }
+
+    function cargarExcel() {
+      const archivo = document.getElementById('archivo-excel').files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        proveedores = XLSX.utils.sheet_to_json(sheet);
+        mostrarProveedores();
+        guardarProveedores();
+      };
+      reader.readAsArrayBuffer(archivo);
+    }
+
+    function exportarExcel() {
+      const hoja = XLSX.utils.json_to_sheet(proveedores);
+      const libro = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(libro, hoja, 'Proveedores');
+      XLSX.writeFile(libro, 'Proveedores_CBC.xlsx');
+      alert('Archivo Excel exportado con los cambios.');
+    }
+
+    function guardarProveedores() {
+      localStorage.setItem('proveedores', JSON.stringify(proveedores));
+    }
+
+    window.addEventListener('beforeunload', function (e) {
+      if (proveedores.length > 0) {
+        const mensaje = 'Tienes cambios no guardados. ¿Seguro que quieres salir?';
+        e.returnValue = mensaje;
+        return mensaje;
+      }
+    });
+
+    mostrarProveedores();
+  </script>
+</body>
+</html>

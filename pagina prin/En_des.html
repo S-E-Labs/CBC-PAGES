@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>En Desarrollo - CBC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #00bfa5;
+      margin: 0;
+    }
+
+    .hero {
+      height: 100vh;
+      background-image: url('https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1400&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 70px;
+    }
+
+    .glass-box {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .glass-box h2 {
+      color: #00796b;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .glass-box p {
+      color: #333;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-volver {
+      background-color: #00bfa5;
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-volver:hover {
+      background-color: #008e76;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #e0f2f1;
+      color: #555;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CBC</h1>
+  </header>
+
+  <section class="hero">
+    <div class="glass-box">
+      <h2>¡Estamos trabajando para ti!</h2>
+      <p>Esta sección está actualmente en desarrollo. Pronto podrás disfrutar de nuevas funcionalidades y mejoras en nuestro servicio.</p>
+      <a href="../index.html" class="btn-volver">Volver al inicio</a>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 CBC. Todos los derechos reservados.
+  </footer>
+
+</body>
+</html>

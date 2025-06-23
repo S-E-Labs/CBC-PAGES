@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventario Global con Gráficas</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h2, h3 {
+      color: #2c3e50;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+      display: block;
+    }
+
+    select, input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: #2980b9;
+      outline: none;
+    }
+
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1c5d86;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      margin-top: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+      font-weight: bold;
+    }
+
+    td button {
+      background-color: transparent;
+      color: #e74c3c;
+      font-size: 18px;
+      padding: 4px 8px;
+    }
+
+    .export-buttons {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .export-buttons button {
+      flex: 1 1 200px;
+      background-color: #27ae60;
+    }
+
+    .export-buttons button:hover {
+      background-color: #1e874b;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .flex-row > input {
+      flex: 1 1 200px;
+    }
+
+    .chart-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .chart-box {
+      flex: 1 1 400px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .chart-title {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .flex-row, .export-buttons {
+        flex-direction: column;
+      }
+      
+      .export-buttons button, .flex-row > input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Gestión de Inventario</h2>
+
+  <label for="categoria">Selecciona Categoría:</label>
+  <select id="categoria" onchange="mostrarProductos(); actualizarGraficas()">
+    <option value="">-- Todas las Categorías (para búsqueda global) --</option>
+    <option value="lavamanos">Lavamanos</option>
+    <option value="muebles">Muebles</option>
+    <option value="sanitarios">Sanitarios</option>
+    <option value="grifos">Grifos</option>
+    <option value="accesorios">Accesorios</option>
+  </select>
+
+  <label for="buscar">Buscar (global en todas las categorías):</label>
+  <input type="text" id="buscar" oninput="filtrarProductos()" placeholder="Buscar por nombre..." />
+
+  <h3>Agregar Producto</h3>
+  <div class="flex-row">
+    <input type="text" id="codigo" placeholder="Código" />
+    <input type="text" id="nombre" placeholder="Nombre" />
+    <input type="number" id="precio" placeholder="Precio" min="0" step="0.01" />
+    <input type="number" id="Precio_costos" placeholder="Precio costos" min="0" step="0.01" />
+    <input type="number" id="cantidad" placeholder="Cantidad" min="0" step="1" />
+    <input type="text" id="comentario" placeholder="Comentario" />
+  </div>
+  <button onclick="agregarProducto()">Agregar Producto</button>
+
+  <h3>Inventario</h3>
+  <table id="tablaProductos">
+    <thead>
+      <tr>
+        <th>Categoría</th>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Precio costo</th>
+        <th>Cantidad</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="export-buttons">
+    <button onclick="exportar('pdf')">Exportar PDF Categoría</button>
+    <button onclick="exportar('excel')">Exportar Excel Categoría</button>
+    <button onclick="exportar('pdf', true)">Exportar PDF Todo Inventario</button>
+    <button onclick="exportar('excel', true)">Exportar Excel Todo Inventario</button>
+  </div>
+
+  <!-- Botón para importar Excel -->
+  <div style="margin-top: 20px;">
+    <label for="importarArchivo"><strong>Importar Excel (Formato: Categoría, Código, Nombre, Precio, Precio costos, Cantidad)</strong></label>
+    <input type="file" id="importarArchivo" accept=".xlsx, .xls" />
+    <button onclick="importarExcel()">Importar Excel</button>
+  </div>
+
+  <!-- Sección de Gráficas -->
+  <h2 style="margin-top: 40px;">Análisis de Inventario</h2>
+  
+  <div class="chart-container">
+    <div class="chart-box">
+      <div class="chart-title">Productos por Categoría</div>
+      <canvas id="chartCategorias"></canvas>
+    </div>
+    
+    <div class="chart-box">
+      <div class="chart-title">Valor del Inventario por Categoría</div>
+      <canvas id="chartValorInventario"></canvas>
+    </div>
+    
+    <div class="chart-box">
+      <div class="chart-title">Productos con Bajo Stock (<5 unidades)</div>
+      <canvas id="chartBajoStock"></canvas>
+    </div>
+    
+    <div class="chart-box">
+      <div class="chart-title">Margen de Beneficio Promedio</div>
+      <canvas id="chartMargenBeneficio"></canvas>
+    </div>
+  </div>
+
+<script>
+  const categorias = ["lavamanos", "muebles", "sanitarios", "grifos", "accesorios"];
+  let chartCategorias, chartValorInventario, chartBajoStock, chartMargenBeneficio;
+
+  // Inicializar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    mostrarProductos();
+    actualizarGraficas();
+  });
+
+  function obtenerCategoria() {
+    return document.getElementById("categoria").value.toLowerCase();
+  }
+
+  function mostrarProductos(filtrados = null) {
+    const tbody = document.querySelector("#tablaProductos tbody");
+    tbody.innerHTML = "";
+
+    let productosAMostrar = [];
+
+    if (filtrados) {
+      productosAMostrar = filtrados;
+    } else {
+      const categoria = obtenerCategoria();
+      if (categoria) {
+        productosAMostrar = JSON.parse(localStorage.getItem(categoria)) || [];
+        productosAMostrar = productosAMostrar.map(p => ({ ...p, categoria }));
+      } else {
+        // Mostrar todo inventario (para categoría vacía)
+        productosAMostrar = [];
+        for (let cat of categorias) {
+          let prods = JSON.parse(localStorage.getItem(cat)) || [];
+          prods = prods.map(p => ({ ...p, categoria: cat }));
+          productosAMostrar = productosAMostrar.concat(prods);
+        }
+      }
+    }
+
+    productosAMostrar.forEach((prod) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${prod.categoria}</td>
+        <td>${prod.codigo}</td>
+        <td>${prod.nombre}</td>
+        <td>${prod.precio}</td>
+        <td>${prod.Precio_costos}</td>
+        <td>${prod.cantidad}</td>
+        <td>
+          <button onclick="eliminarProductoPorCodigo('${prod.codigo}')">🗑</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function eliminarProductoPorCodigo(codigo) {
+    for (let cat of categorias) {
+      let productos = JSON.parse(localStorage.getItem(cat)) || [];
+      const index = productos.findIndex(p => p.codigo === codigo);
+      if (index > -1) {
+        productos.splice(index, 1);
+        localStorage.setItem(cat, JSON.stringify(productos));
+        break;
+      }
+    }
+    filtrarProductos();
+    actualizarGraficas();
+  }
+
+  function agregarProducto() {
+    const categoria = obtenerCategoria();
+    const codigo = document.getElementById("codigo").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
+    const precio = parseFloat(document.getElementById("precio").value);
+    const Precio_costos = parseFloat(document.getElementById("Precio_costos").value);
+    const cantidad = parseInt(document.getElementById("cantidad").value);
+    
+    if (!categoria) {
+      alert("Selecciona una categoría para agregar producto.");
+      return;
+    }
+    if (!codigo || !nombre || isNaN(precio) || isNaN(Precio_costos) || isNaN(cantidad)) {
+      alert("Todos los campos son obligatorios y deben ser válidos.");
+      return;
+    }
+
+    const productos = JSON.parse(localStorage.getItem(categoria)) || [];
+    if (productos.find(p => p.codigo === codigo)) {
+      alert("Ya existe un producto con ese código en esta categoría.");
+      return;
+    }
+
+    productos.push({ codigo, nombre, precio, Precio_costos, cantidad });
+    localStorage.setItem(categoria, JSON.stringify(productos));
+
+    // Limpiar inputs
+    document.getElementById("codigo").value = "";
+    document.getElementById("nombre").value = "";
+    document.getElementById("precio").value = "";
+    document.getElementById("Precio_costos").value = "";
+    document.getElementById("cantidad").value = "";
+     
+    mostrarProductos();
+    actualizarGraficas();
+  }
+
+  function filtrarProductos() {
+    const busqueda = document.getElementById("buscar").value.toLowerCase();
+    const categoria = obtenerCategoria();
+
+    let productosAMostrar = [];
+
+    if (categoria) {
+      let prods = JSON.parse(localStorage.getItem(categoria)) || [];
+      productosAMostrar = prods.filter(p =>
+        p.nombre.toLowerCase().includes(busqueda) ||
+        p.codigo.toLowerCase().includes(busqueda)
+      ).map(p => ({ ...p, categoria }));
+    } else {
+      for (let cat of categorias) {
+        let prods = JSON.parse(localStorage.getItem(cat)) || [];
+        let filtrados = prods.filter(p =>
+          p.nombre.toLowerCase().includes(busqueda) ||
+          p.codigo.toLowerCase().includes(busqueda)
+        ).map(p => ({ ...p, categoria: cat }));
+        productosAMostrar = productosAMostrar.concat(filtrados);
+      }
+    }
+    mostrarProductos(productosAMostrar);
+  }
+
+  function exportar(tipo, todo = false) {
+    let productosAExportar = [];
+    if (todo) {
+      for (let cat of categorias) {
+        let prods = JSON.parse(localStorage.getItem(cat)) || [];
+        prods = prods.map(p => ({ ...p, categoria: cat }));
+        productosAExportar = productosAExportar.concat(prods);
+      }
+    } else {
+      const categoria = obtenerCategoria();
+      if (!categoria) {
+        alert("Selecciona una categoría para exportar o usa la opción de todo inventario.");
+        return;
+      }
+      productosAExportar = JSON.parse(localStorage.getItem(categoria)) || [];
+      productosAExportar = productosAExportar.map(p => ({ ...p, categoria }));
+    }
+
+    if (productosAExportar.length === 0) {
+      alert("No hay productos para exportar.");
+      return;
+    }
+
+    if (tipo === "pdf") {
+      exportarPDF(productosAExportar);
+    } else if (tipo === "excel") {
+      exportarExcel(productosAExportar);
+    }
+  }
+
+  function exportarPDF(productos) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const columnas = ["Categoría", "Código", "Nombre", "Precio", "Precio costos", "Cantidad"];
+    const filas = productos.map(p => [
+      p.categoria, p.codigo, p.nombre, p.precio.toFixed(2), p.Precio_costos.toFixed(2), p.cantidad
+    ]);
+
+    doc.text("Inventario", 14, 15);
+    doc.autoTable({
+      head: [columnas],
+      body: filas,
+      startY: 20,
+      styles: { fontSize: 8 }
+    });
+    doc.save("inventario.pdf");
+  }
+
+  function exportarExcel(productos) {
+    const wb = XLSX.utils.book_new();
+    const ws_data = [
+      ["Categoría", "Código", "Nombre", "Precio", "Precio costos", "Cantidad"],
+      ...productos.map(p => [p.categoria, p.codigo, p.nombre, p.precio, p.Precio_costos, p.cantidad])
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    XLSX.utils.book_append_sheet(wb, ws, "Inventario");
+    XLSX.writeFile(wb, "inventario.xlsx");
+  }
+
+  function importarExcel() {
+    const archivoInput = document.getElementById("importarArchivo");
+    if (!archivoInput.files.length) {
+      alert("Selecciona un archivo Excel para importar.");
+      return;
+    }
+
+    const archivo = archivoInput.files[0];
+    const lector = new FileReader();
+
+    lector.onload = function (e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const nombreHoja = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[nombreHoja];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: ["categoria", "codigo", "nombre", "precio", "Precio_costos", "cantidad"], defval: "" });
+
+      if (jsonData.length === 0) {
+        alert("El archivo Excel está vacío o tiene formato incorrecto.");
+        return;
+      }
+
+      // La primera fila será el encabezado, ignorar si es la cabecera literal:
+      let datos = jsonData;
+      if (jsonData[0].categoria.toLowerCase() === "categoría" || jsonData[0].categoria.toLowerCase() === "categoria") {
+        datos = jsonData.slice(1);
+      }
+
+      // Validar y agregar productos
+      let errores = [];
+      datos.forEach((fila, index) => {
+        const categoria = fila.categoria.toLowerCase().trim();
+        const codigo = String(fila.codigo).trim();
+        const nombre = String(fila.nombre).trim();
+        const precio = parseFloat(fila.precio);
+        const Precio_costos = parseFloat(fila.Precio_costos);
+        const cantidad = parseInt(fila.cantidad);
+
+        if (!categorias.includes(categoria)) {
+          errores.push(`Fila ${index + 2}: Categoría inválida (${fila.categoria}).`);
+          return;
+        }
+        if (!codigo || !nombre || isNaN(precio) || isNaN(cantidad)) {
+          errores.push(`Fila ${index + 2}: Datos incompletos o inválidos.`);
+          return;
+        }
+
+        let productos = JSON.parse(localStorage.getItem(categoria)) || [];
+        if (!productos.find(p => p.codigo === codigo)) {
+          productos.push({ codigo, nombre, precio, Precio_costos, cantidad, comentario: "" });
+          localStorage.setItem(categoria, JSON.stringify(productos));
+        }
+      });
+
+      if (errores.length) {
+        alert("Se importaron algunos productos, pero hubo errores:\n" + errores.join("\n"));
+      } else {
+        alert("Productos importados con éxito.");
+      }
+      mostrarProductos();
+      actualizarGraficas();
+      archivoInput.value = ""; // Reset file input
+    };
+
+    lector.readAsArrayBuffer(archivo);
+  }
+
+  // Funciones para las gráficas
+  function actualizarGraficas() {
+    // 1. Productos por categoría
+    const datosCategorias = categorias.map(cat => {
+      const productos = JSON.parse(localStorage.getItem(cat)) || [];
+      return productos.length;
+    });
+
+    if (chartCategorias) chartCategorias.destroy();
+    const ctx1 = document.getElementById('chartCategorias').getContext('2d');
+    chartCategorias = new Chart(ctx1, {
+      type: 'pie',
+      data: {
+        labels: categorias,
+        datasets: [{
+          data: datosCategorias,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(255, 206, 86, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(153, 102, 255, 0.7)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.label}: ${context.raw} productos`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // 2. Valor del inventario por categoría
+    const valorInventario = categorias.map(cat => {
+      const productos = JSON.parse(localStorage.getItem(cat)) || [];
+      const total = productos.reduce((sum, p) => sum + (p.precio * p.cantidad), 0);
+      return parseFloat(total.toFixed(2));
+    });
+
+    if (chartValorInventario) chartValorInventario.destroy();
+    const ctx2 = document.getElementById('chartValorInventario').getContext('2d');
+    chartValorInventario = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: categorias,
+        datasets: [{
+          label: 'Valor del Inventario ($)',
+          data: valorInventario,
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Valor ($)' }
+          }
+        }
+      }
+    });
+
+    // 3. Productos con bajo stock (<5 unidades)
+    const umbral = 5;
+    const bajoStockData = categorias.map(cat => {
+      const productos = JSON.parse(localStorage.getItem(cat)) || [];
+      return productos.filter(p => p.cantidad < umbral).length;
+    });
+
+    if (chartBajoStock) chartBajoStock.destroy();
+    const ctx3 = document.getElementById('chartBajoStock').getContext('2d');
+    chartBajoStock = new Chart(ctx3, {
+      type: 'doughnut',
+      data: {
+        labels: categorias,
+        datasets: [{
+          label: 'Productos con bajo stock',
+          data: bajoStockData,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(255, 159, 64, 0.7)',
+            'rgba(255, 205, 86, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(153, 102, 255, 0.7)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.label}: ${context.raw} productos con stock < ${umbral}`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // 4. Margen de beneficio promedio por categoría
+    const margenData = categorias.map(cat => {
+      const productos = JSON.parse(localStorage.getItem(cat)) || [];
+      const margenes = productos
+        .filter(p => p.Precio_costos > 0)
+        .map(p => ((p.precio - p.Precio_costos) / p.Precio_costos) * 100);
+      
+      if (margenes.length === 0) return 0;
+      const promedio = margenes.reduce((sum, m) => sum + m, 0) / margenes.length;
+      return parseFloat(promedio.toFixed(2));
+    });
+
+    if (chartMargenBeneficio) chartMargenBeneficio.destroy();
+    const ctx4 = document.getElementById('chartMargenBeneficio').getContext('2d');
+    chartMargenBeneficio = new Chart(ctx4, {
+      type: 'bar',
+      data: {
+        labels: categorias,
+        datasets: [{
+          label: 'Margen de Beneficio Promedio (%)',
+          data: margenData,
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Margen (%)' }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.raw}% de margen promedio`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
