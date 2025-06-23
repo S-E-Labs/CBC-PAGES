@@ -8,24 +8,24 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #0a3d62;
-      --primary-dark: #082a46;
-      --secondary: #c19e5f;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --gray: #6c757d;
-      --light-gray: #e9ecef;
-      --beige: #f5f3f0;
-      --marble: #f0ebe3;
-    }
-    
+     :root {
+          --primary: #1a522c; /* Un verde oscuro */
+          --primary-dark: #0e351e; /* Un verde aún más oscuro */
+          --secondary: #66bb6a; /* Un verde más brillante para acentos */
+          --light: #f8f9fa;
+          --dark: #212529;
+          --gray: #6c757d;
+          --light-gray: #e9ecef;
+          --beige: #f5f3f0;
+          --marble: #e3f0eb; /* Un tono más verdoso para el fondo */
+        }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Montserrat', sans-serif;
       color: var(--dark);
@@ -34,13 +34,13 @@
       background-color: var(--marble);
       font-weight: 400;
     }
-    
+
     h1, h2, h3, h4, h5 {
       font-family: 'Playfair Display', serif;
       font-weight: 600;
       letter-spacing: 0.5px;
     }
-    
+
     /* Header */
     header {
       background: rgba(255, 255, 255, 0.95);
@@ -52,7 +52,7 @@
       box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
-    
+
     .navbar {
       padding: 15px 40px;
       max-width: 1400px;
@@ -61,7 +61,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .navbar-brand {
       display: flex;
       align-items: center;
@@ -71,20 +71,20 @@
       color: var(--primary);
       text-decoration: none;
     }
-    
+
     .navbar-brand span {
       color: var(--secondary);
     }
-    
+
     .nav-links {
       display: flex;
       list-style: none;
     }
-    
+
     .nav-links li {
       margin: 0 10px;
     }
-    
+
     .nav-links a {
       color: var(--dark);
       font-weight: 500;
@@ -94,7 +94,7 @@
       position: relative;
       font-size: 1.05rem;
     }
-    
+
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -105,17 +105,17 @@
       background: var(--secondary);
       transition: width 0.3s ease;
     }
-    
+
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--primary);
     }
-    
+
     .nav-links a:hover::after,
     .nav-links a.active::after {
       width: calc(100% - 30px);
     }
-    
+
     .btn-login {
       background-color: var(--secondary);
       color: white;
@@ -128,16 +128,16 @@
       font-size: 1rem;
       box-shadow: 0 4px 15px rgba(193, 158, 95, 0.3);
     }
-    
+
     .btn-login:hover {
       background-color: var(--primary);
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(10, 61, 98, 0.3);
     }
-    
+
     /* Hero section */
     .hero {
-      background: linear-gradient(105deg, rgba(10, 61, 98, 0.85) 40%, rgba(10, 61, 98, 0.75) 100%), 
+      background: linear-gradient(105deg, rgba(10, 61, 98, 0.85) 40%, rgba(10, 61, 98, 0.75) 100%),
                   url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
       min-height: 100vh;
       display: flex;
@@ -147,26 +147,26 @@
       color: white;
       text-align: left;
     }
-    
+
     .hero-content {
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 20px;
       width: 100%;
     }
-    
+
     .hero-text {
       max-width: 700px;
       padding: 40px 0;
     }
-    
+
     .hero h1 {
       font-size: 3.5rem;
       margin-bottom: 25px;
       line-height: 1.15;
       font-weight: 700;
     }
-    
+
     .hero p {
       font-size: 1.3rem;
       margin-bottom: 40px;
@@ -174,14 +174,14 @@
       font-weight: 300;
       opacity: 0.9;
     }
-    
+
     .cta-buttons {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
       margin-top: 20px;
     }
-    
+
     .btn-primary {
       background: var(--secondary);
       color: white;
@@ -198,14 +198,14 @@
       text-decoration: none;
       cursor: pointer;
     }
-    
+
     .btn-primary:hover {
       background: var(--primary);
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(10, 61, 98, 0.4);
       color: white;
     }
-    
+
     .btn-outline {
       background: transparent;
       color: white;
@@ -221,25 +221,25 @@
       justify-content: center;
       cursor: pointer;
     }
-    
+
     .btn-outline:hover {
       background: white;
       color: var(--primary);
       transform: translateY(-3px);
     }
-    
+
     /* Product Categories */
     .categories {
       padding: 100px 40px;
       background: white;
     }
-    
+
     .section-title {
       text-align: center;
       margin-bottom: 70px;
       position: relative;
     }
-    
+
     .section-title h2 {
       font-size: 2.8rem;
       color: var(--primary);
@@ -247,7 +247,7 @@
       display: inline-block;
       padding-bottom: 20px;
     }
-    
+
     .section-title h2::after {
       content: '';
       position: absolute;
@@ -259,14 +259,14 @@
       background: var(--secondary);
       border-radius: 2px;
     }
-    
+
     .section-title p {
       color: var(--gray);
       max-width: 700px;
       margin: 25px auto 0;
       font-size: 1.15rem;
     }
-    
+
     .categories-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -274,7 +274,7 @@
       max-width: 1400px;
       margin: 0 auto;
     }
-    
+
     .category-card {
       background: white;
       border-radius: 10px;
@@ -285,41 +285,41 @@
       height: 400px;
       text-align: center;
     }
-    
+
     .category-card:hover {
       transform: translateY(-10px);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
     }
-    
+
     .category-img {
       height: 300px;
       overflow: hidden;
     }
-    
+
     .category-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
     }
-    
+
     .category-card:hover .category-img img {
       transform: scale(1.05);
     }
-    
+
     .category-content {
       padding: 25px;
       position: relative;
       z-index: 2;
       background: white;
     }
-    
+
     .category-content h3 {
       font-size: 1.8rem;
       margin-bottom: 10px;
       color: var(--primary);
     }
-    
+
     .category-content a {
       color: var(--secondary);
       font-weight: 600;
@@ -328,26 +328,26 @@
       align-items: center;
       transition: all 0.3s ease;
     }
-    
+
     .category-content a:hover {
       color: var(--primary);
     }
-    
+
     .category-content a i {
       margin-left: 8px;
       transition: transform 0.3s ease;
     }
-    
+
     .category-content a:hover i {
       transform: translateX(5px);
     }
-    
+
     /* Featured Products */
     .featured-products {
       padding: 100px 40px;
       background: linear-gradient(rgba(10, 61, 98, 0.03), rgba(10, 61, 98, 0.03));
     }
-    
+
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -355,7 +355,7 @@
       max-width: 1400px;
       margin: 0 auto;
     }
-    
+
     .product-card {
       background: white;
       border-radius: 10px;
@@ -364,12 +364,12 @@
       transition: all 0.3s ease;
       position: relative;
     }
-    
+
     .product-card:hover {
       transform: translateY(-10px);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     }
-    
+
     .product-badge {
       position: absolute;
       top: 15px;
@@ -382,24 +382,24 @@
       font-weight: 600;
       z-index: 2;
     }
-    
+
     .product-img {
       height: 250px;
       overflow: hidden;
       position: relative;
     }
-    
+
     .product-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
     }
-    
+
     .product-card:hover .product-img img {
       transform: scale(1.05);
     }
-    
+
     .product-overlay {
       position: absolute;
       bottom: 0;
@@ -413,11 +413,11 @@
       display: flex;
       justify-content: center;
     }
-    
+
     .product-card:hover .product-overlay {
       transform: translateY(0);
     }
-    
+
     .overlay-btn {
       background: white;
       color: var(--primary);
@@ -430,48 +430,48 @@
       text-decoration: none;
       display: inline-block;
     }
-    
+
     .overlay-btn:hover {
       background: var(--secondary);
       color: white;
       transform: translateY(-2px);
     }
-    
+
     .product-info {
       padding: 25px;
     }
-    
+
     .product-info h3 {
       font-size: 1.5rem;
       margin-bottom: 10px;
       color: var(--primary);
     }
-    
+
     .product-meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 15px;
     }
-    
+
     .product-price {
       font-size: 1.4rem;
       font-weight: 700;
       color: var(--primary);
     }
-    
+
     .product-category {
       color: var(--secondary);
       font-weight: 600;
       font-size: 0.9rem;
     }
-    
+
     /* Brands Section */
     .brands {
       padding: 80px 40px;
       background: white;
     }
-    
+
     .brands-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -480,7 +480,7 @@
       margin: 0 auto;
       place-items: center;
     }
-    
+
     .brand-item {
       height: 120px;
       width: 180px;
@@ -493,12 +493,12 @@
       transition: all 0.3s ease;
       padding: 15px;
     }
-    
+
     .brand-item:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
-    
+
     .brand-item img {
       max-height: 70px;
       max-width: 100%;
@@ -506,11 +506,11 @@
       filter: grayscale(100%);
       transition: filter 0.3s ease;
     }
-    
+
     .brand-item:hover img {
       filter: grayscale(0);
     }
-    
+
     /* Contact Info Section */
     .contact-info-section {
       padding: 100px 40px;
@@ -518,19 +518,19 @@
       color: white;
       text-align: center;
     }
-    
+
     .contact-info-container {
       max-width: 800px;
       margin: 0 auto;
     }
-    
+
     .contact-info-section h2 {
       font-size: 2.5rem;
       margin-bottom: 30px;
       position: relative;
       padding-bottom: 20px;
     }
-    
+
     .contact-info-section h2::after {
       content: '';
       position: absolute;
@@ -541,14 +541,14 @@
       height: 3px;
       background: var(--secondary);
     }
-    
+
     .contact-details-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 40px;
       margin-top: 50px;
     }
-    
+
     .contact-item {
       display: flex;
       flex-direction: column;
@@ -558,12 +558,12 @@
       border-radius: 10px;
       transition: all 0.3s ease;
     }
-    
+
     .contact-item:hover {
       transform: translateY(-5px);
       background: rgba(255, 255, 255, 0.15);
     }
-    
+
     .contact-icon {
       width: 70px;
       height: 70px;
@@ -576,24 +576,24 @@
       color: var(--primary);
       font-size: 28px;
     }
-    
+
     .contact-text h4 {
       font-size: 1.4rem;
       margin-bottom: 10px;
     }
-    
+
     .contact-text p {
       color: rgba(255, 255, 255, 0.85);
       font-weight: 300;
     }
-    
+
     /* Footer */
     .footer {
       background-color: var(--primary-dark);
       color: #dcdcdc;
       padding-top: 100px;
     }
-    
+
     .footer-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -602,7 +602,7 @@
       margin: 0 auto;
       padding: 0 40px;
     }
-    
+
     .footer-col h4 {
       color: var(--secondary);
       margin-bottom: 25px;
@@ -610,7 +610,7 @@
       position: relative;
       padding-bottom: 10px;
     }
-    
+
     .footer-col h4::after {
       content: '';
       position: absolute;
@@ -620,34 +620,34 @@
       height: 2px;
       background: var(--secondary);
     }
-    
+
     .footer-col p {
       margin-bottom: 20px;
       font-weight: 300;
     }
-    
+
     .footer-links li {
       margin-bottom: 12px;
     }
-    
+
     .footer-links a {
       color: #dcdcdc;
       transition: all 0.3s ease;
       display: inline-block;
       font-weight: 300;
     }
-    
+
     .footer-links a:hover {
       color: var(--secondary);
       transform: translateX(5px);
     }
-    
+
     .footer-social {
       display: flex;
       gap: 15px;
       margin-top: 20px;
     }
-    
+
     .social-link {
       width: 45px;
       height: 45px;
@@ -660,13 +660,13 @@
       transition: all 0.3s ease;
       font-size: 18px;
     }
-    
+
     .social-link:hover {
       background: var(--secondary);
       color: var(--primary-dark);
       transform: translateY(-5px);
     }
-    
+
     .copyright {
       text-align: center;
       padding: 30px 0;
@@ -676,74 +676,363 @@
       color: rgba(255, 255, 255, 0.6);
       font-weight: 300;
     }
-    
+
     /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     .fade-in {
       opacity: 0;
       animation: fadeIn 1s ease forwards;
     }
-    
+
     .delay-1 { animation-delay: 0.2s; }
     .delay-2 { animation-delay: 0.4s; }
     .delay-3 { animation-delay: 0.6s; }
-    
+
     /* Responsive */
     @media (max-width: 1200px) {
       .nav-links {
         display: none;
       }
     }
-    
+
     @media (max-width: 992px) {
       .hero h1 {
         font-size: 3rem;
       }
-      
+
       .navbar {
         padding: 15px 20px;
       }
     }
-    
+
     @media (max-width: 768px) {
       .hero {
         padding: 100px 20px 60px;
         text-align: center;
       }
-      
+
       .hero-text {
         margin: 0 auto;
       }
-      
+
       .hero h1 {
         font-size: 2.5rem;
       }
-      
+
       .hero p {
         font-size: 1.1rem;
         margin: 0 auto 40px;
       }
-      
+
       .cta-buttons {
         flex-direction: column;
         gap: 15px;
         justify-content: center;
       }
-      
+
       .section-title h2 {
         font-size: 2.3rem;
       }
     }
-    
+
     @media (max-width: 576px) {
       .section-title h2 {
         font-size: 2rem;
       }
     }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 90%;
+      position: relative;
+      animation: modalFade 0.3s;
+    }
+
+    @keyframes modalFade {
+      from {opacity: 0; transform: translateY(-50px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .close {
+      color: var(--primary);
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: var(--secondary);
+    }
+
+    .modal-body {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .modal-body img {
+      width: 45%;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .modal-info {
+      width: 55%;
+    }
+
+    .modal-info .btn-primary {
+      margin-top: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .modal-body {
+        flex-direction: column;
+      }
+
+      .modal-body img, .modal-info {
+        width: 100%;
+      }
+    }
+
+    /* Chatbot Styles */
+    .chatbot-toggler {
+      position: fixed;
+      bottom: 35px;
+      right: 40px;
+      height: 58px;
+      width: 58px;
+      color: #fff;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 1001; /* Ensure it's above other content */
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbot-toggler span {
+      position: absolute;
+    }
+
+    .show-chatbot .chatbot-toggler span:first-child,
+    .chatbot-toggler span:last-child {
+      opacity: 0;
+    }
+
+    .show-chatbot .chatbot-toggler span:last-child {
+      opacity: 1;
+    }
+
+    .chatbot {
+      position: fixed;
+
+      right: 35px;
+      bottom: 90px;
+      width: 420px;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.5);
+      transform-origin: bottom right;
+      box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+                  0 32px 64px -48px rgba(0, 0, 0, 0.5);
+      transition: all 0.1s ease;
+      z-index: 1001; /* Ensure it's above other content */
+      display: flex;
+      flex-direction: column;
+      max-height: 70vh; /* Limit height for responsiveness */
+    }
+
+    .show-chatbot .chatbot {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .chatbot header {
+      padding: 16px 0;
+      position: relative;
+      text-align: center;
+      background: var(--primary);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 15px 15px 0 0;
+      margin: 0; /* Remove header margin */
+      position: static; /* Override fixed position */
+      z-index: auto; /* Override fixed position */
+      width: 100%;
+    }
+
+    .chatbot header h2 {
+      color: #fff;
+      font-size: 1.4rem;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif; /* Use Montserrat for header */
+    }
+
+    .chatbot header span {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      display: none;
+      transform: translateY(-50%);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.3rem;
+    }
+
+    .chatbot .chatbox {
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px 20px 70px;
+    }
+
+    .chatbox .chat {
+      display: flex;
+      list-style: none;
+      margin-bottom: 10px;
+    }
+
+    .chatbox .incoming span {
+      height: 32px;
+      width: 32px;
+      color: #fff;
+      background: var(--primary);
+      text-align: center;
+      line-height: 32px;
+      border-radius: 4px;
+      margin: 0 10px 7px 0;
+      align-self: flex-end;
+    }
+
+    .chatbox .outgoing {
+      margin: 20px 0;
+      justify-content: flex-end;
+    }
+
+    .chatbox .chat p {
+      max-width: 75%;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      border-radius: 10px 10px 0 10px;
+      background: var(--secondary);
+      color: #fff;
+      white-space: pre-wrap; /* Preserve line breaks */
+    }
+
+    .chatbox .incoming p {
+      border-radius: 10px 10px 10px 0;
+      background: var(--light-gray);
+      color: var(--dark);
+    }
+
+    .chatbot .chat-input {
+      padding: 8px 20px;
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid #ccc;
+      background: #f8f8f8;
+      position: sticky;
+      bottom: 0;
+      margin-top: auto; /* Push to bottom */
+    }
+
+    .chat-input textarea {
+      height: 55px;
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 16px 15px;
+      font-size: 0.95rem;
+      background: transparent;
+    }
+
+    .chat-input span {
+      align-self: flex-end;
+      height: 55px;
+      line-height: 55px;
+      color: var(--primary);
+      font-size: 1.35rem;
+      cursor: pointer;
+      visibility: hidden;
+    }
+
+    .chat-input textarea:valid ~ span {
+      visibility: visible;
+    }
+
+    @media (max-width: 490px) {
+      .chatbot {
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+      }
+
+      .chatbot .chatbox {
+        padding: 25px 15px 100px;
+      }
+
+      .chatbot .chat-input {
+        padding: 15px 20px;
+      }
+
+      .chatbot header span {
+        display: block;
+      }
+    }
+    .chatbot-button {
+        background-color: var(--secondary); /* Color de fondo del botón */
+        color: white; /* Color del texto del botón */
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px; /* Bordes redondeados */
+        cursor: pointer;
+        margin-top: 10px; /* Espacio encima del botón */
+        margin-right: 5px; /* Espacio entre botones si hay varios */
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        display: inline-block; /* Para que aparezcan uno al lado del otro si hay espacio */
+      }
+
+      .chatbot-button:hover {
+        background-color: var(--primary); /* Cambio de color al pasar el mouse */
+        transform: translateY(-1px);
+      }
   </style>
 </head>
 
@@ -785,7 +1074,7 @@
       <h2>Nuestras Categorías</h2>
       <p>Productos de alta calidad para cada necesidad en el baño</p>
     </div>
-    
+
     <div class="categories-grid">
       <div class="category-card fade-in delay-1">
         <div class="category-img">
@@ -796,7 +1085,7 @@
           <a href="./pagina prin/exp_prod.html" onclick="filterProducts('duchas')">Explorar productos <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
-      
+
       <div class="category-card fade-in delay-2">
         <div class="category-img">
           <img src="./Assests/Img/Mueble de baño.jpg">
@@ -806,7 +1095,7 @@
           <a href="./pagina prin/exp_prod.html" onclick="filterProducts('muebles')">Explorar productos <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
-      
+
       <div class="category-card fade-in delay-3">
         <div class="category-img">
           <img src="./Assests/Img/grifo moderno.png" alt="Grifería y Accesorios">
@@ -820,12 +1109,12 @@
   </section>
 
   <!-- Featured Products -->
-  <section class="featured-products"> <id="productos">
+  <section class="featured-products" id="productos">
     <div class="section-title fade-in">
       <h2>Productos Destacados</h2>
       <p>Los artículos más populares de nuestro catálogo</p>
     </div>
-    
+
     <div class="products-grid">
       <div class="product-card fade-in delay-1">
         <div class="product-badge">Nuevo</div>
@@ -844,7 +1133,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="product-card fade-in delay-2">
         <div class="product-badge">Oferta</div>
         <div class="product-img">
@@ -862,7 +1151,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="product-card fade-in delay-3">
         <div class="product-img">
           <img src="./Assests/Img/griferia dorada.jpg" alt="Griferia Moderna">
@@ -879,7 +1168,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="product-card fade-in">
         <div class="product-badge">Más Vendido</div>
         <div class="product-img">
@@ -906,7 +1195,7 @@
       <h2>Marcas que Distribuimos</h2>
       <p>Trabajamos con las mejores marcas del mercado</p>
     </div>
-    
+
     <div class="brands-grid">
       <div class="brand-item fade-in delay-1">
         <img src="./Assests/Img/grohe.jpg" alt="Grohe">
@@ -934,7 +1223,7 @@
     <div class="contact-info-container fade-in">
       <h2>Contáctanos</h2>
       <p>Estamos disponibles para responder tus preguntas sobre nuestros productos</p>
-      
+
       <div class="contact-details-grid">
         <div class="contact-item fade-in delay-1">
           <div class="contact-icon">
@@ -945,7 +1234,7 @@
             <p>Carrera 56c #51 - 109<br>Barrio San Benito, Medellín, Colombia</p>
           </div>
         </div>
-        
+
         <div class="contact-item fade-in delay-2">
           <div class="contact-icon">
             <i class="fas fa-phone-alt"></i>
@@ -955,7 +1244,7 @@
             <p>+57 310 7107274</p>
           </div>
         </div>
-        
+
         <div class="contact-item fade-in delay-3">
           <div class="contact-icon">
             <i class="fas fa-envelope"></i>
@@ -987,7 +1276,7 @@
           </a>
         </div>
       </div>
-      
+
       <div class="footer-col">
         <h4>Categorías</h4>
         <ul class="footer-links">
@@ -999,7 +1288,7 @@
           <li><a href="./pagina prin/exp_prod.html" onclick="filterProducts('sanitarios')">Sanitarios</a></li>
         </ul>
       </div>
-      
+
       <div class="footer-col">
         <h4>Enlaces</h4>
         <ul class="footer-links">
@@ -1011,7 +1300,7 @@
         </ul>
       </div>
     </div>
-    
+
     <div class="copyright">
       <p>&copy; 2025 CBC Distribución. Todos los derechos reservados. | Especialistas en productos para baño</p>
     </div>
@@ -1036,30 +1325,52 @@
     </div>
   </div>
 
+  <!-- Chatbot -->
+<button class="chatbot-toggler">
+  <span class="fas fa-comment"></span>
+  <span class="fas fa-times"></span>
+</button>
+<div class="chatbot">
+  <header>
+    <h2>Asistente CBC</h2> <!-- Nombre del chatbot -->
+    <span class="close-btn fas fa-times"></span>
+  </header>
+  <ul class="chatbox">
+    <li class="chat incoming">
+      <span class="fas fa-robot"></span>
+      <p>¡Hola! Soy tu asistente virtual de CBC. ¿En qué puedo ayudarte hoy con nuestros productos para baño?</p> <!-- Mensaje de bienvenida modificado -->
+    </li>
+  </ul>
+  <div class="chat-input">
+    <textarea placeholder="Ingresa tu mensaje..." required></textarea>
+    <span id="send-btn" class="fas fa-paper-plane"></span>
+  </div>
+</div>
+
   <script>
     // Función para redirigir al login
     function irLogin() {
       window.location.href = "Pages/index.html";
     }
-    
+
     // Función para redirigir a la galería
     function redirectToGallery() {
       window.location.href = "./pagina prin/galeria.html";
     }
-    
+
     // Función para desplazarse al contacto
     function scrollToContact() {
       document.getElementById('contacto').scrollIntoView({behavior: 'smooth'});
     }
-    
+
     // Función para desplazarse al inicio
     function scrollToTop() {
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
-    
+
     // Funciones para el modal de productos
     const modal = document.getElementById('productModal');
-    
+
     function showProductDetails(productId) {
       const products = [
         {
@@ -1080,6 +1391,7 @@
           title: "Grifería Monomando",
           image: "./Assests/Img/griferia dorada.jpg",
           description: "Mezclador para lavabo con acabado en oro rosa, tecnología cerámica. Cartucho de cerámica para mayor durabilidad.",
+
           price: "$210.000",
           category: "Grifería"
         },
@@ -1091,39 +1403,39 @@
           category: "Muebles"
         }
       ];
-      
+
       const product = products[productId - 1];
       document.getElementById('modalTitle').textContent = product.title;
       document.getElementById('modalImage').src = product.image;
       document.getElementById('modalDescription').textContent = product.description;
       document.getElementById('modalPrice').textContent = product.price;
       document.getElementById('modalCategory').textContent = product.category;
-      
+
       modal.style.display = "block";
     }
-    
+
     function closeModal() {
       modal.style.display = "none";
     }
-    
+
     function requestQuote() {
       alert("¡Gracias por su interés! Un asesor se comunicará con usted para brindarle una cotización personalizada.");
       closeModal();
     }
-    
+
     // Función para filtrar productos (simulada)
     function filterProducts(category) {
       alert(`Mostrando productos de la categoría: ${category.charAt(0).toUpperCase() + category.slice(1)}`);
       // En una implementación real, esto filtraría los productos mostrados
     }
-    
+
     // Cerrar modal al hacer clic fuera de él
     window.onclick = function(event) {
       if (event.target == modal) {
         closeModal();
       }
     }
-    
+
     // Animaciones al hacer scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1134,87 +1446,247 @@
     }, {
       threshold: 0.1
     });
-    
+
     document.querySelectorAll('.fade-in').forEach(el => {
       observer.observe(el);
     });
-  </script>
-  
-  <style>
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.8);
-    }
-    
-    .modal-content {
-      background-color: white;
-      margin: 5% auto;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 800px;
-      width: 90%;
-      position: relative;
-      animation: modalFade 0.3s;
-    }
-    
-    @keyframes modalFade {
-      from {opacity: 0; transform: translateY(-50px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    
-    .close {
-      color: var(--primary);
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      font-size: 35px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    
-    .close:hover {
-      color: var(--secondary);
-    }
-    
-    .modal-body {
-      display: flex;
-      gap: 30px;
-      margin-top: 20px;
-    }
-    
-    .modal-body img {
-      width: 45%;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-    
-    .modal-info {
-      width: 55%;
-    }
-    
-    .modal-info .btn-primary {
-      margin-top: 20px;
-      width: 100%;
-      text-align: center;
-    }
-    
-    @media (max-width: 768px) {
-      .modal-body {
-        flex-direction: column;
+
+    // Asegúrate de que estas variables estén declaradas globalmente o pasadas a la función si es necesario
+    const chatbotToggler = document.querySelector(".chatbot-toggler");
+      const closeBtn = document.querySelector(".close-btn");
+      const chatbox = document.querySelector(".chatbox");
+      const chatInput = document.querySelector(".chat-input textarea");
+
+const sendBtn = document.querySelector("#send-btn"); // Usamos sendBtn como en tu código
+
+      let userMessage = null; // Variable para almacenar el mensaje del usuario
+      const initialInputHeight = chatInput.scrollHeight; // Almacenar la altura inicial del textarea
+
+      // Función modificada para crear un nuevo elemento de chat (permite HTML)
+      const createChatLi = (message, className) => {
+        const chatLi = document.createElement("li");
+        chatLi.classList.add("chat", `${className}`);
+        let chatContent = className === "outgoing" ? `<p></p>` : `<span class="fas fa-robot"></span><p></p>`;
+        chatLi.innerHTML = chatContent;
+        // Usa innerHTML en lugar de textContent para interpretar HTML
+        chatLi.querySelector("p").innerHTML = message;
+        return chatLi; // Retorna el elemento li creado
       }
-      
-      .modal-body img, .modal-info {
-        width: 100%;
+
+      // Función para generar la respuesta del chatbot
+      const generateResponse = (chatElement) => {
+        const messageElement = chatElement.querySelector("p");
+        const userQuery = userMessage.toLowerCase();
+
+        let botResponse = "Lo siento, no entendí tu pregunta. ¿Puedes reformularla?";
+
+        // --- Respuestas basadas en palabras clave ---
+
+        // Saludos y estado
+        if (userQuery.includes("hola") || userQuery.includes("saludos") || userQuery.includes("buenas")) {
+          botResponse = "¡Hola! Soy tu asistente virtual de CBC. ¿En qué puedo ayudarte hoy con nuestros productos para baño?";
+        } else if (userQuery.includes("como estas") || userQuery.includes("que tal")) {
+           botResponse = "¡Estoy bien, listo para ayudarte! ¿Tienes alguna pregunta sobre nuestros productos para baño?";
+        }
+        // Preguntas generales sobre productos
+        else if (userQuery.includes("productos") || userQuery.includes("que venden") || userQuery.includes("que ofrecen")) {
+          botResponse = "¿Qué tipo de productos te interesan? Ofrecemos duchas, muebles de baño, grifería, lavabos, bañeras, sanitarios y accesorios.";
+        } else if (userQuery.includes("catalogo") || userQuery.includes("galeria") || userQuery.includes("ver productos") || userQuery.includes("muestrame productos")) {
+          // Respuesta con botón para ir a la galería
+          botResponse = `Puedes ver nuestro catálogo completo de productos visitando la sección 'Productos' o la 'Galería'.
+                         <button class="chatbot-button" data-target="gallery">Ver Catálogo</button>`;
+        } else if (userQuery.includes("marcas") || userQuery.includes("con que marcas trabajan") || userQuery.includes("que marcas tienen")) {
+           // Respuesta con botón para ir a la sección de marcas (si es una sección en la misma página)
+           botResponse = `Trabajamos con marcas líderes en el mercado. Puedes ver todas las marcas en la sección 'Marcas'.
+                          <button class="chatbot-button" data-target="marcas">Ver Marcas</button>`; // Usamos data-target para identificar el destino
+        }
+        // Preguntas sobre categorías específicas
+        else if (userQuery.includes("duchas") || userQuery.includes("cabinas de ducha") || userQuery.includes("seccion duchas")) {
+          botResponse = `Tenemos una variedad de duchas y cabinas. Puedes explorar las opciones en la sección 'Duchas y Cabinas' de nuestro catálogo.
+                         <button class="chatbot-button" data-target="duchas">Explorar Duchas</button>`;
+        } else if (userQuery.includes("muebles de baño") || userQuery.includes("vanitorios") || userQuery.includes("muebles")) {
+          botResponse = `Ofrecemos diferentes estilos y tamaños de muebles de baño. Visita la sección 'Muebles de Baño' para ver nuestras opciones.
+                         <button class="chatbot-button" data-target="muebles">Explorar Muebles</button>`;
+        } else if (userQuery.includes("griferia") || userQuery.includes("llaves de agua") || userQuery.includes("grifos")) {
+          botResponse = `Contamos con una amplia selección de grifería. ¿Buscas algo en particular? Puedes verlas aquí:
+                         <button class="chatbot-button" data-target="griferia">Explorar Grifería</button>`;
+        } else if (userQuery.includes("lavabos") || userQuery.includes("lavamanos")) {
+          botResponse = `Ofrecemos lavabos de diferentes tipos. Puedes verlos en la sección correspondiente:
+                         <button class="chatbot-button" data-target="lavabos">Explorar Lavabos</button>`;
+        } else if (userQuery.includes("bañeras")) {
+          botResponse = `Tenemos bañeras de diversos estilos y tamaños. Explora la sección 'Bañeras'.
+                         <button class="chatbot-button" data-target="bañeras">Explorar Bañeras</button>`;
+        } else if (userQuery.includes("sanitarios") || userQuery.includes("inodoros") || userQuery.includes("wc")) {
+          botResponse = `Encontrarás una variedad de sanitarios. Revisa la sección 'Sanitarios'.
+                         <button class="chatbot-button" data-target="sanitarios">Explorar Sanitarios</button>`;
+        } else if (userQuery.includes("accesorios") || userQuery.includes("complementos de baño")) {
+          botResponse = `Ofrecemos una gama de accesorios para complementar tu baño. Puedes verlos en la sección de 'Accesorios'.
+                         <button class="chatbot-button" data-target="accesorios">Explorar Accesorios</button>`;
+        } else if (userQuery.includes("categorias") || userQuery.includes("que categorias tienen") || userQuery.includes("secciones")) {
+             botResponse = `Nuestras categorías principales son: Duchas y Cabinas, Muebles de Baño, Grifería y Accesorios, Lavabos, Bañeras y Sanitarios.
+                            <button class="chatbot-button" data-target="categorias">Ver Categorías</button>`; // Botón para la sección categorías
+        }
+        // Preguntas sobre Precios y Cotizaciones
+        else if (userQuery.includes("cotizacion") || userQuery.includes("precio") || userQuery.includes("cuanto cuesta") || userQuery.includes("valores") || userQuery.includes("costo")) {
+          botResponse = "Para solicitar una cotización específica, por favor, ve a la página del producto que te interesa y haz clic en el botón 'Solicitar Cotización'. Si tienes una pregunta general sobre precios, puedo darte información sobre categorías.";
+        } else if (userQuery.includes("impuestos") || userQuery.includes("iva")) {
+          botResponse = "Sí, todos nuestros precios están expresados en pesos colombianos (COP) e incluyen los impuestos aplicables.";
+        } else if (userQuery.includes("cambio de precio") || userQuery.includes("precios cambian")) {
+          botResponse = "Los productos y precios pueden estar sujetos a cambios sin previo aviso. Te recomendamos verificar la información en la página del producto.";
+        }
+        // Preguntas sobre Pagos
+        else if (userQuery.includes("metodos de pago") || userQuery.includes("formas de pago") || userQuery.includes("como pagar")) {
+          botResponse = "Aceptamos pagos por medios electrónicos seguros. El procesamiento de pagos es realizado por terceros autorizados bajo protocolos de seguridad.";
+        } else if (userQuery.includes("seguridad pago") || userQuery.includes("pago seguro")) {
+          botResponse = "La seguridad de tus pagos es nuestra prioridad. Utilizamos medios electrónicos seguros y no almacenamos información financiera del cliente.";
+        } else if (userQuery.includes("almacenan datos financieros") || userQuery.includes("guardan mi tarjeta")) {
+          botResponse = "No, CBC Decoración no almacena información financiera del cliente.";
+        }
+        // Preguntas sobre Envíos y Devoluciones
+        else if (userQuery.includes("envios") || userQuery.includes("envian") || userQuery.includes("entrega")) {
+          botResponse = "Los envíos se realizan dentro del territorio nacional. El tiempo de entrega varía según tu ubicación.";
+        } else if (userQuery.includes("tiempo de entrega") || userQuery.includes("cuanto tarda en llegar")) {
+          botResponse = "El tiempo de entrega varía según la ubicación del cliente. Te proporcionaremos una estimación al procesar tu pedido.";
+        } else if (userQuery.includes("devoluciones") || userQuery.includes("politica de devolucion") || userQuery.includes("devolver producto")) {
+          botResponse = "Ofrecemos devoluciones conforme a la normativa legal vigente y nuestra política interna. Puedes encontrar más detalles en el apartado de nuestra 'Política de privacidad'.";
+        } else if (userQuery.includes("como devuelvo") || userQuery.includes("proceso devolucion")) {
+          botResponse = "Para solicitar una devolución, por favor, consulta nuestra política de devoluciones o contáctanos directamente para recibir instrucciones.";
+        }
+        // Preguntas sobre la Empresa y Contacto
+        else if (userQuery.includes("quienes son") || userQuery.includes("sobre cbc") || userQuery.includes("que es cbc")) {
+          botResponse = "Somos CBC Decoración, distribuidores de productos de alta calidad para el baño.";
+        } else if (userQuery.includes("ubicacion") || userQuery.includes("direccion") || userQuery.includes("donde estan")) {
+           // Respuesta con botón para ir a la sección de contacto
+           botResponse = `Puedes encontrar nuestra información de contacto (ubicación, teléfono, email) en la sección 'Contáctanos' al final de la página.
+                          <button class="chatbot-button" data-target="contacto">Ver Contacto</button>`;
+        } else if (userQuery.includes("telefono") || userQuery.includes("numero de telefono") || userQuery.includes("cual es su telefono")) {
+           botResponse = `Puedes encontrar nuestro número de teléfono en la sección 'Contáctanos' al final de la página.
+                          <button class="chatbot-button" data-target="contacto">Ver Contacto</button>`;
+        } else if (userQuery.includes("email") || userQuery.includes("correo electronico") || userQuery.includes("cual es su email")) {
+           botResponse = `Puedes encontrar nuestro correo electrónico en la sección 'Contáctanos' al final de la página.
+                          <button class="chatbot-button" data-target="contacto">Ver Contacto</button>`;
+        } else if (userQuery.includes("contactar") || userQuery.includes("como los contacto") || userQuery.includes("forma de contacto") || userQuery.includes("contacto")) {
+           botResponse = `Puedes contactarnos a través del formulario en nuestra sección 'Contáctanos', por teléfono o por correo electrónico. Encontrarás la información al final de la página.
+                          <button class="chatbot-button" data-target="contacto">Ver Contacto</button>`;
+        }
+        // Preguntas sobre Políticas
+        else if (userQuery.includes("politica de privacidad") || userQuery.includes("privacidad")) {
+          botResponse = "Puedes consultar nuestra política de privacidad en la sección 'Política de Privacidad' al final de la página."; // Considera añadir un enlace directo si tienes esa sección
+        } else if (userQuery.includes("terminos y condiciones") || userQuery.includes("terminos")) {
+          botResponse = "Puedes consultar nuestros términos y condiciones en la sección 'Términos y Condiciones' al final de la página."; // Considera añadir un enlace directo
+        }
+        // Preguntas de Servicio al Cliente (genéricas)
+        else if (userQuery.includes("ayuda") || userQuery.includes("problema") || userQuery.includes("soporte") || userQuery.includes("necesito ayuda")) {
+            botResponse = `Lamento que estés teniendo un problema. Por favor, describe tu consulta o problema con más detalle para poder ayudarte, o contáctanos directamente para soporte técnico.
+                           <button class="chatbot-button" data-target="contacto">Contactar Soporte</button>`;
+        }
+        // Preguntas de Interacción (simples)
+        else if (userQuery.includes("cual es tu nombre") || userQuery.includes("como te llamas")) {
+            botResponse = "Soy tu asistente virtual de CBC.";
+        } else if (userQuery.includes("eres un robot") || userQuery.includes("eres humano")) {
+            botResponse = "Soy un programa de inteligencia artificial diseñado para ayudarte con tus preguntas sobre los productos de CBC Decoración.";
+        } else if (userQuery.includes("gracias")) {
+            botResponse = "De nada. Estoy aquí para ayudarte con cualquier otra consulta sobre nuestros productos para baño.";
+        }
+
+
+        // --- Fin de respuestas basadas en palabras clave ---
+
+
+        // Actualiza el mensaje del chatbot
+        messageElement.innerHTML = botResponse; // Usamos innerHTML aquí
+        chatbox.scrollTo(0, chatbox.scrollHeight);
+
+        // Añadir event listeners a los botones después de que se agregan al DOM
+        const buttons = chatElement.querySelectorAll('.chatbot-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.getAttribute('data-target');
+                if (target === 'gallery') {
+                    redirectToGallery(); // Tu función existente para la galería
+                } else if (target === 'contacto') {
+                    scrollToContact(); // Tu función existente para el contacto
+                } else if (target === 'marcas') {
+                     // Asumiendo que marcas es una sección en la misma página
+                    document.getElementById('marcas').scrollIntoView({behavior: 'smooth'});
+                } else if (target === 'categorias') {
+                     // Asumiendo que categorias es una sección en la misma página
+                    document.getElementById('categorias').scrollIntoView({behavior: 'smooth'});
+                } else if (target === 'duchas' || target === 'muebles' || target === 'griferia' || target === 'lavabos' || target === 'bañeras' || target === 'sanitarios' || target === 'accesorios') {
+                    // Redirigir a la página de productos y aplicar filtro si es necesario
+                    redirectToGalleryAndFilter(target);
+                }
+                // Añade más casos según sea necesario para otros botones
+            });
+        });
       }
-    }
-  </style>
+
+      // Asegúrate de tener estas funciones definidas en tu script
+      // function redirectToGallery() { ... }
+      // function scrollToContact() { ... }
+
+      // Nueva función para redirigir a la galería con filtro
+      function redirectToGalleryAndFilter(category) {
+          // Construye la URL con un parámetro para la categoría
+          window.location.href = `./pagina prin/galeria.html?category=${category}`;
+          // En la página de la galería (galeria.html), necesitarás leer este parámetro y aplicar el filtro
+      }
+
+
+      const handleChat = () => {
+          userMessage = chatInput.value.trim(); // Obtener el mensaje del usuario y eliminar espacios extra
+          if (!userMessage) return; // Si el mensaje está vacío, no hacer nada
+
+          // Limpiar el textarea de entrada y establecer su altura por defecto
+          chatInput.value = "";
+          chatInput.style.height = `${initialInputHeight}px`; // Usamos initialInputHeight
+
+          // Añadir el mensaje del usuario al chatbox
+          chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+          chatbox.scrollTo(0, chatbox.scrollHeight); // Desplazar al final
+
+          // Mostrar mensaje "Pensando..." mientras se espera la respuesta
+          const incomingChatLi = createChatLi("Pensando...", "incoming");
+          chatbox.appendChild(incomingChatLi);
+          chatbox.scrollTo(0, chatbox.scrollHeight); // Desplazar al final
+
+          // Simular indicador de escritura (opcional, depende de tu CSS)
+          // incomingChatLi.classList.add("typing"); // Si tienes un estilo para indicador de escritura
+
+          // Generar la respuesta del chatbot después de un corto retraso (simulando procesamiento)
+          setTimeout(() => {
+              // incomingChatLi.classList.remove("typing"); // Eliminar indicador de escritura
+              generateResponse(incomingChatLi); // Generar y mostrar la respuesta del bot
+          }, 600); // Retraso de 600 milisegundos (ajustable)
+      }
+
+      // Event listener para el botón de enviar
+      sendBtn.addEventListener("click", handleChat); // Usamos sendBtn
+
+      // Event listener para presionar la tecla Enter en el textarea
+      chatInput.addEventListener("keydown", (e) => {
+          // Si se presiona la tecla Enter y la entrada no está vacía y la tecla Shift no está presionada
+          if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) { // Añadido condición de ancho de ventana
+              e.preventDefault(); // Prevenir el comportamiento por defecto (nueva línea)
+              handleChat(); // Manejar el envío del chat
+          }
+          // Ajustar la altura del textarea automáticamente mientras se escribe
+          chatInput.style.height = `${initialInputHeight}px`;
+          chatInput.style.height = `${chatInput.scrollHeight}px`;
+      });
+
+      // Event listener para el botón que abre/cierra el chatbot
+      const body = document.body; // Asegúrate de que body esté accesible
+
+      chatbotToggler.addEventListener("click", () => {
+          body.classList.toggle("show-chatbot");
+      });
+
+      // Event listener para el botón de cerrar el chatbot
+      closeBtn.addEventListener("click", () => {
+          body.classList.remove("show-chatbot");
+      });
+
+    </script>
 </body>
 </html>
