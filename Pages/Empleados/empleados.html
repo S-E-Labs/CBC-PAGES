@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CBC - Empleado</title>
+  <title>Dashboard - Empleado</title>
   <link rel="icon" href="../../Assests/Img/favicon.png" type="image/png"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
@@ -460,6 +460,21 @@
       font-size: 0.9rem;
     }
 
+    /* Content Sections Styling */
+    .content-section {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+    }
+
+    .content-section h2 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: var(--dark-color);
+    }
+
     /* Responsive */
     @media (max-width: 992px) {
       .sidebar {
@@ -514,7 +529,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-header">
-      <h3>CNC - DECORACIÓN</h3>
+      <h3>SanitarioPlus</h3>
     </div>
 
     <div class="sidebar-menu">
@@ -667,24 +682,24 @@
     </div>
 
     <!-- Contenido de otras secciones (ejemplos, inicialmente ocultos) -->
-    <div id="content-reportes" style="display: none;">
+    <div id="content-reportes" class="content-section" style="display: none;">
       <h2>Sección de Reportes</h2>
-      <p>Aquí iría el contenido de los reportes.</p>
+      <p>Cargando reportes...</p>
     </div>
 
-    <div id="content-alertas" style="display: none;">
+    <div id="content-alertas" class="content-section" style="display: none;">
       <h2>Sección de Alertas</h2>
-      <p>Aquí iría el contenido de las alertas.</p>
+      <p>Cargando alertas...</p>
     </div>
 
-    <div id="content-historial" style="display: none;">
+    <div id="content-historial" class="content-section" style="display: none;">
       <h2>Sección de Historial</h2>
-      <p>Aquí iría el contenido del historial.</p>
+      <p>Cargando historial...</p>
     </div>
 
-    <div id="content-configuracion" style="display: none;">
+    <div id="content-configuracion" class="content-section" style="display: none;">
       <h2>Sección de Configuración</h2>
-      <p>Aquí iría el contenido de la configuración.</p>
+      <p>Cargando configuración...</p>
     </div>
 
   </div>
@@ -714,6 +729,7 @@
     });
 
     function getInitials(name) {
+      if (!name) return '';
       return name.split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
@@ -739,14 +755,26 @@
 
     function mostrarProductos(filtrados = null) {
       const tbody = document.querySelector("#tablaProductos tbody");
+      if (!tbody) {
+          console.error("Tabla de productos no encontrada.");
+          return;
+      }
       tbody.innerHTML = "";
 
       let productosAMostrar = filtrados || allProducts;
-      const categoria = document.getElementById("categoria").value.toLowerCase();
+      const categoriaSelect = document.getElementById("categoria");
+      const categoria = categoriaSelect ? categoriaSelect.value.toLowerCase() : '';
+
 
       if (categoria) {
         productosAMostrar = productosAMostrar.filter(p => p.categoria === categoria);
       }
+
+      if (productosAMostrar.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No hay productos para mostrar.</td></tr>';
+          return;
+      }
+
 
       productosAMostrar.forEach((prod) => {
         const tr = document.createElement("tr");
@@ -777,11 +805,11 @@
           </td>
           <td>${prod.codigo}</td>
           <td>${prod.nombre}</td>
-          <td>$${prod.precio}</td>
+          <td>$${prod.precio ? prod.precio.toLocaleString() : 'N/A'}</td>
           <td>
             <div class="stock-indicator">
               <div class="stock-bar">
-                <div class="stock-level ${stockClass}"></div>
+                <div class="stock-level ${stockClass}" style="width: ${Math.min(100, prod.cantidad * 5)}%;"></div> <!-- Ejemplo visual, ajustar según el rango de stock -->
               </div>
               <span class="stock-value">${prod.cantidad} (${stockText})</span>
             </div>
@@ -811,11 +839,14 @@
       const lowStockCount = allProducts.filter(p => p.cantidad <= 5).length;
       const lowStockAlert = document.getElementById('lowStockAlert');
 
-      if (lowStockCount > 0) {
-        lowStockAlert.style.display = 'flex';
-        document.getElementById('alertCount').textContent = lowStockCount;
-      } else {
-        lowStockAlert.style.display = 'none';
+      if (lowStockAlert) {
+          if (lowStockCount > 0) {
+            lowStockAlert.style.display = 'flex';
+            const alertCountSpan = document.getElementById('alertCount');
+            if(alertCountSpan) alertCountSpan.textContent = lowStockCount;
+          } else {
+            lowStockAlert.style.display = 'none';
+          }
       }
     }
 
@@ -825,30 +856,37 @@
     }
 
     function filtrarProductos() {
-      const texto = document.getElementById("buscar").value.toLowerCase();
+      const buscarInput = document.getElementById("buscar");
+      const texto = buscarInput ? buscarInput.value.toLowerCase() : '';
       const filtrados = allProducts.filter(p =>
-        p.nombre.toLowerCase().includes(texto) ||
-        p.codigo.toLowerCase().includes(texto)
+        (p.nombre && p.nombre.toLowerCase().includes(texto)) ||
+        (p.codigo && p.codigo.toLowerCase().includes(texto))
       );
       mostrarProductos(filtrados);
     }
 
     function actualizarEstadisticas() {
       // Productos totales
-      document.getElementById('totalProducts').textContent = allProducts.length;
+      const totalProductsSpan = document.getElementById('totalProducts');
+      if(totalProductsSpan) totalProductsSpan.textContent = allProducts.length;
 
       // Productos con stock bajo
       const lowStock = allProducts.filter(p => p.cantidad <= 5).length;
-      document.getElementById('lowStockProducts').textContent = lowStock;
+      const lowStockProductsSpan = document.getElementById('lowStockProducts');
+      if(lowStockProductsSpan) lowStockProductsSpan.textContent = lowStock;
+
 
       // Valor total del inventario
-      const totalValue = allProducts.reduce((sum, p) => sum + (p.precio * p.cantidad), 0);
-      document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString()}`;
+      const totalValue = allProducts.reduce((sum, p) => sum + ( (p.precio || 0) * (p.cantidad || 0) ), 0);
+      const totalValueSpan = document.getElementById('totalValue');
+      if(totalValueSpan) totalValueSpan.textContent = `$${totalValue.toLocaleString()}`;
     }
 
     function editarProducto(categoria, codigo) {
       // En una implementación real, esto abriría un modal o form para editar
       alert(`Editar producto: ${codigo} de la categoría ${categoria}`);
+      console.log(`Producto a editar: Categoría - ${categoria}, Código - ${codigo}`);
+      // Aquí puedes añadir la lógica para cargar los datos del producto en un formulario de edición.
     }
 
     function cerrarSesion() {
@@ -856,7 +894,7 @@
       window.location.href = "../../Pages/index.html";
     }
 
-    // --- Nuevas funciones para la navegación del menú ---
+    // --- Funciones para la navegación del menú ---
 
     const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
     const pageTitle = document.getElementById('pageTitle');
@@ -875,7 +913,10 @@
       menuItems.forEach(item => {
         item.classList.remove('active');
       });
-      document.getElementById(menuId).classList.add('active');
+      const activeItem = document.getElementById(menuId);
+      if(activeItem) {
+          activeItem.classList.add('active');
+      }
     }
 
     function mostrarContenido(seccionId) {
@@ -884,17 +925,33 @@
         contentDiv.style.display = 'none';
       });
 
-      // Mostrar la sección correspondiente
+      // Mostrar la sección correspondiente y cargar su contenido si es necesario
       const targetContent = document.getElementById(`content-${seccionId}`);
       if (targetContent) {
         targetContent.style.display = 'block';
-        // Si es la sección de inventario, asegúrate de que la tabla esté visible
-        if (seccionId === 'inventario') {
+
+        // Cargar contenido específico para cada sección
+        switch (seccionId) {
+          case 'inventario':
             mostrarProductos(); // Vuelve a renderizar la tabla de inventario
+            actualizarEstadisticas(); // Asegurar que las estadísticas se actualicen al volver a inventario
+            break;
+          case 'reportes':
+            cargarReportes();
+            break;
+          case 'alertas':
+            cargarAlertas();
+            break;
+          case 'historial':
+            cargarHistorial();
+            break;
+          case 'configuracion':
+            cargarConfiguracion();
+            break;
         }
       } else {
         console.warn(`No se encontró la sección de contenido para el ID: ${seccionId}`);
-        // Opcional: Mostrar un mensaje de "Contenido no disponible"
+        // Opcional: Mostrar un mensaje de "Contenido no disponible" en una sección genérica.
       }
     }
 
@@ -928,9 +985,219 @@
           descripcion = '';
       }
 
-      pageTitle.textContent = titulo;
-      pageDescription.textContent = descripcion;
+      if(pageTitle) pageTitle.textContent = titulo;
+      if(pageDescription) pageDescription.textContent = descripcion;
     }
+
+    // --- Funciones para cargar el contenido de cada sección ---
+
+    function cargarReportes() {
+        const reportesContentDiv = document.getElementById('content-reportes');
+        if (!reportesContentDiv) return;
+        reportesContentDiv.innerHTML = ''; // Limpiar contenido anterior
+
+        // Calcular algunas métricas de ejemplo
+        const totalProductos = allProducts.length;
+        const productosBajoStock = allProducts.filter(p => p.cantidad <= 5).length;
+        const valorTotalInventario = allProducts.reduce((sum, p) => sum + ( (p.precio || 0) * (p.cantidad || 0) ), 0).toLocaleString();
+
+        // Contar productos por categoría
+        const productosPorCategoria = allProducts.reduce((acc, p) => {
+            acc[p.categoria] = (acc[p.categoria] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Generar contenido HTML básico para el reporte
+        let reportesHTML = `
+            <h2>Reporte General de Inventario</h2>
+            <p>Fecha del reporte: ${new Date().toLocaleDateString()}</p>
+            <br>
+            <h3>Métricas Clave:</h3>
+            <ul>
+                <li><strong>Total de Productos:</strong> ${totalProductos}</li>
+                <li><strong>Productos con Stock Bajo:</strong> ${productosBajoStock}</li>
+                <li><strong>Valor Total Estimado del Inventario:</strong> $${valorTotalInventario}</li>
+            </ul>
+            <br>
+            <h3>Productos por Categoría:</h3>
+            <ul>
+        `;
+
+        for (const categoria in productosPorCategoria) {
+            reportesHTML += `<li><strong>${categoria.charAt(0).toUpperCase() + categoria.slice(1)}:</strong> ${productosPorCategoria[categoria]} productos</li>`;
+        }
+
+        reportesHTML += `
+            </ul>
+            <br>
+            <p>Este es un reporte básico. Puedes añadir gráficos, tablas detalladas, filtros, etc.</p>
+        `;
+
+        reportesContentDiv.innerHTML = reportesHTML;
+    }
+
+    function cargarAlertas() {
+        const alertasContentDiv = document.getElementById('content-alertas');
+        if (!alertasContentDiv) return;
+        alertasContentDiv.innerHTML = ''; // Limpiar contenido anterior
+
+        // Simular carga de alertas (por ahora, solo la de stock bajo)
+        const productosBajoStock = allProducts.filter(p => p.cantidad <= 5);
+
+        let alertasHTML = `
+            <h2>Alertas Activas</h2>
+        `;
+
+        if (productosBajoStock.length > 0) {
+            alertasHTML += `
+                <div class="low-stock-alert">
+                    <div class="alert-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="alert-content">
+                        <h4>¡Stock bajo!</h4>
+                        <p>Hay ${productosBajoStock.length} productos con stock igual o inferior a 5 unidades.</p>
+                        <ul>
+            `;
+            productosBajoStock.slice(0, 5).forEach(p => { // Mostrar los primeros 5 en la lista
+                alertasHTML += `<li>${p.nombre} (Código: ${p.codigo}, Stock: ${p.cantidad})</li>`;
+            });
+             if (productosBajoStock.length > 5) {
+                 alertasHTML += `<li>y ${productosBajoStock.length - 5} más...</li>`;
+             }
+             alertasHTML += `
+                        </ul>
+                    </div>
+                </div>
+            `;
+        } else {
+            alertasHTML += `<p>No hay alertas activas en este momento.</p>`;
+        }
+
+        // Aquí podrías añadir lógica para otros tipos de alertas si existieran.
+
+        alertasContentDiv.innerHTML += alertasHTML;
+    }
+
+    function cargarHistorial() {
+        const historialContentDiv = document.getElementById('content-historial');
+         if (!historialContentDiv) return;
+        historialContentDiv.innerHTML = ''; // Limpiar contenido anterior
+
+        // Simular datos de historial
+        const historialSimulado = [
+            { fecha: '2023-10-26', hora: '10:00', actividad: 'Inicio de sesión', usuario: 'John Doe' },
+            { fecha: '2023-10-26', hora: '10:15', actividad: 'Actualización de stock', detalles: 'Producto #XYZ123 - Stock actualizado de 10 a 15', usuario: 'John Doe' },
+            { fecha: '2023-10-26', hora: '11:00', actividad: 'Comentario añadido', detalles: 'Producto #ABC456 - "Revisar calidad"', usuario: 'John Doe' },
+            { fecha: '2023-10-25', hora: '17:30', actividad: 'Cierre de sesión', usuario: 'John Doe' },
+            { fecha: '2023-10-25', hora: '09:00', actividad: 'Inicio de sesión', usuario: 'John Doe' }
+        ];
+
+        let historialHTML = `
+            <h2>Historial de Actividad</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Actividad</th>
+                        <th>Detalles</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        if (historialSimulado.length > 0) {
+            historialSimulado.forEach(item => {
+                historialHTML += `
+                    <tr>
+                        <td>${item.fecha}</td>
+                        <td>${item.hora}</td>
+                        <td>${item.actividad}</td>
+                        <td>${item.detalles || ''}</td>
+                        <td>${item.usuario}</td>
+                    </tr>
+                `;
+            });
+        } else {
+             historialHTML += `<tr><td colspan="5" style="text-align:center;">No hay historial reciente.</td></tr>`;
+        }
+
+
+        historialHTML += `
+                </tbody>
+            </table>
+            <p style="margin-top: 20px;">Este es un historial simulado. En una aplicación real, estos datos vendrían de una base de datos o registro de eventos.</p>
+        `;
+
+        historialContentDiv.innerHTML = historialHTML;
+
+        // Aplicar estilos básicos a la tabla de historial para que se vea bien
+         const historialTable = historialContentDiv.querySelector('table');
+        if (historialTable) {
+            historialTable.style.width = '100%';
+            historialTable.style.borderCollapse = 'collapse';
+            historialTable.style.marginTop = '15px';
+
+            const ths = historialTable.querySelectorAll('th');
+            ths.forEach(th => {
+                 th.style.backgroundColor = '#f8f9fa';
+                 th.style.color = 'var(--dark-color)';
+                 th.style.fontWeight = '600';
+                 th.style.padding = '12px 15px';
+                 th.style.textAlign = 'left';
+                 th.style.borderBottom = '2px solid #eee';
+            });
+
+             const tds = historialTable.querySelectorAll('td');
+             tds.forEach(td => {
+                 td.style.padding = '12px 15px';
+                 td.style.borderBottom = '1px solid #eee';
+                 td.style.verticalAlign = 'top'; // Alineación superior para detalles más largos
+             });
+
+             const trs = historialTable.querySelectorAll('tbody tr');
+             trs.forEach(tr => {
+                 tr.addEventListener('mouseover', () => {
+                     tr.style.backgroundColor = '#f8f9fa';
+                 });
+                  tr.addEventListener('mouseout', () => {
+                     tr.style.backgroundColor = ''; // Restablecer al quitar el mouse
+                 });
+             });
+        }
+    }
+
+    function cargarConfiguracion() {
+         const configuracionContentDiv = document.getElementById('content-configuracion');
+          if (!configuracionContentDiv) return;
+         configuracionContentDiv.innerHTML = ''; // Limpiar contenido anterior
+
+         const usuarioActual = sessionStorage.getItem('usuario') || 'Usuario Empleado';
+         const rolActual = sessionStorage.getItem('rol') || 'Empleado';
+
+         let configuracionHTML = `
+             <h2>Configuración de Cuenta</h2>
+             <p>Aquí puedes gestionar la configuración de tu perfil.</p>
+             <br>
+             <h3>Información del Usuario:</h3>
+             <p><strong>Nombre de Usuario:</strong> ${usuarioActual}</p>
+             <p><strong>Rol:</strong> ${rolActual}</p>
+             <br>
+             <h3>Opciones Generales:</h3>
+             <ul>
+                 <li><a href="#" onclick="alert('Funcionalidad no implementada: Cambiar contraseña'); return false;">Cambiar contraseña</a></li>
+                 <li><a href="#" onclick="alert('Funcionalidad no implementada: Actualizar perfil'); return false;">Actualizar perfil</a></li>
+                 <li><a href="#" onclick="alert('Funcionalidad no implementada: Notificaciones'); return false;">Configurar notificaciones</a></li>
+             </ul>
+             <br>
+             <p>Nota: Estas opciones son ejemplos y no tienen funcionalidad real implementada aún.</p>
+         `;
+
+         configuracionContentDiv.innerHTML = configuracionHTML;
+    }
+
 
   </script>
 </body>
