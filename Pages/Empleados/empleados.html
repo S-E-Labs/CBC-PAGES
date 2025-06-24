@@ -475,6 +475,164 @@
         color: var(--dark-color);
     }
 
+    /* Estilos para tablas generales (usadas en reportes e historial) */
+    .content-section table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+        border-radius: 8px; /* Bordes redondeados para la tabla */
+        overflow: hidden; /* Para que los bordes redondeados se apliquen correctamente */
+    }
+
+    .content-section th,
+    .content-section td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    .content-section th {
+        background-color: #f8f9fa;
+        color: var(--dark-color);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+    .content-section tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .content-section td {
+         vertical-align: top;
+    }
+
+
+    /* Estilos específicos para Alertas */
+    .alert-item {
+        background-color: #fff;
+        border-left: 4px solid var(--warning-color); /* Color por defecto */
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 0 6px 6px 0;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .alert-item.info { border-color: var(--primary-color); }
+    .alert-item.success { border-color: var(--success-color); }
+    .alert-item.danger { border-color: var(--danger-color); }
+    .alert-item.warning { border-color: var(--warning-color); }
+
+
+    .alert-item .alert-icon {
+        margin-right: 15px;
+        font-size: 1.8rem;
+        color: var(--warning-color); /* Color por defecto */
+    }
+    .alert-item.info .alert-icon { color: var(--primary-color); }
+    .alert-item.success .alert-icon { color: var(--success-color); }
+    .alert-item.danger .alert-icon { color: var(--danger-color); }
+
+
+    .alert-item .alert-content {
+        flex-grow: 1;
+    }
+
+    .alert-item .alert-content h4 {
+        color: var(--dark-color);
+        margin-top: 0;
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+    }
+
+    .alert-item .alert-content p {
+        color: var(--gray-color);
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+     .alert-item .alert-content ul {
+        margin: 5px 0 0 20px;
+        padding: 0;
+        font-size: 0.9rem;
+        color: var(--gray-color);
+    }
+
+    .alert-item .alert-content li {
+        margin-bottom: 3px;
+    }
+
+
+    /* Estilos para Formularios en Configuración */
+    .config-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: var(--dark-color);
+        font-size: 0.9rem;
+    }
+
+    .config-form input[type="text"],
+    .config-form input[type="email"],
+    .config-form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+    }
+
+    .config-form button {
+        padding: 10px 20px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s;
+    }
+
+    .config-form button:hover {
+        background-color: var(--secondary-color);
+    }
+
+    .config-section h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: var(--dark-color);
+    }
+
+    .config-section ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    .config-section ul li {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        border: 1px solid #eee;
+    }
+
+    .config-section ul li a {
+        text-decoration: none;
+        color: var(--primary-color);
+        font-weight: 600;
+        display: block;
+    }
+
+    .config-section ul li a:hover {
+        text-decoration: underline;
+    }
+
+
     /* Responsive */
     @media (max-width: 992px) {
       .sidebar {
@@ -681,25 +839,21 @@
       </div>
     </div>
 
-    <!-- Contenido de otras secciones (ejemplos, inicialmente ocultos) -->
+    <!-- Contenido de otras secciones -->
     <div id="content-reportes" class="content-section" style="display: none;">
-      <h2>Sección de Reportes</h2>
-      <p>Cargando reportes...</p>
+      <!-- El contenido se carga dinámicamente por JavaScript -->
     </div>
 
     <div id="content-alertas" class="content-section" style="display: none;">
-      <h2>Sección de Alertas</h2>
-      <p>Cargando alertas...</p>
+       <!-- El contenido se carga dinámicamente por JavaScript -->
     </div>
 
     <div id="content-historial" class="content-section" style="display: none;">
-      <h2>Sección de Historial</h2>
-      <p>Cargando historial...</p>
+      <!-- El contenido se carga dinámicamente por JavaScript -->
     </div>
 
     <div id="content-configuracion" class="content-section" style="display: none;">
-      <h2>Sección de Configuración</h2>
-      <p>Cargando configuración...</p>
+      <!-- El contenido se carga dinámicamente por JavaScript -->
     </div>
 
   </div>
@@ -989,7 +1143,7 @@
       if(pageDescription) pageDescription.textContent = descripcion;
     }
 
-    // --- Funciones para cargar el contenido de cada sección ---
+    // --- Funciones para cargar el contenido de cada sección (IMPLEMENTACIÓN MEJORADA CON DATOS SIMULADOS) ---
 
     function cargarReportes() {
         const reportesContentDiv = document.getElementById('content-reportes');
@@ -999,7 +1153,16 @@
         // Calcular algunas métricas de ejemplo
         const totalProductos = allProducts.length;
         const productosBajoStock = allProducts.filter(p => p.cantidad <= 5).length;
-        const valorTotalInventario = allProducts.reduce((sum, p) => sum + ( (p.precio || 0) * (p.cantidad || 0) ), 0).toLocaleString();
+        const valorTotalInventario = allProducts.reduce((sum, p) => sum + ( (p.precio || 0) * (p.cantidad || 0) ), 0);
+
+         // Simular datos de "ventas" para el reporte
+         const ventasSimuladas = [
+             { producto: 'Lavamanos Moderno', codigo: 'LAM789', cantidadVendida: 25, totalVenta: 25 * 150 }, // Usar precio simulado si no está en allProducts
+             { producto: 'Sanitario Compacto', codigo: 'SAC101', cantidadVendida: 18, totalVenta: 18 * 200 },
+             { producto: 'Grifo Monomando', codigo: 'GRM202', cantidadVendida: 40, totalVenta: 40 * 80 },
+             { producto: 'Espejo con Luz LED', codigo: 'GL4', cantidadVendida: 12, totalVenta: 12 * 199.99 },
+         ];
+
 
         // Contar productos por categoría
         const productosPorCategoria = allProducts.reduce((acc, p) => {
@@ -1007,30 +1170,98 @@
             return acc;
         }, {});
 
-        // Generar contenido HTML básico para el reporte
         let reportesHTML = `
             <h2>Reporte General de Inventario</h2>
-            <p>Fecha del reporte: ${new Date().toLocaleDateString()}</p>
+            <p>Fecha del reporte: ${new Date().toLocaleDateString()} | Hora: ${new Date().toLocaleTimeString()}</p>
             <br>
-            <h3>Métricas Clave:</h3>
-            <ul>
-                <li><strong>Total de Productos:</strong> ${totalProductos}</li>
-                <li><strong>Productos con Stock Bajo:</strong> ${productosBajoStock}</li>
-                <li><strong>Valor Total Estimado del Inventario:</strong> $${valorTotalInventario}</li>
-            </ul>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                  <div class="stat-card-header">
+                    <div class="stat-card-title">Total Productos</div>
+                    <div class="stat-card-icon blue"><i class="fas fa-boxes"></i></div>
+                  </div>
+                  <div class="stat-card-value">${totalProductos}</div>
+                </div>
+
+                <div class="stat-card">
+                  <div class="stat-card-header">
+                    <div class="stat-card-title">Stock Bajo</div>
+                    <div class="stat-card-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+                  </div>
+                  <div class="stat-card-value">${productosBajoStock}</div>
+                </div>
+
+                 <div class="stat-card">
+                  <div class="stat-card-header">
+                    <div class="stat-card-title">Valor Inventario</div>
+                    <div class="stat-card-icon red"><i class="fas fa-dollar-sign"></i></div>
+                  </div>
+                  <div class="stat-card-value">$${valorTotalInventario.toLocaleString()}</div>
+                </div>
+            </div>
+
             <br>
-            <h3>Productos por Categoría:</h3>
-            <ul>
+            <h3>Distribución por Categoría:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Cantidad de Productos</th>
+                    </tr>
+                </thead>
+                <tbody>
         `;
 
         for (const categoria in productosPorCategoria) {
-            reportesHTML += `<li><strong>${categoria.charAt(0).toUpperCase() + categoria.slice(1)}:</strong> ${productosPorCategoria[categoria]} productos</li>`;
+            reportesHTML += `
+                <tr>
+                    <td>${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</td>
+                    <td>${productosPorCategoria[categoria]}</td>
+                </tr>
+            `;
         }
 
         reportesHTML += `
-            </ul>
+                </tbody>
+            </table>
+
             <br>
-            <p>Este es un reporte básico. Puedes añadir gráficos, tablas detalladas, filtros, etc.</p>
+            <h3>Productos más "Vendidos" (Simulado):</h3>
+             <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Código</th>
+                        <th>Cantidad Vendida</th>
+                        <th>Total Venta</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        if (ventasSimuladas.length > 0) {
+             ventasSimuladas.forEach(venta => {
+                 reportesHTML += `
+                    <tr>
+                        <td>${venta.producto}</td>
+                        <td>${venta.codigo}</td>
+                        <td>${venta.cantidadVendida}</td>
+                        <td>$${venta.totalVenta.toLocaleString()}</td>
+                    </tr>
+                 `;
+             });
+        } else {
+             reportesHTML += `<tr><td colspan="4" style="text-align:center;">No hay datos de ventas simuladas.</td></tr>`;
+        }
+
+
+        reportesHTML += `
+                </tbody>
+            </table>
+
+            <br>
+            <p>Nota: Estos reportes utilizan datos de inventario actuales y datos de ventas simulados. Para reportes reales, necesitarías conectar a una base de datos de ventas.</p>
         `;
 
         reportesContentDiv.innerHTML = reportesHTML;
@@ -1041,40 +1272,60 @@
         if (!alertasContentDiv) return;
         alertasContentDiv.innerHTML = ''; // Limpiar contenido anterior
 
-        // Simular carga de alertas (por ahora, solo la de stock bajo)
         const productosBajoStock = allProducts.filter(p => p.cantidad <= 5);
+
+        // Simular otros tipos de alertas
+        const otrasAlertasSimuladas = [
+             { type: 'info', icon: 'fas fa-comment-dots', title: 'Nuevo Comentario', message: 'Se añadió un comentario a "Lavamanos Pequeño" (LAP789).', details: 'Revisar comentario sobre instalación.' },
+             { type: 'success', icon: 'fas fa-check-circle', title: 'Reabastecimiento Completado', message: 'El pedido de "Sanitario Económico" (SAE456) ha llegado.', details: 'Stock actualizado.' },
+             { type: 'danger', icon: 'fas fa-times-circle', title: 'Problema de Suministro', message: 'Retraso en la entrega de "Grifo de Cocina" (GRC303).', details: 'Contactar proveedor para ETA.' },
+        ];
+
 
         let alertasHTML = `
             <h2>Alertas Activas</h2>
         `;
 
-        if (productosBajoStock.length > 0) {
-            alertasHTML += `
-                <div class="low-stock-alert">
-                    <div class="alert-icon">
-                        <i class="fas fa-exclamation-circle"></i>
+         if (productosBajoStock.length === 0 && otrasAlertasSimuladas.length === 0) {
+             alertasHTML += `<p>No hay alertas activas en este momento.</p>`;
+         } else {
+             // Alerta de stock bajo (si aplica)
+             if (productosBajoStock.length > 0) {
+                 alertasHTML += `
+                    <div class="alert-item warning">
+                        <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="alert-content">
+                            <h4>¡Stock bajo!</h4>
+                            <p>Hay ${productosBajoStock.length} productos con stock igual o inferior a 5 unidades:</p>
+                            <ul>
+                `;
+                productosBajoStock.slice(0, 5).forEach(p => { // Mostrar los primeros 5 en la lista
+                    alertasHTML += `<li>${p.nombre} (Código: ${p.codigo}, Stock: ${p.cantidad})</li>`;
+                });
+                 if (productosBajoStock.length > 5) {
+                     alertasHTML += `<li>y ${productosBajoStock.length - 5} más... <a href="#">Ver todos</a></li>`; // Enlace de ejemplo
+                 }
+                 alertasHTML += `
+                            </ul>
+                        </div>
                     </div>
-                    <div class="alert-content">
-                        <h4>¡Stock bajo!</h4>
-                        <p>Hay ${productosBajoStock.length} productos con stock igual o inferior a 5 unidades.</p>
-                        <ul>
-            `;
-            productosBajoStock.slice(0, 5).forEach(p => { // Mostrar los primeros 5 en la lista
-                alertasHTML += `<li>${p.nombre} (Código: ${p.codigo}, Stock: ${p.cantidad})</li>`;
-            });
-             if (productosBajoStock.length > 5) {
-                 alertasHTML += `<li>y ${productosBajoStock.length - 5} más...</li>`;
-             }
-             alertasHTML += `
-                        </ul>
-                    </div>
-                </div>
-            `;
-        } else {
-            alertasHTML += `<p>No hay alertas activas en este momento.</p>`;
-        }
+                `;
+            }
 
-        // Aquí podrías añadir lógica para otros tipos de alertas si existieran.
+            // Otras alertas simuladas
+            otrasAlertasSimuladas.forEach(alerta => {
+                 alertasHTML += `
+                     <div class="alert-item ${alerta.type}">
+                         <div class="alert-icon"><i class="${alerta.icon}"></i></div>
+                         <div class="alert-content">
+                             <h4>${alerta.title}</h4>
+                             <p>${alerta.message}</p>
+                             ${alerta.details ? `<p><small style="color: var(--gray-color);">${alerta.details}</small></p>` : ''}
+                         </div>
+                     </div>
+                 `;
+            });
+         }
 
         alertasContentDiv.innerHTML += alertasHTML;
     }
@@ -1084,24 +1335,26 @@
          if (!historialContentDiv) return;
         historialContentDiv.innerHTML = ''; // Limpiar contenido anterior
 
-        // Simular datos de historial
+        // Simular datos de historial más detallados
         const historialSimulado = [
-            { fecha: '2023-10-26', hora: '10:00', actividad: 'Inicio de sesión', usuario: 'John Doe' },
-            { fecha: '2023-10-26', hora: '10:15', actividad: 'Actualización de stock', detalles: 'Producto #XYZ123 - Stock actualizado de 10 a 15', usuario: 'John Doe' },
-            { fecha: '2023-10-26', hora: '11:00', actividad: 'Comentario añadido', detalles: 'Producto #ABC456 - "Revisar calidad"', usuario: 'John Doe' },
-            { fecha: '2023-10-25', hora: '17:30', actividad: 'Cierre de sesión', usuario: 'John Doe' },
-            { fecha: '2023-10-25', hora: '09:00', actividad: 'Inicio de sesión', usuario: 'John Doe' }
+            { fecha: '2023-10-26', hora: '10:00', tipo: 'Login', actividad: 'Inicio de sesión exitoso.', usuario: 'John Doe' },
+            { fecha: '2023-10-26', hora: '10:15', tipo: 'Inventario', actividad: 'Stock actualizado', detalles: 'Producto #XYZ123 (Lavamanos) - Cantidad: 10 -> 15', usuario: 'John Doe' },
+            { fecha: '2023-10-26', hora: '11:00', tipo: 'Comentario', actividad: 'Comentario añadido', detalles: 'Producto #ABC456 (Sanitario) - Comentario: "Revisar calidad de empaque".', usuario: 'John Doe' },
+             { fecha: '2023-10-26', hora: '11:30', tipo: 'Inventario', actividad: 'Stock actualizado', detalles: 'Producto #GL4 (Espejo) - Cantidad: 5 -> 4 (Venta)', usuario: 'John Doe' },
+            { fecha: '2023-10-26', hora: '14:00', tipo: 'Reporte', actividad: 'Reporte de Inventario Generado', usuario: 'John Doe' },
+            { fecha: '2023-10-25', hora: '17:30', tipo: 'Logout', actividad: 'Cierre de sesión.', usuario: 'John Doe' },
+            { fecha: '2023-10-25', hora: '09:00', tipo: 'Login', actividad: 'Inicio de sesión exitoso.', usuario: 'John Doe' }
         ];
 
         let historialHTML = `
-            <h2>Historial de Actividad</h2>
+            <h2>Historial de Actividad Reciente</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Fecha</th>
                         <th>Hora</th>
+                        <th>Tipo</th>
                         <th>Actividad</th>
-                        <th>Detalles</th>
                         <th>Usuario</th>
                     </tr>
                 </thead>
@@ -1114,8 +1367,11 @@
                     <tr>
                         <td>${item.fecha}</td>
                         <td>${item.hora}</td>
-                        <td>${item.actividad}</td>
-                        <td>${item.detalles || ''}</td>
+                        <td>${item.tipo}</td>
+                        <td>
+                            ${item.actividad}
+                            ${item.detalles ? `<br><small style="color: var(--gray-color);">${item.detalles}</small>` : ''}
+                        </td>
                         <td>${item.usuario}</td>
                     </tr>
                 `;
@@ -1128,45 +1384,12 @@
         historialHTML += `
                 </tbody>
             </table>
-            <p style="margin-top: 20px;">Este es un historial simulado. En una aplicación real, estos datos vendrían de una base de datos o registro de eventos.</p>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--gray-color);">Este historial es simulado y muestra ejemplos de actividades.</p>
         `;
 
         historialContentDiv.innerHTML = historialHTML;
 
-        // Aplicar estilos básicos a la tabla de historial para que se vea bien
-         const historialTable = historialContentDiv.querySelector('table');
-        if (historialTable) {
-            historialTable.style.width = '100%';
-            historialTable.style.borderCollapse = 'collapse';
-            historialTable.style.marginTop = '15px';
-
-            const ths = historialTable.querySelectorAll('th');
-            ths.forEach(th => {
-                 th.style.backgroundColor = '#f8f9fa';
-                 th.style.color = 'var(--dark-color)';
-                 th.style.fontWeight = '600';
-                 th.style.padding = '12px 15px';
-                 th.style.textAlign = 'left';
-                 th.style.borderBottom = '2px solid #eee';
-            });
-
-             const tds = historialTable.querySelectorAll('td');
-             tds.forEach(td => {
-                 td.style.padding = '12px 15px';
-                 td.style.borderBottom = '1px solid #eee';
-                 td.style.verticalAlign = 'top'; // Alineación superior para detalles más largos
-             });
-
-             const trs = historialTable.querySelectorAll('tbody tr');
-             trs.forEach(tr => {
-                 tr.addEventListener('mouseover', () => {
-                     tr.style.backgroundColor = '#f8f9fa';
-                 });
-                  tr.addEventListener('mouseout', () => {
-                     tr.style.backgroundColor = ''; // Restablecer al quitar el mouse
-                 });
-             });
-        }
+        // Los estilos para la tabla de historial ya deberían aplicarse gracias a los estilos generales de .content-section table.
     }
 
     function cargarConfiguracion() {
@@ -1176,23 +1399,65 @@
 
          const usuarioActual = sessionStorage.getItem('usuario') || 'Usuario Empleado';
          const rolActual = sessionStorage.getItem('rol') || 'Empleado';
+         const avatarLetras = getInitials(usuarioActual);
+
 
          let configuracionHTML = `
              <h2>Configuración de Cuenta</h2>
-             <p>Aquí puedes gestionar la configuración de tu perfil.</p>
+             <p>Gestiona la información de tu perfil y preferencias.</p>
              <br>
-             <h3>Información del Usuario:</h3>
-             <p><strong>Nombre de Usuario:</strong> ${usuarioActual}</p>
-             <p><strong>Rol:</strong> ${rolActual}</p>
-             <br>
-             <h3>Opciones Generales:</h3>
-             <ul>
-                 <li><a href="#" onclick="alert('Funcionalidad no implementada: Cambiar contraseña'); return false;">Cambiar contraseña</a></li>
-                 <li><a href="#" onclick="alert('Funcionalidad no implementada: Actualizar perfil'); return false;">Actualizar perfil</a></li>
-                 <li><a href="#" onclick="alert('Funcionalidad no implementada: Notificaciones'); return false;">Configurar notificaciones</a></li>
-             </ul>
-             <br>
-             <p>Nota: Estas opciones son ejemplos y no tienen funcionalidad real implementada aún.</p>
+
+             <div class="config-section">
+                <h3>Información del Perfil</h3>
+                 <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                     <div class="user-avatar" style="width: 60px; height: 60px; font-size: 1.5rem; margin-right: 20px;">${avatarLetras}</div>
+                     <div>
+                         <p><strong>Nombre de Usuario:</strong> ${usuarioActual}</p>
+                         <p><strong>Rol:</strong> ${rolActual}</p>
+                         <p><strong>Estado:</strong> Activo</p> <!-- Simulado -->
+                     </div>
+                 </div>
+
+                 <h4>Actualizar Perfil (Simulado)</h4>
+                 <div class="config-form">
+                     <label for="config-nombre">Nombre Completo:</label>
+                     <input type="text" id="config-nombre" value="${usuarioActual}" disabled> <!-- Deshabilitado por ahora -->
+
+                     <label for="config-email">Correo Electrónico:</label>
+                     <input type="email" id="config-email" value="empleado@sanitarioplus.com" disabled> <!-- Simulado y deshabilitado -->
+
+                     <button onclick="alert('La funcionalidad de actualizar perfil no está implementada.');">Guardar Cambios</button>
+                 </div>
+             </div>
+
+             <div class="config-section">
+                 <h3>Seguridad de la Cuenta</h3>
+                  <h4>Cambiar Contraseña (Simulado)</h4>
+                  <div class="config-form">
+                     <label for="config-current-password">Contraseña Actual:</label>
+                     <input type="password" id="config-current-password" placeholder="Ingresa tu contraseña actual">
+
+                     <label for="config-new-password">Nueva Contraseña:</label>
+                     <input type="password" id="config-new-password" placeholder="Ingresa tu nueva contraseña">
+
+                      <label for="config-confirm-password">Confirmar Nueva Contraseña:</label>
+                     <input type="password" id="config-confirm-password" placeholder="Confirma tu nueva contraseña">
+
+                      <button onclick="alert('La funcionalidad para cambiar contraseña no está implementada.');">Cambiar Contraseña</button>
+                  </div>
+             </div>
+
+              <div class="config-section">
+                 <h3>Preferencias de Notificaciones</h3>
+                  <h4>Configurar Notificaciones (Simulado)</h4>
+                  <ul>
+                      <li><a href="#" onclick="alert('Funcionalidad no implementada: Notificaciones de stock bajo'); return false;">Notificaciones de Stock Bajo</a></li>
+                      <li><a href="#" onclick="alert('Funcionalidad no implementada: Notificaciones de nuevos comentarios'); return false;">Notificaciones de Nuevos Comentarios</a></li>
+                      <li><a href="#" onclick="alert('Funcionalidad no implementada: Notificaciones de sistema'); return false;">Notificaciones del Sistema</a></li>
+                  </ul>
+                   <p style="font-size: 0.9rem; color: var(--gray-color);">Nota: La configuración de notificaciones es una sección de ejemplo.</p>
+             </div>
+
          `;
 
          configuracionContentDiv.innerHTML = configuracionHTML;
