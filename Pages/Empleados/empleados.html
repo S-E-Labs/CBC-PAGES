@@ -514,32 +514,32 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-header">
-      <h3>CBC - DECORACIÓN </h3>
+      <h3>CNC - DECORACIÓN</h3>
     </div>
-    
+
     <div class="sidebar-menu">
-      <div class="menu-item active">
+      <div class="menu-item active" id="menu-inventario">
         <i class="fas fa-boxes"></i>
         <span>Inventario</span>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" id="menu-reportes">
         <i class="fas fa-chart-line"></i>
         <span>Reportes</span>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" id="menu-alertas">
         <i class="fas fa-bell"></i>
         <span>Alertas</span>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" id="menu-historial">
         <i class="fas fa-history"></i>
         <span>Historial</span>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" id="menu-configuracion">
         <i class="fas fa-cog"></i>
         <span>Configuración</span>
       </div>
     </div>
-    
+
     <div class="user-profile">
       <div class="user-avatar" id="userAvatar">JD</div>
       <div class="user-info">
@@ -553,8 +553,8 @@
   <div class="main-content">
     <div class="header">
       <div class="page-title">
-        <h1>Panel de Inventario</h1>
-        <p>Gestión y control de productos en stock</p>
+        <h1 id="pageTitle">Panel de Inventario</h1>
+        <p id="pageDescription">Gestión y control de productos en stock</p>
       </div>
       <div class="header-actions">
         <button class="btn btn-danger" onclick="cerrarSesion()">
@@ -563,105 +563,130 @@
       </div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="stats-cards">
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Productos en Stock</div>
-          <div class="stat-card-icon blue">
-            <i class="fas fa-boxes"></i>
+    <!-- Contenido dinámico según el menú seleccionado -->
+    <div id="content-inventario">
+      <!-- Stats Cards -->
+      <div class="stats-cards">
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">Productos en Stock</div>
+            <div class="stat-card-icon blue">
+              <i class="fas fa-boxes"></i>
+            </div>
+          </div>
+          <div class="stat-card-value" id="totalProducts">0</div>
+          <div class="stat-card-change positive">
+            <i class="fas fa-arrow-up"></i> 12% desde ayer
           </div>
         </div>
-        <div class="stat-card-value" id="totalProducts">0</div>
-        <div class="stat-card-change positive">
-          <i class="fas fa-arrow-up"></i> 12% desde ayer
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">Productos Bajos</div>
+            <div class="stat-card-icon orange">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+          </div>
+          <div class="stat-card-value" id="lowStockProducts">0</div>
+          <div class="stat-card-change negative">
+            <i class="fas fa-arrow-down"></i> 5% desde ayer
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">Categorías</div>
+            <div class="stat-card-icon green">
+              <i class="fas fa-tags"></i>
+            </div>
+          </div>
+          <div class="stat-card-value">5</div>
+          <div class="stat-card-change">
+            <i class="fas fa-equals"></i> Sin cambios
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">Valor Total</div>
+            <div class="stat-card-icon red">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+          </div>
+          <div class="stat-card-value" id="totalValue">$0</div>
+          <div class="stat-card-change positive">
+            <i class="fas fa-arrow-up"></i> 8% desde ayer
+          </div>
         </div>
       </div>
-      
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Productos Bajos</div>
-          <div class="stat-card-icon orange">
-            <i class="fas fa-exclamation-triangle"></i>
-          </div>
+
+      <!-- Low Stock Alert -->
+      <div class="low-stock-alert" id="lowStockAlert" style="display: none;">
+        <div class="alert-icon">
+          <i class="fas fa-exclamation-circle"></i>
         </div>
-        <div class="stat-card-value" id="lowStockProducts">0</div>
-        <div class="stat-card-change negative">
-          <i class="fas fa-arrow-down"></i> 5% desde ayer
+        <div class="alert-content">
+          <h4>¡Atención! Productos con stock bajo</h4>
+          <p>Tienes <span id="alertCount">0</span> productos que necesitan reabastecimiento.</p>
         </div>
+        <button class="btn btn-warning" style="margin-left: auto;">Ver todos</button>
       </div>
-      
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Categorías</div>
-          <div class="stat-card-icon green">
-            <i class="fas fa-tags"></i>
+
+      <!-- Inventory Section -->
+      <div class="inventory-section">
+        <div class="section-header">
+          <h2 class="section-title">Lista de Productos</h2>
+          <div class="search-filter">
+            <select class="filter-select" id="categoria" onchange="mostrarProductos()">
+              <option value="">Todas las categorías</option>
+              <option value="lavamanos">Lavamanos</option>
+              <option value="muebles">Muebles</option>
+              <option value="sanitarios">Sanitarios</option>
+              <option value="grifos">Grifos</option>
+              <option value="accesorios">Accesorios</option>
+            </select>
+            <input type="text" class="search-box" id="buscar" placeholder="Buscar producto..." oninput="filtrarProductos()">
           </div>
         </div>
-        <div class="stat-card-value">5</div>
-        <div class="stat-card-change">
-          <i class="fas fa-equals"></i> Sin cambios
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-title">Valor Total</div>
-          <div class="stat-card-icon red">
-            <i class="fas fa-dollar-sign"></i>
-          </div>
-        </div>
-        <div class="stat-card-value" id="totalValue">$0</div>
-        <div class="stat-card-change positive">
-          <i class="fas fa-arrow-up"></i> 8% desde ayer
-        </div>
+
+        <table class="inventory-table" id="tablaProductos">
+          <thead>
+            <tr>
+              <th>Categoría</th>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Comentarios</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- Low Stock Alert -->
-    <div class="low-stock-alert" id="lowStockAlert" style="display: none;">
-      <div class="alert-icon">
-        <i class="fas fa-exclamation-circle"></i>
-      </div>
-      <div class="alert-content">
-        <h4>¡Atención! Productos con stock bajo</h4>
-        <p>Tienes <span id="alertCount">0</span> productos que necesitan reabastecimiento.</p>
-      </div>
-      <button class="btn btn-warning" style="margin-left: auto;">Ver todos</button>
+    <!-- Contenido de otras secciones (ejemplos, inicialmente ocultos) -->
+    <div id="content-reportes" style="display: none;">
+      <h2>Sección de Reportes</h2>
+      <p>Aquí iría el contenido de los reportes.</p>
     </div>
 
-    <!-- Inventory Section -->
-    <div class="inventory-section">
-      <div class="section-header">
-        <h2 class="section-title">Lista de Productos</h2>
-        <div class="search-filter">
-          <select class="filter-select" id="categoria" onchange="mostrarProductos()">
-            <option value="">Todas las categorías</option>
-            <option value="lavamanos">Lavamanos</option>
-            <option value="muebles">Muebles</option>
-            <option value="sanitarios">Sanitarios</option>
-            <option value="grifos">Grifos</option>
-            <option value="accesorios">Accesorios</option>
-          </select>
-          <input type="text" class="search-box" id="buscar" placeholder="Buscar producto..." oninput="filtrarProductos()">
-        </div>
-      </div>
-      
-      <table class="inventory-table" id="tablaProductos">
-        <thead>
-          <tr>
-            <th>Categoría</th>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Comentarios</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div id="content-alertas" style="display: none;">
+      <h2>Sección de Alertas</h2>
+      <p>Aquí iría el contenido de las alertas.</p>
     </div>
+
+    <div id="content-historial" style="display: none;">
+      <h2>Sección de Historial</h2>
+      <p>Aquí iría el contenido del historial.</p>
+    </div>
+
+    <div id="content-configuracion" style="display: none;">
+      <h2>Sección de Configuración</h2>
+      <p>Aquí iría el contenido de la configuración.</p>
+    </div>
+
   </div>
 
   <script>
@@ -679,10 +704,12 @@
         // Configurar información del usuario
         document.getElementById('userName').textContent = usuario;
         document.getElementById('userAvatar').textContent = getInitials(usuario);
-        
-        // Cargar productos
+
+        // Cargar productos y mostrar inventario por defecto
         cargarProductos();
         actualizarEstadisticas();
+        activarMenuItem('menu-inventario'); // Activar el menú de inventario por defecto
+        mostrarContenido('inventario'); // Mostrar el contenido de inventario por defecto
       }
     });
 
@@ -694,14 +721,14 @@
       allProducts = [];
       for (let cat of categorias) {
         let productos = JSON.parse(localStorage.getItem(cat)) || [];
-        productos = productos.map(p => ({ 
-          ...p, 
+        productos = productos.map(p => ({
+          ...p,
           categoria: cat,
           stockStatus: getStockStatus(p.cantidad)
         }));
         allProducts = allProducts.concat(productos);
       }
-      mostrarProductos();
+      // Nota: mostrarProductos se llama después de cargar productos y determinar la visibilidad
     }
 
     function getStockStatus(quantity) {
@@ -723,7 +750,7 @@
 
       productosAMostrar.forEach((prod) => {
         const tr = document.createElement("tr");
-        
+
         // Obtener comentario guardado
         const comentarioKey = `comentario_${prod.categoria}_${prod.codigo}`;
         const comentarioGuardado = localStorage.getItem(comentarioKey) || "";
@@ -760,11 +787,11 @@
             </div>
           </td>
           <td>
-            <input 
-              type="text" 
-              class="comment-input" 
-              value="${comentarioGuardado.replace(/"/g, '&quot;')}" 
-              placeholder="Agregar comentario..." 
+            <input
+              type="text"
+              class="comment-input"
+              value="${comentarioGuardado.replace(/"/g, '&quot;')}"
+              placeholder="Agregar comentario..."
               oninput="guardarComentario('${prod.categoria}', '${prod.codigo}', this.value)"
             />
           </td>
@@ -783,7 +810,7 @@
       // Mostrar/ocultar alerta de stock bajo
       const lowStockCount = allProducts.filter(p => p.cantidad <= 5).length;
       const lowStockAlert = document.getElementById('lowStockAlert');
-      
+
       if (lowStockCount > 0) {
         lowStockAlert.style.display = 'flex';
         document.getElementById('alertCount').textContent = lowStockCount;
@@ -799,8 +826,8 @@
 
     function filtrarProductos() {
       const texto = document.getElementById("buscar").value.toLowerCase();
-      const filtrados = allProducts.filter(p => 
-        p.nombre.toLowerCase().includes(texto) || 
+      const filtrados = allProducts.filter(p =>
+        p.nombre.toLowerCase().includes(texto) ||
         p.codigo.toLowerCase().includes(texto)
       );
       mostrarProductos(filtrados);
@@ -809,11 +836,11 @@
     function actualizarEstadisticas() {
       // Productos totales
       document.getElementById('totalProducts').textContent = allProducts.length;
-      
+
       // Productos con stock bajo
       const lowStock = allProducts.filter(p => p.cantidad <= 5).length;
       document.getElementById('lowStockProducts').textContent = lowStock;
-      
+
       // Valor total del inventario
       const totalValue = allProducts.reduce((sum, p) => sum + (p.precio * p.cantidad), 0);
       document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString()}`;
@@ -828,6 +855,83 @@
       sessionStorage.clear();
       window.location.href = "../../Pages/index.html";
     }
+
+    // --- Nuevas funciones para la navegación del menú ---
+
+    const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageDescription = document.getElementById('pageDescription');
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const menuId = item.id.replace('menu-', ''); // Obtiene 'inventario', 'reportes', etc.
+        activarMenuItem(item.id);
+        mostrarContenido(menuId);
+        actualizarTituloPagina(menuId);
+      });
+    });
+
+    function activarMenuItem(menuId) {
+      menuItems.forEach(item => {
+        item.classList.remove('active');
+      });
+      document.getElementById(menuId).classList.add('active');
+    }
+
+    function mostrarContenido(seccionId) {
+      // Ocultar todas las secciones de contenido
+      document.querySelectorAll('.main-content > div[id^="content-"]').forEach(contentDiv => {
+        contentDiv.style.display = 'none';
+      });
+
+      // Mostrar la sección correspondiente
+      const targetContent = document.getElementById(`content-${seccionId}`);
+      if (targetContent) {
+        targetContent.style.display = 'block';
+        // Si es la sección de inventario, asegúrate de que la tabla esté visible
+        if (seccionId === 'inventario') {
+            mostrarProductos(); // Vuelve a renderizar la tabla de inventario
+        }
+      } else {
+        console.warn(`No se encontró la sección de contenido para el ID: ${seccionId}`);
+        // Opcional: Mostrar un mensaje de "Contenido no disponible"
+      }
+    }
+
+    function actualizarTituloPagina(seccionId) {
+      let titulo = '';
+      let descripcion = '';
+
+      switch (seccionId) {
+        case 'inventario':
+          titulo = 'Panel de Inventario';
+          descripcion = 'Gestión y control de productos en stock';
+          break;
+        case 'reportes':
+          titulo = 'Panel de Reportes';
+          descripcion = 'Visualización de métricas y análisis';
+          break;
+        case 'alertas':
+          titulo = 'Panel de Alertas';
+          descripcion = 'Gestión de notificaciones importantes';
+          break;
+        case 'historial':
+          titulo = 'Historial de Actividad';
+          descripcion = 'Registro de cambios y operaciones';
+          break;
+        case 'configuracion':
+          titulo = 'Configuración de Cuenta';
+          descripcion = 'Ajustes de usuario y preferencias';
+          break;
+        default:
+          titulo = 'Dashboard Empleado';
+          descripcion = '';
+      }
+
+      pageTitle.textContent = titulo;
+      pageDescription.textContent = descripcion;
+    }
+
   </script>
 </body>
 </html>
