@@ -615,6 +615,10 @@
       color: rgba(255, 255, 255, 0.85);
       font-weight: 300;
     }
+
+
+
+     /* ========= FOOTER ========= */
     /* Footer */
     .footer {
       background-color: var(--primary-dark);
@@ -705,7 +709,9 @@
       font-weight: 300;
     }
 
-    /* Animations */
+
+
+    /* ========= ANIMACIONES ========= */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
@@ -720,6 +726,9 @@
     .delay-2 { animation-delay: 0.4s; }
     .delay-3 { animation-delay: 0.6s; }
 
+
+
+     /* ========= MODAL ========= */
     /* Responsive */
     @media (max-width: 1200px) {
       .nav-links {
@@ -848,29 +857,38 @@
       }
     }
 
-    /* Chatbot Styles */
+    
+
+
+
+     /* ========= CHATBOT ========= */
     .chatbot-toggler {
-      position: fixed;
-      bottom: 35px;
-      right: 40px;
-      height: 58px;
-      width: 58px;
-      color: #fff;
-      background: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      outline: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      z-index: 1001; /* Ensure it's above other content */
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    right: 40px;
+    bottom: 35px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background-color: #000; /* Cambiado a negro */
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+    .chatbot-toggler:hover {
+      background: var(--primary-dark);
+      transform: scale(1.1);
     }
 
     .chatbot-toggler span {
       position: absolute;
+      font-size: 1.5rem;
+      transition: opacity 0.3s ease;
     }
 
     .show-chatbot .chatbot-toggler span:first-child,
@@ -884,7 +902,6 @@
 
     .chatbot {
       position: fixed;
-
       right: 35px;
       bottom: 90px;
       width: 420px;
@@ -898,10 +915,10 @@
       box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
                   0 32px 64px -48px rgba(0, 0, 0, 0.5);
       transition: all 0.1s ease;
-      z-index: 1001; /* Ensure it's above other content */
+      z-index: 1001;
       display: flex;
       flex-direction: column;
-      max-height: 70vh; /* Limit height for responsiveness */
+      max-height: 70vh;
     }
 
     .show-chatbot .chatbot {
@@ -917,9 +934,9 @@
       background: var(--primary);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       border-radius: 15px 15px 0 0;
-      margin: 0; /* Remove header margin */
-      position: static; /* Override fixed position */
-      z-index: auto; /* Override fixed position */
+      margin: 0;
+      position: static;
+      z-index: auto;
       width: 100%;
     }
 
@@ -927,14 +944,13 @@
       color: #fff;
       font-size: 1.4rem;
       margin: 0;
-      font-family: 'Montserrat', sans-serif; /* Use Montserrat for header */
+      font-family: 'Montserrat', sans-serif;
     }
 
     .chatbot header span {
       position: absolute;
       right: 20px;
       top: 50%;
-      display: none;
       transform: translateY(-50%);
       color: #fff;
       cursor: pointer;
@@ -977,7 +993,7 @@
       border-radius: 10px 10px 0 10px;
       background: var(--secondary);
       color: #fff;
-      white-space: pre-wrap; /* Preserve line breaks */
+      white-space: pre-wrap;
     }
 
     .chatbox .incoming p {
@@ -986,43 +1002,130 @@
       color: var(--dark);
     }
 
-    .chatbot .chat-input {
-      padding: 8px 20px;
-      display: flex;
-      gap: 10px;
-      border-top: 1px solid #ccc;
-      background: #f8f8f8;
-      position: sticky;
-      bottom: 0;
-      margin-top: auto; /* Push to bottom */
-    }
-
-    .chat-input textarea {
-      height: 55px;
-      width: 100%;
+    .chatbot-button {
+      background-color: var(--secondary);
+      color: white;
       border: none;
-      outline: none;
-      resize: none;
-      padding: 16px 15px;
-      font-size: 0.95rem;
-      background: transparent;
-    }
-
-    .chat-input span {
-      align-self: flex-end;
-      height: 55px;
-      line-height: 55px;
-      color: var(--primary);
-      font-size: 1.35rem;
+      padding: 10px 15px;
+      border-radius: 20px;
       cursor: pointer;
-      visibility: hidden;
+      margin: 5px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: inline-block;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .chat-input textarea:valid ~ span {
-      visibility: visible;
+    .chatbot-button:hover {
+      background-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    @media (max-width: 490px) {
+    .options-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    /* ========= CHATBOT ICONOS ========= */
+    .fas, .fab {
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+
+    .fa-robot:before {
+      content: "\f544";
+    }
+
+    .fa-comment-dots:before {
+      content: "\f4ad";
+    }
+
+    .fa-times:before {
+      content: "\f00d";
+    }
+
+    .fa-search:before {
+      content: "\f002";
+    }
+
+    .fa-phone:before {
+      content: "\f095";
+    }
+
+    .fa-gift:before {
+      content: "\f06b";
+    }
+
+    .fa-building:before {
+      content: "\f1ad";
+    }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 1200px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .navbar {
+        padding: 15px 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 100px 20px 60px;
+        text-align: center;
+      }
+
+      .hero-text {
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+        margin: 0 auto 40px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .section-title h2 {
+        font-size: 2.3rem;
+      }
+
+      .modal-body {
+        flex-direction: column;
+      }
+
+      .modal-body img, .modal-info {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 2rem;
+      }
+
       .chatbot {
         right: 0;
         bottom: 0;
@@ -1035,66 +1138,65 @@
         padding: 25px 15px 100px;
       }
 
-      .chatbot .chat-input {
-        padding: 15px 20px;
-      }
-
       .chatbot header span {
         display: block;
       }
     }
-    .chatbot-button {
-        background-color: var(--secondary); /* Color de fondo del botón */
-        color: white; /* Color del texto del botón */
-        border: none;
-        padding: 8px 15px;
-        border-radius: 20px; /* Bordes redondeados */
-        cursor: pointer;
-        margin-top: 10px; /* Espacio encima del botón */
-        margin-right: 5px; /* Espacio entre botones si hay varios */
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
-        display: inline-block; /* Para que aparezcan uno al lado del otro si hay espacio */
-      }
-
-      .chatbot-button:hover {
-        background-color: var(--primary); /* Cambio de color al pasar el mouse */
-        transform: translateY(-1px);
-      }
   </style>
 </head>
 
-<body>
-  <!-- Header -->
-  <header>
-    <div class="navbar">
-      <a class="navbar-brand" href="#">CB<span>C</span></a>
-      <ul class="nav-links">
-        <li><a class="active" href="#" onclick="scrollToTop()">Inicio</a></li>
-        <li><a href="#categorias">Categorías</a></li>
-        <li><a href="#" onclick="redirectToGallery()">Productos</a></li>
-        <li><a href="#marcas">Marcas</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      </ul>
-      <button class="btn-login" onclick="irLogin()" aria-label="Iniciar sesión">
-        <i class="fas fa-sign-in-alt me-2"></i>Login
-      </button>
-    </div>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="hero-text fade-in">
-        <h1>Distribución de Productos Premium para Baños</h1>
-        <p>Suministramos las mejores marcas de grifería, duchas, muebles y accesorios para baño a profesionales y minoristas.</p>
-        <div class="cta-buttons">
-          <button class="btn btn-primary" onclick="redirectToGallery()">Ver Catálogo <i class="fas fa-arrow-right"></i></button>
-          <button class="btn btn-outline" onclick="scrollToContact()">Contactar Vendedor</button>
+
+
+  
+<body>
+    <!-- ==================== -->
+    <!-- HEADER / BARRA NAVEGACIÓN -->
+    <!-- ==================== -->
+    <header>
+        <div class="navbar">
+            <!-- Logo con efecto de color -->
+            <a class="navbar-brand" href="#">CB<span>C</span></a>
+            
+            <!-- Menú principal -->
+            <ul class="nav-links">
+                <li><a class="active" href="#" onclick="scrollToTop()">Inicio</a></li>
+                <li><a href="#categorias">Categorías</a></li>
+                <li><a href="#" onclick="redirectToGallery()">Productos</a></li>
+                <li><a href="#marcas">Marcas</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+          
+       <!-- Botón de login con ícono -->
+            <button class="btn-login" onclick="irLogin()" aria-label="Iniciar sesión">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+            </button>
         </div>
-      </div>
-    </div>
-  </section>
+    </header>
+<!-- ==================== -->
+    <!-- HERO SECTION (PORTADA) -->
+    <!-- ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <!-- Texto principal con animación fade-in -->
+            <div class="hero-text fade-in">
+                <h1>Los mejores productos para remodelar tu baño</h1>
+                <p>Productos confiables, precios accesibles</p>
+                
+                <!-- Botones de llamado a la acción -->
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="redirectToGallery()">
+                        <i class="bi bi-grid"></i> Ver Catálogo
+                    </button>
+                    <a href="https://wa.me/+573107107274" class="btn btn-outline" target="_blank">
+                        <i class="bi bi-whatsapp"></i> Contactar Vendedor
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
 
   <!-- Categories -->
   <section class="categories" id="categorias">
