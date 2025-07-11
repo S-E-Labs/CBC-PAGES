@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- METADATOS BASICOS -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CBC Decoración - Especialistas en productos para baño de alta calidad. Duchas, muebles, grifería y más.">
+  
+  <!-- FAVICON -->
   <link rel="icon" href="../Assests/Img/favicon.png" type="image/png" />
-  <title>CBC - Decoración </title>
+
+  <!-- BOOTSTRAP ICONS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- FONT AWESOME -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- TITULO -->
+  <title>Los mejores productos para remodelar tu baño | CBC Decoración</title>
+  
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
- <!-- ESTILOS CSS -->
+  
+  <!-- ESTILOS CSS -->
   <style>
     /* ========= VARIABLES GLOBALES ========= */
     :root {
@@ -21,6 +35,8 @@
       --beige: #f5f3f0;          /* Color beige */
       --marble: #e3f0eb;         /* Fondo estilo mármol con tono verdoso */
     }
+
+    /* ========= RESET Y ESTILOS BASE ========= */
     * {
       margin: 0;
       padding: 0;
@@ -36,13 +52,14 @@
       font-weight: 400;
     }
 
+    /* ========= ESTILOS DE ENCABEZADOS ========= */
     h1, h2, h3, h4, h5 {
       font-family: 'Playfair Display', serif;
       font-weight: 600;
       letter-spacing: 0.5px;
     }
 
-    /* Header */
+    /* ========= HEADER Y BARRA DE NAVEGACION ========= */
     header {
       background: rgba(255, 255, 255, 0.95);
       padding: 0;
@@ -136,9 +153,9 @@
       box-shadow: 0 6px 20px rgba(10, 61, 98, 0.3);
     }
 
-    /* Hero section */
+    /* ========= SECCION HERO ========= */
     .hero {
-      background: linear-gradient(105deg, rgba(10, 61, 98, 0.85) 40%, rgba(10, 61, 98, 0.75) 100%),
+      background: linear-gradient(105deg, #1c5c30cc 40%, rgba(26, 165, 95) 290%),
                   url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
       min-height: 100vh;
       display: flex;
@@ -226,8 +243,11 @@
     .btn-outline:hover {
       background: white;
       color: var(--primary);
-      transform: translateY(-3px);
     }
+
+
+
+  /*/////
 
     /* Product Categories */
     .categories {
